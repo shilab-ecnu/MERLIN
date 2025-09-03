@@ -16,7 +16,7 @@ Load the package using the following command:
 library(CHESS)
 ```
 
-### Fit CHESS using <a href="https://github.com/shilab-ecnu/CHESS/tree/main/simulation">simulated data</a>
+## Fit CHESS using <a href="https://github.com/shilab-ecnu/CHESS/tree/main/simulation">simulated data</a>
 
 We first generate the genotype data and the environmental variable:
 
@@ -155,8 +155,10 @@ pval4 <- res$Beta4.pval
 
 beta1_hat, se1_hat, and pval1 are the estimated average causal effect, corresponding standard error, and p-value of beta1_hat. beta4_hat, se4_hat, and pval4 are the estimated heterogeneity causal effect, corresponding standard error, and p-value of beta4_hat.
 
+## Real data
+### The Testosterone-BD study with environmental factor sex
 
-### Fit CHESS using the Testosterone-BD study with environmental factor sex
+All the raw data for the real-data analyses in the replicated paper are stored on <a href="https://figshare.com/articles/dataset/Data_for_CHESS/29910116">CHESS Dataset on Figshare</a>. Here, we take the dataset “The Testosterone–BD study with the environmental factor sex” as an example.
 
 Furthermore, we give an example to illustrate the implementation of CHESS for real data analysis. The following datasets ('Testosterone.GWAS.txt.gz', 'Testosterone.GWIS.txt.gz', 'BD.GWAS.txt.gz', 'BD.GWIS.txt.gz', 'g1000_eur.bed','g1000_eur.fam', 'g1000_eur.bim', 'all.bed') should be prepared. Download here: <a href="https://figshare.com/articles/dataset/Data_for_CHESS/29910116">CHESS Dataset on Figshare</a>
 
