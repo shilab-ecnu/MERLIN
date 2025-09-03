@@ -1,0 +1,23 @@
+Package: CHESS
+Title: CHESS for causal heterogeneity using summary statistics
+Version: 1.1.0
+Authors@R: 
+    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: CHESS (Causal Heterogeneity using Summary Statistics) is a unified 
+    Bayesian framework that jointly estimates average and heterogeneity 
+    effects using summary data from genome-wide association studies (GWAS) and 
+    Genome-Wide Interaction Studies (GWIS).
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+        license
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+LinkingTo: Rcpp,RcppArmadillo,BH,bigmemory,RcppDist
+Imports: data.table,readr,Rcpp
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
+NeedsCompilation: yes
+Packaged: 2025-08-24 18:32:39 UTC; 36433
+Author: First Last [aut, cre] (YOUR-ORCID-ID)
+Maintainer: First Last <first.last@example.com>
