@@ -16,7 +16,8 @@ Load the package using the following command:
 library(CHESS)
 ```
 
-## Fit CHESS using <a href="https://github.com/shilab-ecnu/CHESS/tree/main/simulation">simulated data</a>
+## Fit CHESS using simulated data
+The repeated code in the paper is all in this hyperlink: <a href="https://github.com/shilab-ecnu/CHESS/tree/main/simulation">SIMULATION</a>.
 
 We first generate the genotype data and the environmental variable:
 
