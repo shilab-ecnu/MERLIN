@@ -200,7 +200,9 @@ The SNP effects and standard errors for GWIS summary statistics were derived bas
 \hat{b}_{gwis,j}=\frac{1}{2}(\hat{b}_{male,j}-{\hat{b}}_{female,j})
 ```
 
-$$se(\hat{b}_{gwis,j})=\frac{1}{2}\sqrt{(se(\hat{b}_{male,j})^2+se(\hat{b}_{female,j})^2}$$
+```math
+se(\hat{b}_{gwis,j})=\frac{1}{2}\sqrt{(se(\hat{b}_{male,j})^2+se(\hat{b}_{female,j})^2}
+```
 
 'stringname3' is the name of the reference panel data. Here we use samples from '1000 Genomes Project European panel', which is in plink binary format. 'block_file' is used to partition the whole genome into blocks.
 
