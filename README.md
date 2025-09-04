@@ -196,7 +196,9 @@ metal metal.config.Testosterone.txt
 
 The SNP effects and standard errors for GWIS summary statistics were derived based on the following formula, assuming sex coded as Male=1, Female=-1. Allele direction must be aligned before analyzing sex-stratified data.
 
-$\hat{b}_{gwis,j}=\frac{1}{2}(\hat{b}_{male,j}-{\hat{b}}_{female,j})$
+```math
+\hat{b}_{gwis,j}=\frac{1}{2}(\hat{b}_{male,j}-{\hat{b}}_{female,j})
+```
 
 $$se(\hat{b}_{gwis,j})=\frac{1}{2}\sqrt{(se(\hat{b}_{male,j})^2+se(\hat{b}_{female,j})^2}$$
 
