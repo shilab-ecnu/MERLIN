@@ -6,7 +6,7 @@ Install the development version of *CHESS* by use of the 'devtools' package. Not
 To install this package, run the following command in R.
 
 ```         
-library(devtools)
+library(remotes)
 install_github("shilab-ecnu/MR-CHESS")
 ```
 
