@@ -1,19 +1,19 @@
-# CHESS: Causal Heterogeneity using Summary Statistics
-This vignette provides an introduction to the *CHESS* package. R package *CHESS* implements CHESS for causal heterogeneity using summary statistics.
+# MERLIN: MEndelian Randomization for Linear INteraction
+This vignette provides an introduction to the *MERLIN* package. R package *MERLIN* implements MERLIN for causal heterogeneity using summary statistics.
 
-Install the development version of *CHESS* by use of the 'devtools' package. Note that *CHESS* depends on the 'Rcpp' and 'RcppArmadillo' packages, which also require appropriate settings of Rtools and Xcode for Windows and Mac OS/X, respectively.
+Install the development version of *MERLIN* by use of the 'devtools' package. Note that *MERLIN* depends on the 'Rcpp' and 'RcppArmadillo' packages, which also require appropriate settings of Rtools and Xcode for Windows and Mac OS/X, respectively.
 
 To install this package, run the following command in R.
 
 ```         
 library(remotes)
-install_github("shilab-ecnu/MR-CHESS")
+install_github("shilab-ecnu/MERLIN")
 ```
 
 Load the package using the following command:
 
 ```{r}
-library(CHESS)
+library(MERLIN)
 ```
 
 ## Fit CHESS using simulated data
