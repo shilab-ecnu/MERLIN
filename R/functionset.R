@@ -123,7 +123,7 @@ ivselect <- function(expgwas_dir, expgwis_dir, outgwas_dir, outgwis_dir,
                      lam = 0.1, coreNum = 1, intersect_mode = FALSE){
 
   start_time <- Sys.time()
-  message("Starting CHESS IV selection process...")
+  message("Starting MERLIN IV selection process...")
 
   message("Step 1/7: Reading reference panel (bim file)...")
   bim <- data.table::fread(paste0(stringname3,".bim"), header = FALSE)
@@ -259,7 +259,7 @@ ivselect <- function(expgwas_dir, expgwis_dir, outgwas_dir, outgwis_dir,
 }
 
 
-CHESS <- function(gammah1, gammah3, Gammah1, Gammah3,
+MERLIN <- function(gammah1, gammah3, Gammah1, Gammah3,
                   se1, se2, se3, se4, R, rho_1, rho_2) {
 
   if (!all.equal(
@@ -271,7 +271,7 @@ CHESS <- function(gammah1, gammah3, Gammah1, Gammah3,
   }
 
   start_time <- Sys.time()
-  message("Running CHESS method...")
+  message("Running MERLIN method...")
 
   result <- MRGEI_Gam3seo(
     gammah1 = gammah1,
@@ -291,7 +291,7 @@ CHESS <- function(gammah1, gammah3, Gammah1, Gammah3,
   duration <- round(as.numeric(difftime(end_time, start_time, units = "secs")), 1)
 
   message("\n", rep("-", 50))
-  message("CHESS Analysis Completed Successfully!")
+  message("MERLIN Analysis Completed Successfully!")
   message("Total processing time: ", duration, " seconds")
   message(rep("-", 50))
 
