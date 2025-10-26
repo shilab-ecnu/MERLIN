@@ -10,7 +10,7 @@ library(bigsnpr)
 library(bigstatsr)
 library(bigreadr)
 library(data.table)
-setwd("¡«/CHESS")
+setwd("Â¡Â«/MERLIN")
 source("code/R/summary_lm.R")
 sourceCpp("code/cpp/Gibbs_samp_Gamseo.cpp")
 sourceCpp("code/cpp/Gibbs_samp_Gam3seo.cpp")
@@ -170,10 +170,10 @@ R_other <- diag(length(cauidx_other))
 rhoe <- 0
 rhoee <- 0
 
-##CHESS(p)
+##MERLIN(p)
 res1 <- MRGEI_Gamseo(fit1$BETA[cauidx], fit3$BETA[cauidx], Fit1$BETA[cauidx], fit1$SE[cauidx], fit3$SE[cauidx], Fit1$SE[cauidx], R, rhoe)
 str(res1)
-#CHESS 
+#MERLIN 
 res2 <- MRGEI_Gam3seo(fit1$BETA[cauidx], fit3$BETA[cauidx], Fit1$BETA[cauidx], Fit3$BETA[cauidx], fit1$SE[cauidx], fit3$SE[cauidx], Fit1$SE[cauidx], Fit3$SE[cauidx], R, rhoe, rhoee)
 str(res2)
 ##MR.LDP
