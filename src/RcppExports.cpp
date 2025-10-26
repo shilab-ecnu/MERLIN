@@ -13,7 +13,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 
 // load_block_file
 std::vector<arma::umat> load_block_file(const std::string& block_file);
-RcppExport SEXP _CHESS_load_block_file(SEXP block_fileSEXP) {
+RcppExport SEXP _MERLIN_load_block_file(SEXP block_fileSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -24,7 +24,7 @@ END_RCPP
 }
 // test_blocks
 List test_blocks(arma::ivec bp, arma::ivec chr, std::string block_file);
-RcppExport SEXP _CHESS_test_blocks(SEXP bpSEXP, SEXP chrSEXP, SEXP block_fileSEXP) {
+RcppExport SEXP _MERLIN_test_blocks(SEXP bpSEXP, SEXP chrSEXP, SEXP block_fileSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -37,7 +37,7 @@ END_RCPP
 }
 // std_setdiff
 arma::ivec std_setdiff(arma::ivec& x, arma::ivec& y);
-RcppExport SEXP _CHESS_std_setdiff(SEXP xSEXP, SEXP ySEXP) {
+RcppExport SEXP _MERLIN_std_setdiff(SEXP xSEXP, SEXP ySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -49,7 +49,7 @@ END_RCPP
 }
 // LDclump
 arma::ivec LDclump(arma::mat& R, double ld_r2_thresh);
-RcppExport SEXP _CHESS_LDclump(SEXP RSEXP, SEXP ld_r2_threshSEXP) {
+RcppExport SEXP _MERLIN_LDclump(SEXP RSEXP, SEXP ld_r2_threshSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -61,7 +61,7 @@ END_RCPP
 }
 // Cal_blockR
 List Cal_blockR(arma::ivec& bp, arma::ivec& chr, arma::uvec& avbIndex, arma::uvec& idx4panel, std::string block_file, std::string stringname3, double ld_r2_thresh, int coreNum, double lam);
-RcppExport SEXP _CHESS_Cal_blockR(SEXP bpSEXP, SEXP chrSEXP, SEXP avbIndexSEXP, SEXP idx4panelSEXP, SEXP block_fileSEXP, SEXP stringname3SEXP, SEXP ld_r2_threshSEXP, SEXP coreNumSEXP, SEXP lamSEXP) {
+RcppExport SEXP _MERLIN_Cal_blockR(SEXP bpSEXP, SEXP chrSEXP, SEXP avbIndexSEXP, SEXP idx4panelSEXP, SEXP block_fileSEXP, SEXP stringname3SEXP, SEXP ld_r2_threshSEXP, SEXP coreNumSEXP, SEXP lamSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -80,7 +80,7 @@ END_RCPP
 }
 // Cal_block_Rmatrix
 List Cal_block_Rmatrix(arma::ivec& bp, arma::ivec& chr, arma::uvec& avbIndex, arma::uvec& idx4panel, std::string block_file, std::string stringname3, double ld_r2_thresh, int coreNum, double lam);
-RcppExport SEXP _CHESS_Cal_block_Rmatrix(SEXP bpSEXP, SEXP chrSEXP, SEXP avbIndexSEXP, SEXP idx4panelSEXP, SEXP block_fileSEXP, SEXP stringname3SEXP, SEXP ld_r2_threshSEXP, SEXP coreNumSEXP, SEXP lamSEXP) {
+RcppExport SEXP _MERLIN_Cal_block_Rmatrix(SEXP bpSEXP, SEXP chrSEXP, SEXP avbIndexSEXP, SEXP idx4panelSEXP, SEXP block_fileSEXP, SEXP stringname3SEXP, SEXP ld_r2_threshSEXP, SEXP coreNumSEXP, SEXP lamSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -99,7 +99,7 @@ END_RCPP
 }
 // Cal_blockinf
 List Cal_blockinf(arma::ivec& bp, arma::ivec& chr, std::string block_file);
-RcppExport SEXP _CHESS_Cal_blockinf(SEXP bpSEXP, SEXP chrSEXP, SEXP block_fileSEXP) {
+RcppExport SEXP _MERLIN_Cal_blockinf(SEXP bpSEXP, SEXP chrSEXP, SEXP block_fileSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -112,7 +112,7 @@ END_RCPP
 }
 // IndepSummary
 Rcpp::List IndepSummary(arma::ivec& bp, arma::ivec& chr, arma::uvec& avbIndex, std::string& block_file, std::string stringname3, arma::vec& bh1, arma::vec& bh2, arma::vec& se1, arma::vec& se2, int coreNum, double lam, const double& ld_r2_thresh);
-RcppExport SEXP _CHESS_IndepSummary(SEXP bpSEXP, SEXP chrSEXP, SEXP avbIndexSEXP, SEXP block_fileSEXP, SEXP stringname3SEXP, SEXP bh1SEXP, SEXP bh2SEXP, SEXP se1SEXP, SEXP se2SEXP, SEXP coreNumSEXP, SEXP lamSEXP, SEXP ld_r2_threshSEXP) {
+RcppExport SEXP _MERLIN_IndepSummary(SEXP bpSEXP, SEXP chrSEXP, SEXP avbIndexSEXP, SEXP block_fileSEXP, SEXP stringname3SEXP, SEXP bh1SEXP, SEXP bh2SEXP, SEXP se1SEXP, SEXP se2SEXP, SEXP coreNumSEXP, SEXP lamSEXP, SEXP ld_r2_threshSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -134,7 +134,7 @@ END_RCPP
 }
 // testR
 double testR(double rho, int n);
-RcppExport SEXP _CHESS_testR(SEXP rhoSEXP, SEXP nSEXP) {
+RcppExport SEXP _MERLIN_testR(SEXP rhoSEXP, SEXP nSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -146,7 +146,7 @@ END_RCPP
 }
 // comb
 arma::imat comb(int p);
-RcppExport SEXP _CHESS_comb(SEXP pSEXP) {
+RcppExport SEXP _MERLIN_comb(SEXP pSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -157,7 +157,7 @@ END_RCPP
 }
 // Mat2Vec
 arma::vec Mat2Vec(arma::mat R);
-RcppExport SEXP _CHESS_Mat2Vec(SEXP RSEXP) {
+RcppExport SEXP _MERLIN_Mat2Vec(SEXP RSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -168,7 +168,7 @@ END_RCPP
 }
 // Vec2Mat
 arma::mat Vec2Mat(arma::vec RV, int p1);
-RcppExport SEXP _CHESS_Vec2Mat(SEXP RVSEXP, SEXP p1SEXP) {
+RcppExport SEXP _MERLIN_Vec2Mat(SEXP RVSEXP, SEXP p1SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -180,7 +180,7 @@ END_RCPP
 }
 // Cal_block_Rvec
 List Cal_block_Rvec(arma::ivec& bp, arma::ivec& chr, arma::uvec& avbIndex, std::string block_file, std::string stringname3, int coreNum, double lam);
-RcppExport SEXP _CHESS_Cal_block_Rvec(SEXP bpSEXP, SEXP chrSEXP, SEXP avbIndexSEXP, SEXP block_fileSEXP, SEXP stringname3SEXP, SEXP coreNumSEXP, SEXP lamSEXP) {
+RcppExport SEXP _MERLIN_Cal_block_Rvec(SEXP bpSEXP, SEXP chrSEXP, SEXP avbIndexSEXP, SEXP block_fileSEXP, SEXP stringname3SEXP, SEXP coreNumSEXP, SEXP lamSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -197,7 +197,7 @@ END_RCPP
 }
 // MRGEI_Gam3seo
 List MRGEI_Gam3seo(arma::vec& gammah1, arma::vec& gammah3, arma::vec& Gammah1, arma::vec& Gammah3, arma::vec& se1, arma::vec& se2, arma::vec& se3, arma::vec& se4, arma::mat& R, double& rho_1, double& rho_2);
-RcppExport SEXP _CHESS_MRGEI_Gam3seo(SEXP gammah1SEXP, SEXP gammah3SEXP, SEXP Gammah1SEXP, SEXP Gammah3SEXP, SEXP se1SEXP, SEXP se2SEXP, SEXP se3SEXP, SEXP se4SEXP, SEXP RSEXP, SEXP rho_1SEXP, SEXP rho_2SEXP) {
+RcppExport SEXP _MERLIN_MRGEI_Gam3seo(SEXP gammah1SEXP, SEXP gammah3SEXP, SEXP Gammah1SEXP, SEXP Gammah3SEXP, SEXP se1SEXP, SEXP se2SEXP, SEXP se3SEXP, SEXP se4SEXP, SEXP RSEXP, SEXP rho_1SEXP, SEXP rho_2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -218,7 +218,7 @@ END_RCPP
 }
 // getLineNum
 int getLineNum(std::string filename);
-RcppExport SEXP _CHESS_getLineNum(SEXP filenameSEXP) {
+RcppExport SEXP _MERLIN_getLineNum(SEXP filenameSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -229,7 +229,7 @@ END_RCPP
 }
 // ReadSNPinfo
 Rcpp::List ReadSNPinfo(std::string stringname, IntegerVector A1, IntegerVector A2, CharacterVector rsname, IntegerVector chr, IntegerVector bp, NumericVector morgan, int N);
-RcppExport SEXP _CHESS_ReadSNPinfo(SEXP stringnameSEXP, SEXP A1SEXP, SEXP A2SEXP, SEXP rsnameSEXP, SEXP chrSEXP, SEXP bpSEXP, SEXP morganSEXP, SEXP NSEXP) {
+RcppExport SEXP _MERLIN_ReadSNPinfo(SEXP stringnameSEXP, SEXP A1SEXP, SEXP A2SEXP, SEXP rsnameSEXP, SEXP chrSEXP, SEXP bpSEXP, SEXP morganSEXP, SEXP NSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -247,7 +247,7 @@ END_RCPP
 }
 // Read_summarystat
 void Read_summarystat(std::string stringname, IntegerVector SA1, IntegerVector SA2, CharacterVector rsname, NumericVector betah, NumericVector s2, NumericVector pvalue, IntegerVector chr, IntegerVector bp, int N);
-RcppExport SEXP _CHESS_Read_summarystat(SEXP stringnameSEXP, SEXP SA1SEXP, SEXP SA2SEXP, SEXP rsnameSEXP, SEXP betahSEXP, SEXP s2SEXP, SEXP pvalueSEXP, SEXP chrSEXP, SEXP bpSEXP, SEXP NSEXP) {
+RcppExport SEXP _MERLIN_Read_summarystat(SEXP stringnameSEXP, SEXP SA1SEXP, SEXP SA2SEXP, SEXP rsnameSEXP, SEXP betahSEXP, SEXP s2SEXP, SEXP pvalueSEXP, SEXP chrSEXP, SEXP bpSEXP, SEXP NSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::string >::type stringname(stringnameSEXP);
@@ -266,7 +266,7 @@ END_RCPP
 }
 // select
 CharacterVector select(CharacterVector vec_, NumericVector idx_);
-RcppExport SEXP _CHESS_select(SEXP vec_SEXP, SEXP idx_SEXP) {
+RcppExport SEXP _MERLIN_select(SEXP vec_SEXP, SEXP idx_SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -278,7 +278,7 @@ END_RCPP
 }
 // matchsnp
 Rcpp::List matchsnp(std::string stringname1, std::string stringname2, std::string stringname3, bool matchExp);
-RcppExport SEXP _CHESS_matchsnp(SEXP stringname1SEXP, SEXP stringname2SEXP, SEXP stringname3SEXP, SEXP matchExpSEXP) {
+RcppExport SEXP _MERLIN_matchsnp(SEXP stringname1SEXP, SEXP stringname2SEXP, SEXP stringname3SEXP, SEXP matchExpSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -292,7 +292,7 @@ END_RCPP
 }
 // matchscreen
 Rcpp::List matchscreen(std::string screenname, std::string stringname1, std::string stringname2, std::string stringname3, double pva_cutoff, bool matchExp);
-RcppExport SEXP _CHESS_matchscreen(SEXP screennameSEXP, SEXP stringname1SEXP, SEXP stringname2SEXP, SEXP stringname3SEXP, SEXP pva_cutoffSEXP, SEXP matchExpSEXP) {
+RcppExport SEXP _MERLIN_matchscreen(SEXP screennameSEXP, SEXP stringname1SEXP, SEXP stringname2SEXP, SEXP stringname3SEXP, SEXP pva_cutoffSEXP, SEXP matchExpSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -308,7 +308,7 @@ END_RCPP
 }
 // phi
 double phi(double x);
-RcppExport SEXP _CHESS_phi(SEXP xSEXP) {
+RcppExport SEXP _MERLIN_phi(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -319,7 +319,7 @@ END_RCPP
 }
 // cdfNormal
 double cdfNormal(double x, double mean, double sd);
-RcppExport SEXP _CHESS_cdfNormal(SEXP xSEXP, SEXP meanSEXP, SEXP sdSEXP) {
+RcppExport SEXP _MERLIN_cdfNormal(SEXP xSEXP, SEXP meanSEXP, SEXP sdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -332,7 +332,7 @@ END_RCPP
 }
 // MulticdfNormal
 arma::vec MulticdfNormal(arma::vec& x);
-RcppExport SEXP _CHESS_MulticdfNormal(SEXP xSEXP) {
+RcppExport SEXP _MERLIN_MulticdfNormal(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -343,7 +343,7 @@ END_RCPP
 }
 // multiphi
 arma::vec multiphi(arma::vec x);
-RcppExport SEXP _CHESS_multiphi(SEXP xSEXP) {
+RcppExport SEXP _MERLIN_multiphi(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -354,7 +354,7 @@ END_RCPP
 }
 // inverseNormal
 double inverseNormal(double prob, double mean, double sd);
-RcppExport SEXP _CHESS_inverseNormal(SEXP probSEXP, SEXP meanSEXP, SEXP sdSEXP) {
+RcppExport SEXP _MERLIN_inverseNormal(SEXP probSEXP, SEXP meanSEXP, SEXP sdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -367,7 +367,7 @@ END_RCPP
 }
 // MultiinverseNormal
 arma::vec MultiinverseNormal(arma::vec& prob);
-RcppExport SEXP _CHESS_MultiinverseNormal(SEXP probSEXP) {
+RcppExport SEXP _MERLIN_MultiinverseNormal(SEXP probSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -378,7 +378,7 @@ END_RCPP
 }
 // MatSum
 arma::mat MatSum(arma::vec& y1, arma::vec& y2);
-RcppExport SEXP _CHESS_MatSum(SEXP y1SEXP, SEXP y2SEXP) {
+RcppExport SEXP _MERLIN_MatSum(SEXP y1SEXP, SEXP y2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -390,7 +390,7 @@ END_RCPP
 }
 // truncEstfun
 arma::vec truncEstfun(arma::vec& a, arma::vec& b, arma::vec& x1, arma::vec& x2, int maxIter, int burnin, int thin);
-RcppExport SEXP _CHESS_truncEstfun(SEXP aSEXP, SEXP bSEXP, SEXP x1SEXP, SEXP x2SEXP, SEXP maxIterSEXP, SEXP burninSEXP, SEXP thinSEXP) {
+RcppExport SEXP _MERLIN_truncEstfun(SEXP aSEXP, SEXP bSEXP, SEXP x1SEXP, SEXP x2SEXP, SEXP maxIterSEXP, SEXP burninSEXP, SEXP thinSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -407,38 +407,38 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_CHESS_load_block_file", (DL_FUNC) &_CHESS_load_block_file, 1},
-    {"_CHESS_test_blocks", (DL_FUNC) &_CHESS_test_blocks, 3},
-    {"_CHESS_std_setdiff", (DL_FUNC) &_CHESS_std_setdiff, 2},
-    {"_CHESS_LDclump", (DL_FUNC) &_CHESS_LDclump, 2},
-    {"_CHESS_Cal_blockR", (DL_FUNC) &_CHESS_Cal_blockR, 9},
-    {"_CHESS_Cal_block_Rmatrix", (DL_FUNC) &_CHESS_Cal_block_Rmatrix, 9},
-    {"_CHESS_Cal_blockinf", (DL_FUNC) &_CHESS_Cal_blockinf, 3},
-    {"_CHESS_IndepSummary", (DL_FUNC) &_CHESS_IndepSummary, 12},
-    {"_CHESS_testR", (DL_FUNC) &_CHESS_testR, 2},
-    {"_CHESS_comb", (DL_FUNC) &_CHESS_comb, 1},
-    {"_CHESS_Mat2Vec", (DL_FUNC) &_CHESS_Mat2Vec, 1},
-    {"_CHESS_Vec2Mat", (DL_FUNC) &_CHESS_Vec2Mat, 2},
-    {"_CHESS_Cal_block_Rvec", (DL_FUNC) &_CHESS_Cal_block_Rvec, 7},
-    {"_CHESS_MRGEI_Gam3seo", (DL_FUNC) &_CHESS_MRGEI_Gam3seo, 11},
-    {"_CHESS_getLineNum", (DL_FUNC) &_CHESS_getLineNum, 1},
-    {"_CHESS_ReadSNPinfo", (DL_FUNC) &_CHESS_ReadSNPinfo, 8},
-    {"_CHESS_Read_summarystat", (DL_FUNC) &_CHESS_Read_summarystat, 10},
-    {"_CHESS_select", (DL_FUNC) &_CHESS_select, 2},
-    {"_CHESS_matchsnp", (DL_FUNC) &_CHESS_matchsnp, 4},
-    {"_CHESS_matchscreen", (DL_FUNC) &_CHESS_matchscreen, 6},
-    {"_CHESS_phi", (DL_FUNC) &_CHESS_phi, 1},
-    {"_CHESS_cdfNormal", (DL_FUNC) &_CHESS_cdfNormal, 3},
-    {"_CHESS_MulticdfNormal", (DL_FUNC) &_CHESS_MulticdfNormal, 1},
-    {"_CHESS_multiphi", (DL_FUNC) &_CHESS_multiphi, 1},
-    {"_CHESS_inverseNormal", (DL_FUNC) &_CHESS_inverseNormal, 3},
-    {"_CHESS_MultiinverseNormal", (DL_FUNC) &_CHESS_MultiinverseNormal, 1},
-    {"_CHESS_MatSum", (DL_FUNC) &_CHESS_MatSum, 2},
-    {"_CHESS_truncEstfun", (DL_FUNC) &_CHESS_truncEstfun, 7},
+    {"_MERLIN_load_block_file", (DL_FUNC) &_MERLIN_load_block_file, 1},
+    {"_MERLIN_test_blocks", (DL_FUNC) &_MERLIN_test_blocks, 3},
+    {"_MERLIN_std_setdiff", (DL_FUNC) &_MERLIN_std_setdiff, 2},
+    {"_MERLIN_LDclump", (DL_FUNC) &_MERLIN_LDclump, 2},
+    {"_MERLIN_Cal_blockR", (DL_FUNC) &_MERLIN_Cal_blockR, 9},
+    {"_MERLIN_Cal_block_Rmatrix", (DL_FUNC) &_MERLIN_Cal_block_Rmatrix, 9},
+    {"_MERLIN_Cal_blockinf", (DL_FUNC) &_MERLIN_Cal_blockinf, 3},
+    {"_MERLIN_IndepSummary", (DL_FUNC) &_MERLIN_IndepSummary, 12},
+    {"_MERLIN_testR", (DL_FUNC) &_MERLIN_testR, 2},
+    {"_MERLIN_comb", (DL_FUNC) &_MERLIN_comb, 1},
+    {"_MERLIN_Mat2Vec", (DL_FUNC) &_MERLIN_Mat2Vec, 1},
+    {"_MERLIN_Vec2Mat", (DL_FUNC) &_MERLIN_Vec2Mat, 2},
+    {"_MERLIN_Cal_block_Rvec", (DL_FUNC) &_MERLIN_Cal_block_Rvec, 7},
+    {"_MERLIN_MRGEI_Gam3seo", (DL_FUNC) &_MERLIN_MRGEI_Gam3seo, 11},
+    {"_MERLIN_getLineNum", (DL_FUNC) &_MERLIN_getLineNum, 1},
+    {"_MERLIN_ReadSNPinfo", (DL_FUNC) &_MERLIN_ReadSNPinfo, 8},
+    {"_MERLIN_Read_summarystat", (DL_FUNC) &_MERLIN_Read_summarystat, 10},
+    {"_MERLIN_select", (DL_FUNC) &_MERLIN_select, 2},
+    {"_MERLIN_matchsnp", (DL_FUNC) &_MERLIN_matchsnp, 4},
+    {"_MERLIN_matchscreen", (DL_FUNC) &_MERLIN_matchscreen, 6},
+    {"_MERLIN_phi", (DL_FUNC) &_MERLIN_phi, 1},
+    {"_MERLIN_cdfNormal", (DL_FUNC) &_MERLIN_cdfNormal, 3},
+    {"_MERLIN_MulticdfNormal", (DL_FUNC) &_MERLIN_MulticdfNormal, 1},
+    {"_MERLIN_multiphi", (DL_FUNC) &_MERLIN_multiphi, 1},
+    {"_MERLIN_inverseNormal", (DL_FUNC) &_MERLIN_inverseNormal, 3},
+    {"_MERLIN_MultiinverseNormal", (DL_FUNC) &_MERLIN_MultiinverseNormal, 1},
+    {"_MERLIN_MatSum", (DL_FUNC) &_MERLIN_MatSum, 2},
+    {"_MERLIN_truncEstfun", (DL_FUNC) &_MERLIN_truncEstfun, 7},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_CHESS(DllInfo *dll) {
+RcppExport void R_init_MERLIN(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }
