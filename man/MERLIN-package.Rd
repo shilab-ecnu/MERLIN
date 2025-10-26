@@ -1,20 +1,20 @@
-\name{CHESS-package}
-\alias{CHESS-package}
-\alias{CHESS}
+\name{MERLIN-package}
+\alias{MERLIN-package}
+\alias{MERLIN}
 \docType{package}
-\title{\packageTitle{CHESS}}
-\description{\packageDescription{CHESS}}
+\title{\packageTitle{MERLIN}}
+\description{\packageDescription{MERLIN}}
 \details{
-  The DESCRIPTION file: \packageDESCRIPTION{CHESS}
-  \packageIndices{CHESS}
+  The DESCRIPTION file: \packageDESCRIPTION{MERLIN}
+  \packageIndices{MERLIN}
 
   This section should provide a more detailed overview of how to use the
   package, including the most important functions.
 }
 \author{
-  \packageAuthor{CHESS}
+  \packageAuthor{MERLIN}
 
-  Maintainer: \packageMaintainer{CHESS}
+  Maintainer: \packageMaintainer{MERLIN}
 }
 \references{
   This optional section can contain literature or other references for
