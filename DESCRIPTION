@@ -1,10 +1,10 @@
-Package: CHESS
-Title: CHESS for causal heterogeneity using summary statistics
+Package: MERLIN
+Title: MERLIN for causal heterogeneity using summary statistics
 Version: 1.1.0
 Authors@R: 
     person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: CHESS (Causal Heterogeneity using Summary Statistics) is a unified 
+Description: MERLIN (Causal Heterogeneity using Summary Statistics) is a unified 
     Bayesian framework that jointly estimates average and heterogeneity 
     effects using summary data from genome-wide association studies (GWAS) and 
     Genome-Wide Interaction Studies (GWIS).
