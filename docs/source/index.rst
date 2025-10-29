@@ -7,4 +7,4 @@ Welcome to MERLIN's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   MERLIN
+   MERLIN 
