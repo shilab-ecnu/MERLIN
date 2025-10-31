@@ -73,102 +73,656 @@ std_setdiff <- function(x, y) {
     .Call(`_MERLIN_std_setdiff`, x, y)
 }
 
+#' LD Clumping
+#'
+#' @description
+#' Performs linkage disequilibrium (LD) clumping on a correlation matrix to select independent variants.
+#'
+#' @details
+#' Prunes variants exceeding the LD r-squared threshold, useful in GWAS for selecting lead SNPs.
+#'
+#' @param R Square matrix of LD correlations.
+#' @param ld_r2_thresh Numeric threshold for r-squared (e.g., 0.01).
+#'
+#' @return Indices or matrix of clumped results.
+#'
+#' @examples
+#' \dontrun{
+#' clumped <- LDclump(R = cor_matrix, ld_r2_thresh = 0.01)
+#' }
+#'
+#' @seealso \code{\link{IndepSummary}}
+#'
+#' @export
 LDclump <- function(R, ld_r2_thresh) {
     .Call(`_MERLIN_LDclump`, R, ld_r2_thresh)
 }
 
+#' Calculate Block R
+#'
+#' @description
+#' Calculates the R value (e.g., correlation) for genetic blocks.
+#'
+#' @details
+#' Processes positions and indices to compute block-wise correlations, using multi-core if specified.
+#'
+#' @param bp Numeric vector of base pair positions.
+#' @param chr Numeric or character vector of chromosomes.
+#' @param avbIndex Numeric vector of available indices.
+#' @param idx4panel Numeric vector of panel indices.
+#' @param block_file Path to block file.
+#' @param stringname3 Character string, possibly a file or name for additional data.
+#' @param ld_r2_thresh LD r-squared threshold.
+#' @param coreNum Number of cores for parallel computation.
+#' @param lam Lambda parameter, possibly for regularization.
+#'
+#' @return Block R values.
+#'
+#' @examples
+#' \dontrun{
+#' block_r <- Cal_blockR(bp, chr, avbIndex, idx4panel, "blocks.txt", "data.txt", 0.01, 4, 1)
+#' }
+#'
+#' @seealso \code{\link{Cal_block_Rmatrix}}, \code{\link{Cal_block_Rvec}}
+#'
+#' @export
 Cal_blockR <- function(bp, chr, avbIndex, idx4panel, block_file, stringname3, ld_r2_thresh, coreNum, lam) {
     .Call(`_MERLIN_Cal_blockR`, bp, chr, avbIndex, idx4panel, block_file, stringname3, ld_r2_thresh, coreNum, lam)
 }
 
+#' Calculate Block R Matrix
+#'
+#' @description
+#' Computes the R correlation matrix for genetic blocks.
+#'
+#' @details
+#' Similar to \code{Cal_blockR} but returns a matrix form.
+#'
+#' @param bp Numeric vector of base pair positions.
+#' @param chr Numeric or character vector of chromosomes.
+#' @param avbIndex Numeric vector of available indices.
+#' @param idx4panel Numeric vector of panel indices.
+#' @param block_file Path to block file.
+#' @param stringname3 Character string for additional data.
+#' @param ld_r2_thresh LD r-squared threshold.
+#' @param coreNum Number of cores.
+#' @param lam Lambda parameter.
+#'
+#' @return R matrix for blocks.
+#'
+#' @examples
+#' \dontrun{
+#' r_matrix <- Cal_block_Rmatrix(bp, chr, avbIndex, idx4panel, "blocks.txt", "data.txt", 0.01, 4, 1)
+#' }
+#'
+#' @seealso \code{\link{Cal_blockR}}
+#'
+#' @export
 Cal_block_Rmatrix <- function(bp, chr, avbIndex, idx4panel, block_file, stringname3, ld_r2_thresh, coreNum, lam) {
     .Call(`_MERLIN_Cal_block_Rmatrix`, bp, chr, avbIndex, idx4panel, block_file, stringname3, ld_r2_thresh, coreNum, lam)
 }
 
+#' Calculate Block Information
+#'
+#' @description
+#' Computes information about genetic blocks, such as size or SNP counts.
+#'
+#' @details
+#' Analyzes blocks based on positions and chromosomes.
+#'
+#' @param bp Numeric vector of base pairs.
+#' @param chr Vector of chromosomes.
+#' @param block_file Path to block file.
+#'
+#' @return Block information, possibly a data frame.
+#'
+#' @examples
+#' \dontrun{
+#' info <- Cal_blockinf(bp, chr, "blocks.txt")
+#' }
+#'
+#' @seealso \code{\link{load_block_file}}
+#'
+#' @export
 Cal_blockinf <- function(bp, chr, block_file) {
     .Call(`_MERLIN_Cal_blockinf`, bp, chr, block_file)
 }
 
+#' Independent Summary Statistics
+#'
+#' @description
+#' Generates independent summary statistics by processing blocks and clumping.
+#'
+#' @details
+#' Selects independent variants from summary data using block information.
+#'
+#' @param bp Base pairs.
+#' @param chr Chromosomes.
+#' @param avbIndex Available indices.
+#' @param block_file Block file path.
+#' @param stringname3 Additional data string.
+#' @param bh1 Beta hats for exposure.
+#' @param bh2 Beta hats for outcome.
+#' @param se1 Standard errors for bh1.
+#' @param se2 Standard errors for bh2.
+#' @param coreNum Cores.
+#' @param lam Lambda.
+#' @param ld_r2_thresh LD threshold.
+#'
+#' @return List or data frame of independent summaries.
+#'
+#' @examples
+#' \dontrun{
+#' indep <- IndepSummary(bp, chr, avbIndex, "blocks.txt", "data.txt", bh1, bh2, se1, se2, 4, 1, 0.01)
+#' }
+#'
+#' @seealso \code{\link{LDclump}}
+#'
+#' @export
 IndepSummary <- function(bp, chr, avbIndex, block_file, stringname3, bh1, bh2, se1, se2, coreNum, lam, ld_r2_thresh) {
     .Call(`_MERLIN_IndepSummary`, bp, chr, avbIndex, block_file, stringname3, bh1, bh2, se1, se2, coreNum, lam, ld_r2_thresh)
 }
 
+#' Test Correlation
+#'
+#' @description
+#' Performs a statistical test on correlation coefficient rho with sample size n.
+#'
+#' @details
+#' Likely a t-test or z-test for correlation significance.
+#'
+#' @param rho Numeric correlation coefficient.
+#' @param n Sample size.
+#'
+#' @return Test statistic or p-value.
+#'
+#' @examples
+#' \dontrun{
+#' test <- testR(0.5, 100)
+#' }
+#'
+#' @export
 testR <- function(rho, n) {
     .Call(`_MERLIN_testR`, rho, n)
 }
 
+#' Combinations
+#'
+#' @description
+#' Generates combinations or possibly combines p-values.
+#'
+#' @details
+#' Given the parameter p, likely computes combinations for p items.
+#'
+#' @param p Integer or vector for combinations.
+#'
+#' @return Matrix or vector of combinations.
+#'
+#' @examples
+#' combs <- comb(5)
+#'
+#' @export
 comb <- function(p) {
     .Call(`_MERLIN_comb`, p)
 }
 
+#' Matrix to Vector
+#'
+#' @description
+#' Flattens a matrix into a vector.
+#'
+#' @details
+#' Converts matrix R to a vector, possibly row-major.
+#'
+#' @param R Input matrix.
+#'
+#' @return Flattened vector.
+#'
+#' @examples
+#' vec <- Mat2Vec(matrix(1:4, 2, 2))
+#'
+#' @seealso \code{\link{Vec2Mat}}
+#'
+#' @export
 Mat2Vec <- function(R) {
     .Call(`_MERLIN_Mat2Vec`, R)
 }
 
+#' Vector to Matrix
+#'
+#' @description
+#' Reshapes a vector into a matrix.
+#'
+#' @details
+#' Converts vector RV to a matrix with dimension related to p1.
+#'
+#' @param RV Input vector.
+#' @param p1 Integer, possibly number of rows or columns.
+#'
+#' @return Reshaped matrix.
+#'
+#' @examples
+#' mat <- Vec2Mat(1:4, 2)
+#'
+#' @seealso \code{\link{Mat2Vec}}
+#'
+#' @export
 Vec2Mat <- function(RV, p1) {
     .Call(`_MERLIN_Vec2Mat`, RV, p1)
 }
 
+#' Calculate Block R Vector
+#'
+#' @description
+#' Computes a vector of R values for blocks.
+#'
+#' @details
+#' Similar to Cal_blockR but returns a vector form.
+#'
+#' @param bp Base pairs.
+#' @param chr Chromosomes.
+#' @param avbIndex Available indices.
+#' @param block_file Block file.
+#' @param stringname3 Additional string.
+#' @param coreNum Cores.
+#' @param lam Lambda.
+#'
+#' @return Vector of block R values.
+#'
+#' @examples
+#' \dontrun{
+#' r_vec <- Cal_block_Rvec(bp, chr, avbIndex, "blocks.txt", "data.txt", 4, 1)
+#' }
+#'
+#' @seealso \code{\link{Cal_blockR}}
+#'
+#' @export
 Cal_block_Rvec <- function(bp, chr, avbIndex, block_file, stringname3, coreNum, lam) {
     .Call(`_MERLIN_Cal_block_Rvec`, bp, chr, avbIndex, block_file, stringname3, coreNum, lam)
 }
 
+#' MRGEI GAM 3 SEO
+#'
+#' @description
+#' Core function for Mendelian Randomization with Gene-Environment Interaction using GAM and 3 SE optimization.
+#'
+#' @details
+#' Performs MR analysis accounting for interactions, using beta hats, SEs, LD matrix, and overlap coefficients.
+#'
+#' @param gammah1 Gamma hats for first component.
+#' @param gammah3 Gamma hats for third component.
+#' @param Gammah1 Gamma hats for outcome first.
+#' @param Gammah3 Gamma hats for outcome third.
+#' @param se1 SE for gammah1.
+#' @param se2 SE for Gammah1.
+#' @param se3 SE for gammah3.
+#' @param se4 SE for Gammah3.
+#' @param R LD matrix.
+#' @param rho_1 Overlap rho 1.
+#' @param rho_2 Overlap rho 2.
+#'
+#' @return Analysis results, likely estimates and p-values.
+#'
+#' @examples
+#' \dontrun{
+#' result <- MRGEI_Gam3seo(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, 0.5, 0.3)
+#' }
+#'
+#' @seealso \code{\link{MERLIN}}
+#'
+#' @export
 MRGEI_Gam3seo <- function(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2) {
     .Call(`_MERLIN_MRGEI_Gam3seo`, gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2)
 }
 
+#' Get Line Number
+#'
+#' @description
+#' Returns the number of lines in a file.
+#'
+#' @details
+#' Efficient way to count lines without reading the entire file.
+#'
+#' @param filename Path to file.
+#'
+#' @return Integer line count.
+#'
+#' @examples
+#' \dontrun{
+#' lines <- getLineNum("file.txt")
+#' }
+#'
+#' @export
 getLineNum <- function(filename) {
     .Call(`_MERLIN_getLineNum`, filename)
 }
 
+#' Read SNP Information
+#'
+#' @description
+#' Reads SNP information from a file or data.
+#'
+#' @details
+#' Processes SNP details including alleles, positions, etc.
+#'
+#' @param stringname Character, possibly file path.
+#' @param A1 Allele 1 column or data.
+#' @param A2 Allele 2.
+#' @param rsname RS names.
+#' @param chr Chromosomes.
+#' @param bp Base pairs.
+#' @param morgan Morgan positions?
+#' @param N Sample sizes.
+#'
+#' @return Processed SNP info.
+#'
+#' @examples
+#' \dontrun{
+#' snp <- ReadSNPinfo("snp.txt", A1, A2, rsname, chr, bp, morgan, N)
+#' }
+#'
+#' @seealso \code{\link{Read_summarystat}}
+#'
+#' @export
 ReadSNPinfo <- function(stringname, A1, A2, rsname, chr, bp, morgan, N) {
     .Call(`_MERLIN_ReadSNPinfo`, stringname, A1, A2, rsname, chr, bp, morgan, N)
 }
 
+#' Read Summary Statistics
+#'
+#' @description
+#' Reads and processes GWAS summary statistics.
+#'
+#' @details
+#' Loads betas, SEs, p-values, etc., from file.
+#'
+#' @param stringname File path.
+#' @param SA1 Allele 1.
+#' @param SA2 Allele 2.
+#' @param rsname RS names.
+#' @param betah Beta hats.
+#' @param s2 Variances.
+#' @param pvalue P-values.
+#' @param chr Chromosomes.
+#' @param bp Base pairs.
+#' @param N Sample sizes.
+#'
+#' @return Invisible, possibly modifies inputs or returns data.
+#'
+#' @examples
+#' \dontrun{
+#' Read_summarystat("gwas.txt", SA1, SA2, rsname, betah, s2, pvalue, chr, bp, N)
+#' }
+#'
+#' @seealso \code{\link{ReadSNPinfo}}
+#'
+#' @export
 Read_summarystat <- function(stringname, SA1, SA2, rsname, betah, s2, pvalue, chr, bp, N) {
     invisible(.Call(`_MERLIN_Read_summarystat`, stringname, SA1, SA2, rsname, betah, s2, pvalue, chr, bp, N))
 }
 
+#' Select Vector Elements
+#'
+#' @description
+#' Selects elements from a vector by indices.
+#'
+#' @details
+#' Efficient subsetting.
+#'
+#' @param vec_ Input vector.
+#' @param idx_ Indices to select.
+#'
+#' @return Selected vector.
+#'
+#' @examples
+#' sel <- select(1:10, c(1,3,5))
+#'
+#' @export
 select <- function(vec_, idx_) {
     .Call(`_MERLIN_select`, vec_, idx_)
 }
 
+#' Match SNPs
+#'
+#' @description
+#' Matches SNPs between datasets.
+#'
+#' @details
+#' Aligns based on RS names or positions.
+#'
+#' @param stringname1 First data string.
+#' @param stringname2 Second.
+#' @param stringname3 Third.
+#' @param matchExp Logical for expression matching?
+#'
+#' @return Matched results.
+#'
+#' @examples
+#' \dontrun{
+#' matched <- matchsnp("data1", "data2", "data3", TRUE)
+#' }
+#'
+#' @seealso \code{\link{matchscreen}}
+#'
+#' @export
 matchsnp <- function(stringname1, stringname2, stringname3, matchExp) {
     .Call(`_MERLIN_matchsnp`, stringname1, stringname2, stringname3, matchExp)
 }
 
+#' Match and Screen
+#'
+#' @description
+#' Matches and screens SNPs based on p-value cutoff.
+#'
+#' @details
+#' Filters matching SNPs by significance.
+#'
+#' @param screenname Screen data.
+#' @param stringname1 First data.
+#' @param stringname2 Second.
+#' @param stringname3 Third.
+#' @param pva_cutoff P-value cutoff.
+#' @param matchExp Logical (default FALSE).
+#'
+#' @return Screened matches.
+#'
+#' @examples
+#' \dontrun{
+#' screened <- matchscreen("screen", "data1", "data2", "data3", 5e-8, FALSE)
+#' }
+#'
+#' @seealso \code{\link{matchsnp}}
+#'
+#' @export
 matchscreen <- function(screenname, stringname1, stringname2, stringname3, pva_cutoff, matchExp = FALSE) {
     .Call(`_MERLIN_matchscreen`, screenname, stringname1, stringname2, stringname3, pva_cutoff, matchExp)
 }
 
+#' Phi Function
+#'
+#' @description
+#' Computes the standard normal density function (phi).
+#'
+#' @details
+#' Probability density function for normal distribution.
+#'
+#' @param x Numeric values.
+#'
+#' @return Density values.
+#'
+#' @examples
+#' dens <- phi(seq(-3, 3, 0.1))
+#'
+#' @seealso \code{\link{cdfNormal}}, \code{\link{multiphi}}
+#'
+#' @export
 phi <- function(x) {
     .Call(`_MERLIN_phi`, x)
 }
 
+#' Normal CDF
+#'
+#' @description
+#' Computes the cumulative distribution function for normal distribution.
+#'
+#' @details
+#' Equivalent to pnorm in R.
+#'
+#' @param x Quantiles.
+#' @param mean Mean (default 0?).
+#' @param sd Standard deviation (default 1?).
+#'
+#' @return Probabilities.
+#'
+#' @examples
+#' prob <- cdfNormal(1.96, 0, 1)
+#'
+#' @seealso \code{\link{MulticdfNormal}}
+#'
+#' @export
 cdfNormal <- function(x, mean, sd) {
     .Call(`_MERLIN_cdfNormal`, x, mean, sd)
 }
 
+#' Multivariate Normal CDF
+#'
+#' @description
+#' Computes multivariate normal CDF.
+#'
+#' @details
+#' For vector x, assuming mean and cov.
+#'
+#' @param x Vector of quantiles.
+#'
+#' @return Probability.
+#'
+#' @examples
+#' \dontrun{
+#' prob <- MulticdfNormal(c(1,1))
+#' }
+#'
+#' @seealso \code{\link{cdfNormal}}
+#'
+#' @export
 MulticdfNormal <- function(x) {
     .Call(`_MERLIN_MulticdfNormal`, x)
 }
 
+#' Multiple Phi
+#'
+#' @description
+#' Computes phi for multiple values or multivariate.
+#'
+#' @details
+#' Vectorized or multi-dimensional density.
+#'
+#' @param x Input values.
+#'
+#' @return Densities.
+#'
+#' @examples
+#' dens <- multiphi(seq(-3,3,0.1))
+#'
+#' @seealso \code{\link{phi}}
+#'
+#' @export
 multiphi <- function(x) {
     .Call(`_MERLIN_multiphi`, x)
 }
 
+#' Inverse Normal
+#'
+#' @description
+#' Computes the quantile function for normal distribution.
+#'
+#' @details
+#' Equivalent to qnorm.
+#'
+#' @param prob Probabilities.
+#' @param mean Mean.
+#' @param sd SD.
+#'
+#' @return Quantiles.
+#'
+#' @examples
+#' quant <- inverseNormal(0.975, 0, 1)
+#'
+#' @seealso \code{\link{MultiinverseNormal}}
+#'
+#' @export
 inverseNormal <- function(prob, mean, sd) {
     .Call(`_MERLIN_inverseNormal`, prob, mean, sd)
 }
 
+#' Multivariate Inverse Normal
+#'
+#' @description
+#' Computes multivariate normal quantiles.
+#'
+#' @details
+#' For vector prob.
+#'
+#' @param prob Probability vector.
+#'
+#' @return Quantiles.
+#'
+#' @examples
+#' \dontrun{
+#' quants <- MultiinverseNormal(c(0.5, 0.5))
+#' }
+#'
+#' @seealso \code{\link{inverseNormal}}
+#'
+#' @export
 MultiinverseNormal <- function(prob) {
     .Call(`_MERLIN_MultiinverseNormal`, prob)
 }
 
+#' Matrix Sum
+#'
+#' @description
+#' Sums two matrices element-wise.
+#'
+#' @details
+#' Adds y1 and y2.
+#'
+#' @param y1 First matrix.
+#' @param y2 Second matrix.
+#'
+#' @return Sum matrix.
+#'
+#' @examples
+#' sum_mat <- MatSum(matrix(1:4,2,2), matrix(5:8,2,2))
+#'
+#' @export
 MatSum <- function(y1, y2) {
     .Call(`_MERLIN_MatSum`, y1, y2)
 }
 
+#' Truncated Estimation Function
+#'
+#' @description
+#' Performs estimation under truncation, possibly using MCMC.
+#'
+#' @details
+#' Truncated distribution estimation with iteration parameters.
+#'
+#' @param a Lower bound.
+#' @param b Upper bound.
+#' @param x1 Data 1.
+#' @param x2 Data 2.
+#' @param maxIter Maximum iterations.
+#' @param burnin Burn-in period.
+#' @param thin Thinning interval.
+#'
+#' @return Estimated parameters.
+#'
+#' @examples
+#' \dontrun{
+#' est <- truncEstfun(0, Inf, x1, x2, 10000, 1000, 10)
+#' }
+#'
+#' @export
 truncEstfun <- function(a, b, x1, x2, maxIter, burnin, thin) {
     .Call(`_MERLIN_truncEstfun`, a, b, x1, x2, maxIter, burnin, thin)
 }
