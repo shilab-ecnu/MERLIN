@@ -26,10 +26,49 @@ load_block_file <- function(block_file) {
     .Call(`_MERLIN_load_block_file`, block_file)
 }
 
+#' Test Blocks
+#'
+#' @description
+#' Assigns or tests genetic positions (base pairs and chromosomes) against predefined blocks.
+#'
+#' @details
+#' Used to map SNPs to LD blocks for downstream analyses like clumping or independence testing.
+#'
+#' @param bp Numeric vector of base pair positions.
+#' @param chr Numeric or character vector of chromosome identifiers.
+#' @param block_file Character string path to the block file.
+#'
+#' @return Results of block assignment or testing, possibly indices or block IDs.
+#'
+#' @examples
+#' \dontrun{
+#' test_result <- test_blocks(bp = c(1000, 2000), chr = c(1, 1), block_file = "blocks.txt")
+#' }
+#'
+#' @seealso \code{\link{load_block_file}}, \code{\link{Cal_blockR}}
+#'
+#' @export
 test_blocks <- function(bp, chr, block_file) {
     .Call(`_MERLIN_test_blocks`, bp, chr, block_file)
 }
 
+#' Standard Set Difference
+#'
+#' @description
+#' Computes the set difference between two vectors, removing elements of y from x.
+#'
+#' @details
+#' A standardized implementation, possibly handling numeric or character vectors efficiently.
+#'
+#' @param x Vector from which to remove elements.
+#' @param y Vector of elements to remove.
+#'
+#' @return Vector containing elements in x but not in y.
+#'
+#' @examples
+#' diff <- std_setdiff(1:10, 5:15)
+#'
+#' @export
 std_setdiff <- function(x, y) {
     .Call(`_MERLIN_std_setdiff`, x, y)
 }
