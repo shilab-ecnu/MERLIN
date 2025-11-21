@@ -14,21 +14,15 @@ knitr::opts_chunk$set(echo = TRUE)
 options(encoding = "UTF-8")
 ```
 
-### Introduction
+# MERLIN: MEndelian Randomization for Linear INteraction
+This vignette provides an introduction to the *MERLIN* package. R package *MERLIN* implements MERLIN for causal heterogeneity using summary statistics.
 
-This vignette provides an introduction to the *MERLIN* package. R package
-*MERLIN* implements MERLIN for causal heterogeneity using summary
-statistics.
-
-Install the development version of *MERLIN* by use of the 'devtools'
-package. Note that *MERLIN* depends on the 'Rcpp' and 'RcppArmadillo'
-package, which also requires appropriate setting of Rtools and Xcode for
-Windows and Mac OS/X, respectively.
+Install the development version of *MERLIN* by use of the 'devtools' package. Note that *MERLIN* depends on the 'Rcpp' and 'RcppArmadillo' packages, which also require appropriate settings of Rtools and Xcode for Windows and Mac OS/X, respectively.
 
 To install this package, run the following command in R.
 
 ```         
-library(devtools)
+library(remotes)
 install_github("shilab-ecnu/MERLIN")
 ```
 
@@ -38,9 +32,10 @@ Load the package using the following command:
 library(MERLIN)
 ```
 
-### Fit MERLIN using simulated data
+## Fit MERLIN using simulated data
+The repeated code in the paper is all in this hyperlink: <a href="https://github.com/shilab-ecnu/MERLIN/tree/main/simulation">SIMULATION</a>.
 
-We first generate the genotype data and environmental variable:
+We first generate the genotype data and the environmental variable:
 
 ```{r, eval = FALSE}
 library(mvtnorm)
@@ -66,9 +61,7 @@ G <- scale(G, center = TRUE, scale = FALSE);
 E_x <- rnorm(n_exp + n_out)
 ```
 
-Now simulate the genetic effect sizes. The main genetic effects ($\gamma_1$) 
-and G×E interaction effects ($\gamma_3$) are generated as correlated multivariate 
-normal variables with specified heritabilities.
+Now simulate the genetic effect sizes. The main genetic effects ($\gamma_1$) and G×E interaction effects ($\gamma_3$) are generated as correlated multivariate normal variables with specified heritabilities.
 
 ```{r, eval = FALSE}
 sigma2g1 <- h_g1 / m;
@@ -84,7 +77,7 @@ gamma_1x <- gamma1_3[, 1];
 gamma_3x <- gamma1_3[, 2]
 ```
 
-Generate the exposure ($X$) and outcome ($Y$) variables With the genetic effects defined.
+Generate the exposure ($X$) and outcome ($Y$) variables with the genetic effects defined.
 
 ```{r, eval = FALSE}
 GE <- G * E_x;
@@ -134,8 +127,7 @@ out_gwis_sum <- get_sumstats(G[(n_exp + 1):(n_exp + n_out), ], out_gwis,
                             interaction = TRUE, E = out_E)
 ```
 
-We select genetic instruments using a p-value threshold. SNPs in either the GWAS 
-or GWIS analysis are included in the union set of instruments.
+We select genetic instruments using a p-value threshold. SNPs in either the GWAS or GWIS analysis are included in the union set of instruments.
 
 ```{r, eval = FALSE}
 p_threshold <- 0.01;
@@ -178,17 +170,14 @@ se4_hat <- res$Beta4.se;
 pval4 <- res$Beta4.pval
 ```
 
-beta1_hat, se1_hat, pval1 are estimated average causal effect, corresponding standard error and p-value of beta1_hat. beta4_hat, se4_hat, pval4 are estimated heterogeneity causal effect, corresponding standard error and p-value of beta4_hat.
+beta1_hat, se1_hat, and pval1 are the estimated average causal effect, corresponding standard error, and p-value of beta1_hat. beta4_hat, se4_hat, and pval4 are the estimated heterogeneity causal effect, corresponding standard error, and p-value of beta4_hat.
 
+## Real data
+### The Testosterone-BD study with environmental factor sex
 
-### Fit MERLIN using Testosterone-BD study with environmental factor sex
+All the raw data for the real-data analyses in the replicated paper are stored on <a href="https://figshare.com/articles/dataset/Data_for_MERLIN/29910116">MERLIN Dataset on Figshare</a>. Here, we take the dataset “The Testosterone–BD study with the environmental factor sex” as an example.
 
-Furthermore, we give an example to illustrate the implements of MERLIN
-for real data analysis. The following
-datasets ('Testosterone.GWAS.txt.gz', 'Testosterone.GWIS.txt.gz',
-'BD.GWAS.txt.gz', 'BD.GWIS.txt.gz', 'g1000_eur.bed','g1000_eur.fam',
-'g1000_eur.bim', 'all.bed') should be prepared. Download here:
-$\underline{\href{https://figshare.com/articles/dataset/Data_for_MERLIN/29910116}{https://figshare.com/articles/dataset/Data_for_MERLIN/29910116}}$.
+Furthermore, we give an example to illustrate the implementation of MERLIN for real data analysis. The following datasets ('Testosterone.GWAS.txt.gz', 'Testosterone.GWIS.txt.gz', 'BD.GWAS.txt.gz', 'BD.GWIS.txt.gz', 'g1000_eur.bed','g1000_eur.fam', 'g1000_eur.bim', 'all.bed') should be prepared. Download here: <a href="https://figshare.com/articles/dataset/Data_for_MERLIN/29910116">MERLIN Dataset on Figshare</a>
 
 ```{r}
 expgwas <- "Testosterone.GWAS.txt.gz";
@@ -199,12 +188,9 @@ stringname3 <- "g1000_eur";
 block_file <- "all.bed";
 ```
 
-'expgwas', 'expgwis', 'outgwas', 'outgwis' are the datasets names for
-exposure GWAS, exposure GWIS, outcome GWAS and outcome GWIS,
-respectively. Here the environment variable is sex.
+'expgwas', 'expgwis', 'outgwas', and 'outgwis' are the dataset names for exposure GWAS, exposure GWIS, outcome GWAS, and outcome GWIS, respectively. Here, the environment variable is sex.
 
-These four datasets must have the following format (note that it must be
-tab delimited): including columns as SNP,CHR,BP,A1,A2,BETA,SE,P.
+These four datasets must have the following format (note that it must be tab-delimited): including columns as SNP, CHR, BP, A1, A2, BETA, SE, and P.
 
 ```{r, echo=FALSE}
 example <- read.table("example.txt", header = TRUE)
@@ -215,37 +201,28 @@ knitr::kable(example, digits = 6, caption = "\\label{exp}Data format used for ex
 ```
 
 
-If GWAS and GWIS data cannot be directly obtained, and the environmental factor is 
-a binary variable (e.g., sex), one can generate the required GWAS and GWIS inputs 
-for MERLIN by converting the sex-stratified summary statistics 
-(e.g., Testosterone.male.txt and Testosterone.female.txt) as follows.
+If GWAS and GWIS data cannot be directly obtained, and the environmental factor is a binary variable (e.g., sex), one can generate the required GWAS and GWIS inputs for MERLIN by converting the sex-stratified summary statistics (e.g., Testosterone.male.txt and Testosterone.female.txt) as follows.
 
-The GWAS summary statistics can be generated by meta-analyzing the male and female 
-data using inverse-variance weighting, as implemented in METAL 
-($\underline{\href{https://github.com/statgen/METAL}{https://github.com/statgen/METAL}}$). 
-After installing the software, the analysis 
-can be executed via the command line (e.g., in Linux or other shell environments) 
-using a configuration file. A sample configuration file 'metal.config.Testosterone.txt' 
-is available for download: $\underline{\href{https://figshare.com/articles/dataset/Data_for_MERLIN/29910116}{https://figshare.com/articles/dataset/Data_for_MERLIN/29910116}}$.
+The GWAS summary statistics can be generated by meta-analyzing the male and female data using inverse-variance weighting, as implemented in METAL (<a href="https://github.com/statgen/METAL">https://github.com/statgen/METAL</a>).  After installing the software, the analysis can be executed via the command line (e.g., in Linux or other shell environments) using a configuration file. A sample configuration file 'metal.config.Testosterone.txt' is available for download: <a href="https://figshare.com/articles/dataset/Data_for_MERLIN/29910116">MERLIN Dataset on Figshare</a>.
+
 
 ```         
 metal metal.config.Testosterone.txt
 ```
 
-The SNP effects and standard errors for GWIS summary statistics were derived 
-based on the following formula, assuming sex coded as Male=1, Female=-1.
-Allele direction must be aligned prior to analyzing sex-stratified data.
+The SNP effects and standard errors for GWIS summary statistics were derived based on the following formula, assuming sex coded as Male=1, Female=-1. Allele direction must be aligned before analyzing sex-stratified data.
 
-$$\hat{b}_{gwis,j}=\frac{1}{2}(\hat{b}_{male,j}-\hat{b}_{female,j})$$
-$$se(\hat{b}_{gwis,j})=\frac{1}{2}\sqrt{(se(\hat{b}_{male,j})^2+se(\hat{b}_{female,j})^2}$$
+```math
+\hat{b}_{gwis,j}=\frac{1}{2}(\hat{b}_{male,j}-{\hat{b}}_{female,j})
+```
 
-'stringname3' is the name of reference panel data. Here we use samples
-from '1000 Genomes Project European panel' which is in plink binary
-format. 'block_file' is used to partition the whole genome into blocks.
+```math
+se(\hat{b}_{gwis,j})=\frac{1}{2}\sqrt{(se(\hat{b}_{male,j})^2+se(\hat{b}_{female,j})^2}
+```
 
-`matchpanel` function is used to match a GWAS/GWIS dataset with the
-reference panel data, alongside initial data quality control. The output
-includes a data frame (`$data`) and the corresponding storage path
+'stringname3' is the name of the reference panel data. Here we use samples from '1000 Genomes Project European panel', which is in plink binary format. 'block_file' is used to partition the whole genome into blocks.
+
+The `matchpanel` function is used to match a GWAS/GWIS dataset with the reference panel data, alongside initial data quality control. The output includes a data frame (`$data`) and the corresponding storage path
 (`$data_dir`).
 
 
@@ -256,19 +233,10 @@ outgwas.match <- matchpanel(outgwas,stringname3)$data_dir;
 outgwis.match <- matchpanel(outgwis,stringname3)$data_dir;
 ```
 
-Having given that we have the formatted data, we can use the `ivselect`
-function to screen the instrumental variables (IVs) and estimate the
-correlations among those IVs. `plink_dir` specifies the local path to
-the PLINK executable; if not provided, PLINK will be automatically
-downloaded. `pval_cutoff_gwas` and `pval_cutoff_gwis` define the P-value
-thresholds for the exposure GWAS and GWIS, respectively. `r2_cutoff` and
-`kb_cutoff` are used in LD clumping to specify the $r^2$ threshold and
-the physical distance (in kilobases) between SNPs. `maf_cutoff` sets the
-threshold for minor allele frequency. `lam` denotes the shrinkage
-parameter used in the regularization of the LD matrix. `CoreNum`
-indicates the number of CPU cores to be used for parallel computation.
-`intersect_mode` controls whether to merge GWAS and GWIS IVs using intersection 
-(default: union).   
+Having given that we have the formatted data, we can use the `ivselect` function to screen the instrumental variables (IVs) and estimate the correlations among those IVs. `plink_dir` specifies the local path to
+the PLINK executable; if not provided, PLINK will be automatically downloaded. `pval_cutoff_gwas` and `pval_cutoff_gwis` define the P-value thresholds for the exposure GWAS and GWIS, respectively. `r2_cutoff` and
+`kb_cutoff` are used in LD clumping to specify the $r^2$ threshold and the physical distance (in kilobases) between SNPs. `maf_cutoff` sets the threshold for minor allele frequency. `lam` denotes the shrinkage
+parameter used in the regularization of the LD matrix. `CoreNum` indicates the number of CPU cores to be used for parallel computation. `intersect_mode` controls whether to merge GWAS and GWIS IVs using intersection (default: union).   
 
 ```{r, eval = FALSE}
 plink_dir <- NULL;
@@ -307,12 +275,7 @@ to 0.
 rho1 <- 0; rho2 <- 0;
 ```
 
-For overlap samples, Since $\rho_1$ and $\rho_2$ are estimated using summary
-statistics among independent variants, we select independent SNPs using
-the clumping algorithm ($r^2$ threshold denoted by `ld_r2_thresh`).
-`pth` is the critical value adapted to the truncated normal distribution
-in the estimation procedure. `lambda` is the shrinkage turning parameter
-for LD estimator.
+For overlap samples, Since $\rho_1$ and $\rho_2$ are estimated using summary statistics among independent variants, we select independent SNPs using the clumping algorithm ($r^2$ threshold denoted by `ld_r2_thresh`). `pth` is the critical value adapted to the truncated normal distribution in the estimation procedure. `lambda` is the shrinkage turning parameter for LD estimator.
 
 ```         
 ld_r2_thresh <- 0.001;
@@ -332,7 +295,7 @@ res <- MERLIN(gammah1, gammah3, Gammah1, Gammah3,
 str(res)
 ```
 
-Check the convergence of Gibbs sampler using `traceplot`.
+Check the convergence of the Gibbs sampler using `traceplot`.
 
 ```{r, eval = FALSE}
 traceplot(res$Beta1res);
@@ -357,3 +320,4 @@ cat("The estimated main effect of Testosterone on BD: ", MERLINbeta1,
 cat("The estimated interaction effect of Testosterone on BD: ", MERLINbeta4, 
     "\n with Standard error: ", MERLINse4, "and P-value: ", MERLINpvalue4)
 ```
+
