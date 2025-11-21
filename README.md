@@ -16,8 +16,8 @@ Load the package using the following command:
 library(MERLIN)
 ```
 
-## Fit CHESS using simulated data
-The repeated code in the paper is all in this hyperlink: <a href="https://github.com/shilab-ecnu/CHESS/tree/main/simulation">SIMULATION</a>.
+## Fit MERLIN using simulated data
+The repeated code in the paper is all in this hyperlink: <a href="https://github.com/shilab-ecnu/MERLIN/tree/main/simulation">SIMULATION</a>.
 
 We first generate the genotype data and the environmental variable:
 
@@ -126,7 +126,7 @@ iv_union <- union(iv_gwas, iv_gwas);
 R <- diag(length(iv_union)) 
 ```
 
-Finally, we apply the CHESS methods. 
+Finally, we apply the MERLIN methods. 
 
 ```{r, eval = FALSE}
 gamma_hat <- exp_gwas_sum$beta[iv_union];
