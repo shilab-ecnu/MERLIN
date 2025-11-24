@@ -400,9 +400,6 @@ p <- ggplot(qq_df, aes(x = expected, y = observed, color = method)) +
 ## Figure 2
 
 ```{r, eval = FALSE}
-
-######Figure 1
-
 library(ggplot2)    
 library(dplyr)      
 
@@ -569,9 +566,6 @@ p <- ggplot(proportion_final, aes(x = beta1, y = prop_beta_pval, color = method,
 ## Figure 3
 
 ```{r, eval = FALSE}
-
-######Figure 1
-
 library(ggplot2)    
 library(dplyr)  
 
