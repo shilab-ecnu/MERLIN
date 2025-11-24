@@ -14,15 +14,9 @@ knitr::opts_chunk$set(echo = TRUE)
 options(encoding = "UTF-8")
 ```
 
-This vignette provides an introduction to the *MERLIN* package. R package *MERLIN* implements MERLIN for causal heterogeneity using summary statistics.
-
-Install the development version of *MERLIN* by use of the 'devtools' package. Note that *MERLIN* depends on the 'Rcpp' and 'RcppArmadillo' packages, which also require appropriate settings of Rtools and Xcode for Windows and Mac OS/X, respectively.
-
-To install this package, run the following command in R.
 
 
-# MERLIN: MEndelian Randomization for Linear INteraction
-
+# Installation
 
 ```         
 library(remotes)
@@ -35,7 +29,7 @@ Load the package using the following command:
 library(MERLIN)
 ```
 
-## Fit MERLIN using simulated data
+# Fit MERLIN using simulated data
 The repeated code in the paper is all in this hyperlink: <a href="https://github.com/shilab-ecnu/MERLIN/tree/main/simulation">SIMULATION</a>.
 
 We first generate the genotype data and the environmental variable:
@@ -175,8 +169,8 @@ pval4 <- res$Beta4.pval
 
 beta1_hat, se1_hat, and pval1 are the estimated average causal effect, corresponding standard error, and p-value of beta1_hat. beta4_hat, se4_hat, and pval4 are the estimated heterogeneity causal effect, corresponding standard error, and p-value of beta4_hat.
 
-## Real data
-### The Testosterone-BD study with environmental factor sex
+# Real data
+## The Testosterone-BD study with environmental factor sex
 
 All the raw data for the real-data analyses in the replicated paper are stored on <a href="https://figshare.com/articles/dataset/Data_for_MERLIN/29910116">MERLIN Dataset on Figshare</a>. Here, we take the dataset “The Testosterone–BD study with the environmental factor sex” as an example.
 
