@@ -323,7 +323,7 @@ In the negative control analysis designed to examine heterogeneity where none ar
 
 All the raw data for the real-data analyses in the replicated paper are stored on <a href="https://figshare.com/articles/dataset/Data_for_MERLIN/29910116">MERLIN Dataset on Figshare</a>. Here, we take the dataset “Benchmarking the performance of MERLIN using negative and positive controls” as an example.
 
-Also, we give an example to show how MERLIN is implemented for real data analysis. The following control file datasets ('BMI.GIANT.GWAS.NC.txt.gz', 'BMI.GIANT.GWIS.NC.txt.gz', 'BMI.GWAS.PC.txt.gz', 'BMI.GWIS.PC.txt.gz', 'BMI.UKB.GWAS.NC.txt.gz','BMI.UKB.GWIS.NC.txt.gz', 'WHR.GIANT.GWAS.NC.txt.gz', ,'Testosterone.GWAS.PC.txt.gz','Testosterone.GWlS.PC.txt.gz','WHR.GIANT.GWIS.NC.txt.gz','WHR.GIANT.GWIS.NC.txt.gz','MBWHR.UKB.GWAS.NC.txt.gz','WHR.UKB.GWIS.NC.txt.gz') should be prepared. Download here: <a href="https://figshare.com/articles/dataset/Data_for_MERLIN/29910116">MERLIN Dataset on Figshare</a>
+Also, we give an example to show how MERLIN is implemented for real data analysis. The following control file datasets ('BMI.GIANT.GWAS.NC.txt.gz', 'BMI.GIANT.GWIS.NC.txt.gz', 'BMI.GWAS.PC.txt.gz', 'BMI.GWIS.PC.txt.gz', 'BMI.UKB.GWAS.NC.txt.gz','BMI.UKB.GWIS.NC.txt.gz', 'WHR.GIANT.GWAS.NC.txt.gz', ,' Testosterone.GWAS.PC.txt.gz',' Testosterone.GWlS.PC.txt.gz',' WHR.GIANT.GWIS.NC.txt.gz',' WHR.GIANT.GWIS.NC.txt.gz',' MBWHR.UKB.GWAS.NC.txt.gz',' WHR.UKB.GWIS.NC.txt.gz') should be prepared. Download here: <a href="https://figshare.com/articles/dataset/Data_for_MERLIN/29910116">MERLIN Dataset on Figshare</a>
 
 ```{r}
 expgwas <- "Testosterone.GWAS.PC.txt.gz";
