@@ -74,7 +74,7 @@ gamma_1x <- gamma1_3[, 1];
 gamma_3x <- gamma1_3[, 2]
 ```
 
-Generate the exposure ($X$) and outcome ($Y$) variables with the genetic effects defined.
+Generate the exposure ({math}`X`) and outcome ({math}`Y`) variables with the genetic effects defined.
 
 ```{r, eval = FALSE}
 GE <- G * E_x;
@@ -232,7 +232,7 @@ outgwis.match <- matchpanel(outgwis,stringname3)$data_dir;
 
 Having given that we have the formatted data, we can use the `ivselect` function to screen the instrumental variables (IVs) and estimate the correlations among those IVs. `plink_dir` specifies the local path to
 the PLINK executable; if not provided, PLINK will be automatically downloaded. `pval_cutoff_gwas` and `pval_cutoff_gwis` define the P-value thresholds for the exposure GWAS and GWIS, respectively. `r2_cutoff` and
-`kb_cutoff` are used in LD clumping to specify the $r^2$ threshold and the physical distance (in kilobases) between SNPs. `maf_cutoff` sets the threshold for minor allele frequency. `lam` denotes the shrinkage
+`kb_cutoff` are used in LD clumping to specify the {math}`r^2` threshold and the physical distance (in kilobases) between SNPs. `maf_cutoff` sets the threshold for minor allele frequency. `lam` denotes the shrinkage
 parameter used in the regularization of the LD matrix. `CoreNum` indicates the number of CPU cores to be used for parallel computation. `intersect_mode` controls whether to merge GWAS and GWIS IVs using intersection (default: union).   
 
 ```{r, eval = FALSE}
@@ -272,7 +272,7 @@ to 0.
 rho1 <- 0; rho2 <- 0;
 ```
 
-For overlap samples, Since $\rho_1$ and $\rho_2$ are estimated using summary statistics among independent variants, we select independent SNPs using the truncated algorithm ($r^2$ threshold denoted by `ld_r2_thresh`). `pth` is the critical value adapted to the truncated normal distribution in the estimation procedure. `lambda` is the shrinkage turning parameter for LD estimator.
+For overlap samples, Since {math}`\rho_1` and {math}`\rho_2` are estimated using summary statistics among independent variants, we select independent SNPs using the truncated algorithm ({math}`r^2` threshold denoted by `ld_r2_thresh`). `pth` is the critical value adapted to the truncated normal distribution in the estimation procedure. `lambda` is the shrinkage turning parameter for LD estimator.
 
 ```         
 ld_r2_thresh <- 0.001;
@@ -381,7 +381,7 @@ outgwis.match <- matchpanel(outgwis,stringname3)$data_dir;
 
 Having given that we have the formatted data, we can use the `ivselect` function to screen the instrumental variables (IVs) and estimate the correlations among those IVs. `plink_dir` specifies the local path to
 the PLINK executable; if not provided, PLINK will be automatically downloaded. `pval_cutoff_gwas` and `pval_cutoff_gwis` define the P-value thresholds for the exposure GWAS and GWIS, respectively. `r2_cutoff` and
-`kb_cutoff` are used in LD clumping to specify the $r^2$ threshold and the physical distance (in kilobases) between SNPs. `maf_cutoff` sets the threshold for minor allele frequency. `lam` denotes the shrinkage
+`kb_cutoff` are used in LD clumping to specify the {math}`r^2` threshold and the physical distance (in kilobases) between SNPs. `maf_cutoff` sets the threshold for minor allele frequency. `lam` denotes the shrinkage
 parameter used in the regularization of the LD matrix. `CoreNum` indicates the number of CPU cores to be used for parallel computation. `intersect_mode` controls whether to merge GWAS and GWIS IVs using intersection (default: union).   
 
 ```{r, eval = FALSE}
@@ -421,7 +421,7 @@ to 0.
 rho1 <- 0; rho2 <- 0;
 ```
 
-For data with sample overlap,  \$\rho_1\$ and $\rho_2$ are estimated using summary statistics among independent variants following <a href="https://www.nature.com/articles/s41467-022-34164-1">Chen et al (2022)</a>, we select independent SNPs using the clumping algorithm ($r^2$ threshold denoted by `ld_r2_thresh`). `pth` is the critical value adapted to the truncated normal distribution in the estimation procedure. `lambda` is the shrinkage turning parameter for LD estimator.
+For data with sample overlap,  {math}`\rho_1` and {math}`\rho_2` are estimated using summary statistics among independent variants following <a href="https://www.nature.com/articles/s41467-022-34164-1">Chen et al (2022)</a>, we select independent SNPs using the clumping algorithm ({math}`r^2` threshold denoted by `ld_r2_thresh`). `pth` is the critical value adapted to the truncated normal distribution in the estimation procedure. `lambda` is the shrinkage turning parameter for LD estimator.
 
 ```         
 ld_r2_thresh <- 0.001;
