@@ -1,7 +1,7 @@
 # MERLIN: MEndelian Randomization for Linear INteraction
 This vignette provides an introduction to the *MERLIN* package. R package *MERLIN* implements MERLIN for causal heterogeneity using summary statistics.
 
-Install the development version of *MERLIN* by use of the 'devtools' package. Note that *MERLIN* depends on the 'Rcpp' and 'RcppArmadillo' packages, which also require appropriate settings of Rtools and Xcode for Windows and Mac OS/X, respectively.
+Install the development version of *MERLIN* by use of the 'remotes' package. Note that *MERLIN* depends on the 'Rcpp' and 'RcppArmadillo' packages, which also require appropriate settings of Rtools and Xcode for Windows and Mac OS/X, respectively.
 
 To install this package, run the following command in R.
 
