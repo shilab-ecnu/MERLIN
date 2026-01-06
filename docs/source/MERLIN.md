@@ -319,7 +319,7 @@ cat("The estimated interaction effect of Testosterone on BD: ", MERLINbeta4,
 ```
 
 ## Benchmarking the performance of MERLIN using negative and positive controls
-In the negative control analysis designed to examine heterogeneity where none are expected (i.e., ), we used biological sex as the environment, and examined the causal effect of body mass index (BMI) and waist-hip ratio (WHR) on themselves, using summary statistics from different GWAS as the exposure and outcome inputs, respectively (Supplementary Table S1 for data details).In our positive control analysis, we sought replication of the previously reported sex difference in the causal effect of BMI on testosterone levels. BMI summary statistics were obtained from the GIANT consortium and testosterone level summary statistics were from from UKB (Supplementary Table S1 for data details).
+In the negative control analysis designed to examine heterogeneity where none are expected (i.e., ), we used biological sex as the environment, and examined the causal effect of body mass index (BMI) and waist-hip ratio (WHR) on themselves, using summary statistics from different GWAS as the exposure and outcome inputs, respectively (Supplementary Table S1 for data details). In our positive control analysis, we sought replication of the previously reported sex difference in the causal effect of BMI on testosterone levels. BMI summary statistics were obtained from the GIANT consortium and testosterone level summary statistics were from from UKB (Supplementary Table S1 for data details).
 
 All the raw data for the real-data analyses in the replicated paper are stored on <a href="https://figshare.com/articles/dataset/Data_for_MERLIN/29910116">MERLIN Dataset on Figshare</a>. Here, we take the dataset “Benchmarking the performance of MERLIN using negative and positive controls” as an example.
 
@@ -421,7 +421,7 @@ to 0.
 rho1 <- 0; rho2 <- 0;
 ```
 
-For data with sample overlap,  $\rho_1$ and $\rho_2$ are estimated using summary statistics among independent variants following <a href="https://www.nature.com/articles/s41467-022-34164-1">Chen et al (2022)</a>, we select independent SNPs using the clumping algorithm ($r^2$ threshold denoted by `ld_r2_thresh`). `pth` is the critical value adapted to the truncated normal distribution in the estimation procedure. `lambda` is the shrinkage turning parameter for LD estimator.
+For data with sample overlap,  \$\rho_1\$ and $\rho_2$ are estimated using summary statistics among independent variants following <a href="https://www.nature.com/articles/s41467-022-34164-1">Chen et al (2022)</a>, we select independent SNPs using the clumping algorithm ($r^2$ threshold denoted by `ld_r2_thresh`). `pth` is the critical value adapted to the truncated normal distribution in the estimation procedure. `lambda` is the shrinkage turning parameter for LD estimator.
 
 ```         
 ld_r2_thresh <- 0.001;
