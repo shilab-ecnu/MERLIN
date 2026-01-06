@@ -272,7 +272,7 @@ to 0.
 rho1 <- 0; rho2 <- 0;
 ```
 
-For overlap samples, Since $\rho_1$ and $\rho_2$ are estimated using summary statistics among independent variants, we select independent SNPs using the clumping algorithm ($r^2$ threshold denoted by `ld_r2_thresh`). `pth` is the critical value adapted to the truncated normal distribution in the estimation procedure. `lambda` is the shrinkage turning parameter for LD estimator.
+For overlap samples, Since $\rho_1$ and $\rho_2$ are estimated using summary statistics among independent variants, we select independent SNPs using the truncated algorithm ($r^2$ threshold denoted by `ld_r2_thresh`). `pth` is the critical value adapted to the truncated normal distribution in the estimation procedure. `lambda` is the shrinkage turning parameter for LD estimator.
 
 ```         
 ld_r2_thresh <- 0.001;
