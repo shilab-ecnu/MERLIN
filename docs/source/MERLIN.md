@@ -58,7 +58,7 @@ G <- scale(G, center = TRUE, scale = FALSE);
 E_x <- rnorm(n_exp + n_out)
 ```
 
-Now simulate the genetic effect sizes. The main genetic effects ($\gamma_1$) and G×E interaction effects ($\gamma_3$) are generated as correlated multivariate normal variables with specified heritabilities.
+Now simulate the genetic effect sizes. The main genetic effects ({math}`\gamma_1`) and G×E interaction effects ($\gamma_3$) are generated as correlated multivariate normal variables with specified heritabilities.
 
 ```{r, eval = FALSE}
 sigma2g1 <- h_g1 / m;
