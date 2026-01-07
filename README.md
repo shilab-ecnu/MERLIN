@@ -296,12 +296,12 @@ MERLINpvalue4 <- res$Beta4.pval;
 ```
 
 ```{r results="hide", eval = FALSE}
-cat("The estimated main effect of Testosterone on BD: ", MERLINbeta1, 
+cat("The estimated average effect of Testosterone on BD: ", MERLINbeta1, 
     "\n with Standard error: ", MERLINse1, "and P-value: ", MERLINpvalue1);
 ```
 
 ```{r results="hide", eval = FALSE}
-cat("The estimated interaction effect of Testosterone on BD: ", MERLINbeta4, 
+cat("The estimated heterogeneity effect of Testosterone on BD: ", MERLINbeta4, 
     "\n with Standard error: ", MERLINse4, "and P-value: ", MERLINpvalue4)
 ```
 
