@@ -17,7 +17,7 @@ library(MERLIN)
 ```
 
 ## Fit MERLIN using simulated data
-The repeated code in the paper is all in this hyperlink: <a href="https://github.com/shilab-ecnu/MERLIN/tree/main/simulation">SIMULATION</a>.
+The simulation code in the paper is all in this hyperlink: <a href="https://github.com/shilab-ecnu/MERLIN/tree/main/simulation">SIMULATION</a>.
 
 We first generate the genotype data and the environmental variable:
 
