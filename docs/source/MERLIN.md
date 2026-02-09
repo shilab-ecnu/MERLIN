@@ -37,7 +37,7 @@ We first generate the genotype data and the environmental variable:
 ```{r, eval = FALSE}
 library(mvtnorm)
 library(MASS)
-set.seed(2025)
+set.seed(20252026)
 ```
 
 ```{r, eval = FALSE}
@@ -49,7 +49,6 @@ h_g3 <- 0.1;
 b1 <- 0;   
 b4 <- 0.3;       
 cor_g1g3 <- 0.4; 
-rhoxy <- 0.6;
 
 maf <- runif(m, 0.05, 0.5);
 G <- matrix(rbinom((n_exp + n_out) * m, 2, rep(maf, each = n_exp + n_out)),
@@ -83,7 +82,7 @@ noise_x <- rnorm(n_exp + n_out, sd = sqrt(1 - h_g1 - h_g3));
 X <- G %*% gamma_1x + GE %*% gamma_3x + noise_x;
 
 noise_y <- rnorm(n_exp + n_out, sd = sqrt(1 - b1^2 - b4^2));
-Y <- X * b1 + GE %*% gamma_3x * b4 + noise_y;
+Y <- X * b1 + X * E_x * b4 + noise_y;
 
 exp_gwas <- X[1:n_exp];  
 exp_gwis <- X[1:n_exp];   
@@ -127,7 +126,7 @@ out_gwis_sum <- get_sumstats(G[(n_exp + 1):(n_exp + n_out), ], out_gwis,
 We select genetic instruments using a p-value threshold. SNPs in either the GWAS or GWIS analysis are included in the union set of instruments.
 
 ```{r, eval = FALSE}
-p_threshold <- 0.01;
+p_threshold <- 5e-8;
 
 pvals_gwas <- 2 * pnorm(-abs(exp_gwas_sum$beta / exp_gwas_sum$se));
 iv_gwas <- which(pvals_gwas < p_threshold);
