@@ -1,0 +1,32 @@
+url: https://shilab-ecnu.github.io/MERLIN/
+template:
+  bootstrap: 5
+  light-switch: true
+  bslib:
+    bootswatch: united
+    pkgdown-navbar-bg: "#e95420"
+
+navbar:
+  structure:
+    left:
+      - home
+      - reference
+      - articles
+    right:
+      - search
+      - github
+
+articles:
+  - title: "Getting started"
+    contents:
+      - MERLIN.intro
+
+  - title: "Data preparation"
+    contents:
+      - MERLIN.preprocess
+      - MERLIN.realdata
+
+  - title: "Analysis and simulation"
+    contents:
+      - MERLIN.functions
+      - MERLIN.sim
