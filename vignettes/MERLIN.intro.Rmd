@@ -73,19 +73,8 @@ Outcome GWIS (outgwis): Genetic-environmental interaction effects on the outcome
 MERLIN can still be applied when GWIS data are unavailable for either the exposure or the outcome (see the Data Analysis section for further details). All summary statistics files must be tab-delimited text files (they can be gzipped, e.g., .txt.gz). They must contain the following standard columns, with exact column names in the header:
 
 
-```{r, echo=FALSE}
-library(data.table)
-url <- "https://figshare.com/articles/dataset/Data_for_MERLIN/29910116"
-download.file(
-    url,
-    "BD.GWAS.txt.gz",
-    mode="wb"
-)
-example <- fread(
-    "BD.GWAS.txt.gz",
-    nrows=10
-)
-example
+```{r, echo=FALSE, out.width="80%"}
+knitr::include_graphics("MERLIN_example_data.png")
 ```
 
 
