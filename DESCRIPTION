@@ -15,7 +15,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 LinkingTo: Rcpp,RcppArmadillo,BH,bigmemory,RcppDist
 Imports: data.table,readr,Rcpp,TwoSampleMR
-Suggests: knitr, rmarkdown
+Suggests: knitr, rmarkdown, mvtnorm
 VignetteBuilder: knitr
 NeedsCompilation: yes
 Packaged: 2026-07-22 12:38:41 UTC; 36433
