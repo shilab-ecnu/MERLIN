@@ -75,8 +75,16 @@ MERLIN can still be applied when GWIS data are unavailable for either the exposu
 
 ```{r, echo=FALSE}
 library(data.table)
-file <- "match.BD.GWAS.txt.gz"
-example <- fread(file, nrows = 10)
+url <- "https://figshare.com/articles/dataset/Data_for_MERLIN/29910116"
+download.file(
+    url,
+    "BD.GWAS.txt.gz",
+    mode="wb"
+)
+example <- fread(
+    "BD.GWAS.txt.gz",
+    nrows=10
+)
 example
 ```
 
