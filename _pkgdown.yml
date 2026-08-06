@@ -24,9 +24,10 @@ articles:
   - title: "Data preparation"
     contents:
       - MERLIN.preprocess
-      - MERLIN.realdata
+      
 
   - title: "Analysis and simulation"
     contents:
       - MERLIN.functions
       - MERLIN.sim
+      - MERLIN.realdata
