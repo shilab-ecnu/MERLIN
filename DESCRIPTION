@@ -1,9 +1,9 @@
 Package: MERLIN
 Title: MERLIN for causal heterogeneity using summary statistics
 Version: 1.1.2
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+Authors@R: c(
+     person(given ="Yadong", family ="Yang", role = "aut"),
+     person(given ="Xingjie", family ="Shi",role = "aut", comment = c(ORCID = "0000-0002-9866-8599")))
 Description: MERLIN (Causal Heterogeneity using Summary Statistics) is a unified 
     Bayesian framework that jointly estimates average and heterogeneity 
     effects using summary data from genome-wide association studies (GWAS) and 
