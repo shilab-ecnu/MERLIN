@@ -12,7 +12,7 @@ install_github("shilab-ecnu/MERLIN")
 
 Load the package using the following command:
 
-```{r}
+```
 library(MERLIN)
 ```
 
