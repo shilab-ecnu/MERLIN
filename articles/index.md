@@ -9,8 +9,6 @@
 
 - [Part 2: Data Preprocessing and Instrumental Variable
   Selection](https://shilab-ecnu.github.io/MERLIN/articles/MERLIN.preprocess.md):
-- [Part 4: Real Data Analysis and Convergence
-  Diagnostics](https://shilab-ecnu.github.io/MERLIN/articles/MERLIN.realdata.md):
 
 ### Analysis and simulation
 
@@ -18,3 +16,5 @@
   Functions](https://shilab-ecnu.github.io/MERLIN/articles/MERLIN.functions.md):
 - [Part 3: Model Fitting Using Simulated
   Data](https://shilab-ecnu.github.io/MERLIN/articles/MERLIN.sim.md):
+- [Part 4: Real Data Analysis and Convergence
+  Diagnostics](https://shilab-ecnu.github.io/MERLIN/articles/MERLIN.realdata.md):
