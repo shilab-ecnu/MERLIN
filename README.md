@@ -21,13 +21,13 @@ The simulation code in the paper is all in this hyperlink: <a href="https://gith
 
 We first generate the genotype data and the environmental variable:
 
-```{r, eval = FALSE}
+```
 library(mvtnorm)
 library(MASS)
 set.seed(20252026)
 ```
 
-```{r, eval = FALSE}
+```
 n_exp <- 80000;
 n_out <- 80000;
 m <- 1000;
