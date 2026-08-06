@@ -157,7 +157,7 @@ applicable workflow, we will proceed with the default
 <code>model = "standard"</code>. We also specify the MCMC parameters and
 set a random seed to ensure strict reproducibility.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MERLIN-package.html">MERLIN</a></span><span class="op">(</span>gammah1    <span class="op">=</span> <span class="va">gammah1</span>, </span>
+<code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">MERLIN</span><span class="op">(</span>gammah1    <span class="op">=</span> <span class="va">gammah1</span>, </span>
 <span>              gammah3    <span class="op">=</span> <span class="va">gammah3</span>, </span>
 <span>              Gammah1    <span class="op">=</span> <span class="va">Gammah1</span>, </span>
 <span>              Gammah3    <span class="op">=</span> <span class="va">Gammah3</span>,</span>
@@ -207,7 +207,7 @@ In this setting, users should specify <code>model = "drop_g3"</code>,
 and <code>gammah3</code>, <code>se2</code>, and <code>rho_2</code> can
 be omitted.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">res.drop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MERLIN-package.html">MERLIN</a></span><span class="op">(</span>gammah1    <span class="op">=</span> <span class="va">gammah1</span>, </span>
+<code class="sourceCode R"><span><span class="va">res.drop</span> <span class="op">&lt;-</span> <span class="fu">MERLIN</span><span class="op">(</span>gammah1    <span class="op">=</span> <span class="va">gammah1</span>, </span>
 <span>                   gammah3    <span class="op">=</span> <span class="cn">NULL</span>, </span>
 <span>                   Gammah1    <span class="op">=</span> <span class="va">Gammah1</span>, </span>
 <span>                   Gammah3    <span class="op">=</span> <span class="va">Gammah3</span>,</span>

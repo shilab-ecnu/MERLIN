@@ -277,13 +277,7 @@ Check the convergence of the Gibbs sampler using `traceplot`.
 
 `{r results="hide", eval = FALSE} cat("The estimated heterogeneity effect of Testosterone on BD: ", MERLINbeta4, "\n with Standard error: ", MERLINse4, "and P-value: ", MERLINpvalue4)`
 
-# Package index
-
-## All functions
-
-- [`MERLIN-package`](https://shilab-ecnu.github.io/MERLIN/reference/MERLIN-package.md)
-  [`MERLIN`](https://shilab-ecnu.github.io/MERLIN/reference/MERLIN-package.md)
-  : MERLIN for causal heterogeneity using summary statistics
+# 
 
 # Articles
 

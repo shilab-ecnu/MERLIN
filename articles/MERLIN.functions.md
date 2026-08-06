@@ -12,7 +12,7 @@ return values on the same page.
 
 #### Main workflow
 
-[`MERLIN()`](https://shilab-ecnu.github.io/MERLIN/reference/MERLIN-package.md)  
+`MERLIN()`  
 Run the MERLIN Bayesian Mendelian randomization model for average causal
 effects and causal heterogeneity effects.
 
@@ -780,9 +780,7 @@ Elements of `x` not present in `y`.
 ### MERLIN model kernels
 
 The following functions are low-level C++ MCMC kernels. Most users
-should call
-[`MERLIN()`](https://shilab-ecnu.github.io/MERLIN/reference/MERLIN-package.md)
-instead.
+should call `MERLIN()` instead.
 
 #### **`MRGEI_Gam3seo()`**
 
@@ -1134,7 +1132,7 @@ A P-value for testing the correlation estimate.
 
 For website-facing documentation, the clearest public API is likely:
 
-- [`MERLIN()`](https://shilab-ecnu.github.io/MERLIN/reference/MERLIN-package.md)
+- `MERLIN()`
 - `matchpanel()`
 - `ivselect()`
 - `EstRhofun()`
