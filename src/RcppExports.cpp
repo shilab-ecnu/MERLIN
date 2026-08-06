@@ -196,8 +196,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // MRGEI_Gam3seo
-List MRGEI_Gam3seo(arma::vec& gammah1, arma::vec& gammah3, arma::vec& Gammah1, arma::vec& Gammah3, arma::vec& se1, arma::vec& se2, arma::vec& se3, arma::vec& se4, arma::mat& R, double& rho_1, double& rho_2);
-RcppExport SEXP _MERLIN_MRGEI_Gam3seo(SEXP gammah1SEXP, SEXP gammah3SEXP, SEXP Gammah1SEXP, SEXP Gammah3SEXP, SEXP se1SEXP, SEXP se2SEXP, SEXP se3SEXP, SEXP se4SEXP, SEXP RSEXP, SEXP rho_1SEXP, SEXP rho_2SEXP) {
+List MRGEI_Gam3seo(arma::vec& gammah1, arma::vec& gammah3, arma::vec& Gammah1, arma::vec& Gammah3, arma::vec& se1, arma::vec& se2, arma::vec& se3, arma::vec& se4, arma::mat& R, double& rho_1, double& rho_2, int maxIter, int burnin, int thin);
+RcppExport SEXP _MERLIN_MRGEI_Gam3seo(SEXP gammah1SEXP, SEXP gammah3SEXP, SEXP Gammah1SEXP, SEXP Gammah3SEXP, SEXP se1SEXP, SEXP se2SEXP, SEXP se3SEXP, SEXP se4SEXP, SEXP RSEXP, SEXP rho_1SEXP, SEXP rho_2SEXP, SEXP maxIterSEXP, SEXP burninSEXP, SEXP thinSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -212,7 +212,102 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< arma::mat& >::type R(RSEXP);
     Rcpp::traits::input_parameter< double& >::type rho_1(rho_1SEXP);
     Rcpp::traits::input_parameter< double& >::type rho_2(rho_2SEXP);
-    rcpp_result_gen = Rcpp::wrap(MRGEI_Gam3seo(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2));
+    Rcpp::traits::input_parameter< int >::type maxIter(maxIterSEXP);
+    Rcpp::traits::input_parameter< int >::type burnin(burninSEXP);
+    Rcpp::traits::input_parameter< int >::type thin(thinSEXP);
+    rcpp_result_gen = Rcpp::wrap(MRGEI_Gam3seo(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, maxIter, burnin, thin));
+    return rcpp_result_gen;
+END_RCPP
+}
+// MRGEI_Gam3seo_addE2
+List MRGEI_Gam3seo_addE2(arma::vec& gammah1, arma::vec& gammah3, arma::vec& Gammah1, arma::vec& Gammah3, arma::vec& se1, arma::vec& se2, arma::vec& se3, arma::vec& se4, arma::mat& R, double& rho_1, double& rho_2, int maxIter, int burnin, int thin);
+RcppExport SEXP _MERLIN_MRGEI_Gam3seo_addE2(SEXP gammah1SEXP, SEXP gammah3SEXP, SEXP Gammah1SEXP, SEXP Gammah3SEXP, SEXP se1SEXP, SEXP se2SEXP, SEXP se3SEXP, SEXP se4SEXP, SEXP RSEXP, SEXP rho_1SEXP, SEXP rho_2SEXP, SEXP maxIterSEXP, SEXP burninSEXP, SEXP thinSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec& >::type gammah1(gammah1SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type gammah3(gammah3SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type Gammah1(Gammah1SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type Gammah3(Gammah3SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type se1(se1SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type se2(se2SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type se3(se3SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type se4(se4SEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type R(RSEXP);
+    Rcpp::traits::input_parameter< double& >::type rho_1(rho_1SEXP);
+    Rcpp::traits::input_parameter< double& >::type rho_2(rho_2SEXP);
+    Rcpp::traits::input_parameter< int >::type maxIter(maxIterSEXP);
+    Rcpp::traits::input_parameter< int >::type burnin(burninSEXP);
+    Rcpp::traits::input_parameter< int >::type thin(thinSEXP);
+    rcpp_result_gen = Rcpp::wrap(MRGEI_Gam3seo_addE2(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, maxIter, burnin, thin));
+    return rcpp_result_gen;
+END_RCPP
+}
+// MRGEI_Gam3seo_binary
+List MRGEI_Gam3seo_binary(arma::vec& gammah1, arma::vec& gammah3, arma::vec& Gammah1, arma::vec& Gammah3, arma::vec& se1, arma::vec& se2, arma::vec& se3, arma::vec& se4, arma::mat& R, double& rho_1, double& rho_2, double& p1, int maxIter, int burnin, int thin);
+RcppExport SEXP _MERLIN_MRGEI_Gam3seo_binary(SEXP gammah1SEXP, SEXP gammah3SEXP, SEXP Gammah1SEXP, SEXP Gammah3SEXP, SEXP se1SEXP, SEXP se2SEXP, SEXP se3SEXP, SEXP se4SEXP, SEXP RSEXP, SEXP rho_1SEXP, SEXP rho_2SEXP, SEXP p1SEXP, SEXP maxIterSEXP, SEXP burninSEXP, SEXP thinSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec& >::type gammah1(gammah1SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type gammah3(gammah3SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type Gammah1(Gammah1SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type Gammah3(Gammah3SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type se1(se1SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type se2(se2SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type se3(se3SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type se4(se4SEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type R(RSEXP);
+    Rcpp::traits::input_parameter< double& >::type rho_1(rho_1SEXP);
+    Rcpp::traits::input_parameter< double& >::type rho_2(rho_2SEXP);
+    Rcpp::traits::input_parameter< double& >::type p1(p1SEXP);
+    Rcpp::traits::input_parameter< int >::type maxIter(maxIterSEXP);
+    Rcpp::traits::input_parameter< int >::type burnin(burninSEXP);
+    Rcpp::traits::input_parameter< int >::type thin(thinSEXP);
+    rcpp_result_gen = Rcpp::wrap(MRGEI_Gam3seo_binary(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, p1, maxIter, burnin, thin));
+    return rcpp_result_gen;
+END_RCPP
+}
+// MRGEI_Gamseo_fixb1
+List MRGEI_Gamseo_fixb1(arma::vec& gammah1, arma::vec& gammah3, arma::vec& Gammah1, arma::vec& se1, arma::vec& se2, arma::vec& se3, arma::mat& R, double& rho, double& b1, int maxIter, int burnin, int thin);
+RcppExport SEXP _MERLIN_MRGEI_Gamseo_fixb1(SEXP gammah1SEXP, SEXP gammah3SEXP, SEXP Gammah1SEXP, SEXP se1SEXP, SEXP se2SEXP, SEXP se3SEXP, SEXP RSEXP, SEXP rhoSEXP, SEXP b1SEXP, SEXP maxIterSEXP, SEXP burninSEXP, SEXP thinSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec& >::type gammah1(gammah1SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type gammah3(gammah3SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type Gammah1(Gammah1SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type se1(se1SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type se2(se2SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type se3(se3SEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type R(RSEXP);
+    Rcpp::traits::input_parameter< double& >::type rho(rhoSEXP);
+    Rcpp::traits::input_parameter< double& >::type b1(b1SEXP);
+    Rcpp::traits::input_parameter< int >::type maxIter(maxIterSEXP);
+    Rcpp::traits::input_parameter< int >::type burnin(burninSEXP);
+    Rcpp::traits::input_parameter< int >::type thin(thinSEXP);
+    rcpp_result_gen = Rcpp::wrap(MRGEI_Gamseo_fixb1(gammah1, gammah3, Gammah1, se1, se2, se3, R, rho, b1, maxIter, burnin, thin));
+    return rcpp_result_gen;
+END_RCPP
+}
+// MRGEI_dropg3
+List MRGEI_dropg3(arma::vec& gammah1, arma::vec& Gammah1, arma::vec& Gammah3, arma::vec& se1, arma::vec& se3, arma::vec& se4, arma::mat& R, double& rho_1, int maxIter, int burnin, int thin);
+RcppExport SEXP _MERLIN_MRGEI_dropg3(SEXP gammah1SEXP, SEXP Gammah1SEXP, SEXP Gammah3SEXP, SEXP se1SEXP, SEXP se3SEXP, SEXP se4SEXP, SEXP RSEXP, SEXP rho_1SEXP, SEXP maxIterSEXP, SEXP burninSEXP, SEXP thinSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec& >::type gammah1(gammah1SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type Gammah1(Gammah1SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type Gammah3(Gammah3SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type se1(se1SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type se3(se3SEXP);
+    Rcpp::traits::input_parameter< arma::vec& >::type se4(se4SEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type R(RSEXP);
+    Rcpp::traits::input_parameter< double& >::type rho_1(rho_1SEXP);
+    Rcpp::traits::input_parameter< int >::type maxIter(maxIterSEXP);
+    Rcpp::traits::input_parameter< int >::type burnin(burninSEXP);
+    Rcpp::traits::input_parameter< int >::type thin(thinSEXP);
+    rcpp_result_gen = Rcpp::wrap(MRGEI_dropg3(gammah1, Gammah1, Gammah3, se1, se3, se4, R, rho_1, maxIter, burnin, thin));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -420,7 +515,11 @@ static const R_CallMethodDef CallEntries[] = {
     {"_MERLIN_Mat2Vec", (DL_FUNC) &_MERLIN_Mat2Vec, 1},
     {"_MERLIN_Vec2Mat", (DL_FUNC) &_MERLIN_Vec2Mat, 2},
     {"_MERLIN_Cal_block_Rvec", (DL_FUNC) &_MERLIN_Cal_block_Rvec, 7},
-    {"_MERLIN_MRGEI_Gam3seo", (DL_FUNC) &_MERLIN_MRGEI_Gam3seo, 11},
+    {"_MERLIN_MRGEI_Gam3seo", (DL_FUNC) &_MERLIN_MRGEI_Gam3seo, 14},
+    {"_MERLIN_MRGEI_Gam3seo_addE2", (DL_FUNC) &_MERLIN_MRGEI_Gam3seo_addE2, 14},
+    {"_MERLIN_MRGEI_Gam3seo_binary", (DL_FUNC) &_MERLIN_MRGEI_Gam3seo_binary, 15},
+    {"_MERLIN_MRGEI_Gamseo_fixb1", (DL_FUNC) &_MERLIN_MRGEI_Gamseo_fixb1, 12},
+    {"_MERLIN_MRGEI_dropg3", (DL_FUNC) &_MERLIN_MRGEI_dropg3, 11},
     {"_MERLIN_getLineNum", (DL_FUNC) &_MERLIN_getLineNum, 1},
     {"_MERLIN_ReadSNPinfo", (DL_FUNC) &_MERLIN_ReadSNPinfo, 8},
     {"_MERLIN_Read_summarystat", (DL_FUNC) &_MERLIN_Read_summarystat, 10},
