@@ -114,7 +114,7 @@ iv_gwas \<- which(pvals_gwas \< p_threshold);
 pvals_gwis \<- 2 \* pnorm(-abs(exp_gwis_sum$`beta / exp_gwis_sum`$se));
 iv_gwis \<- which(pvals_gwis \< p_threshold);
 
-iv_union \<- union(iv_gwas, iv_gwas); R \<- diag(length(iv_union))
+iv_union \<- union(iv_gwas, iv_gwis); R \<- diag(length(iv_union))
 
 
     Finally, we apply the MERLIN methods.

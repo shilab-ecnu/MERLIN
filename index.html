@@ -125,7 +125,7 @@ out_gwis_sum &lt;- get_sumstats(G[(n_exp + 1):(n_exp + n_out), ], out_gwis,
 <p>```{r, eval = FALSE} p_threshold &lt;- 5e-8;</p>
 <p>pvals_gwas &lt;- 2 * pnorm(-abs(exp_gwas_sum<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mi>e</mi><mi>t</mi><mi>a</mi><mi>/</mi><mi>e</mi><mi>x</mi><msub><mi>p</mi><mi>g</mi></msub><mi>w</mi><mi>a</mi><msub><mi>s</mi><mi>s</mi></msub><mi>u</mi><mi>m</mi></mrow><annotation encoding="application/x-tex">beta / exp_gwas_sum</annotation></semantics></math>se)); iv_gwas &lt;- which(pvals_gwas &lt; p_threshold);</p>
 <p>pvals_gwis &lt;- 2 * pnorm(-abs(exp_gwis_sum<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mi>e</mi><mi>t</mi><mi>a</mi><mi>/</mi><mi>e</mi><mi>x</mi><msub><mi>p</mi><mi>g</mi></msub><mi>w</mi><mi>i</mi><msub><mi>s</mi><mi>s</mi></msub><mi>u</mi><mi>m</mi></mrow><annotation encoding="application/x-tex">beta / exp_gwis_sum</annotation></semantics></math>se)); iv_gwis &lt;- which(pvals_gwis &lt; p_threshold);</p>
-<p>iv_union &lt;- union(iv_gwas, iv_gwas); R &lt;- diag(length(iv_union))</p>
+<p>iv_union &lt;- union(iv_gwas, iv_gwis); R &lt;- diag(length(iv_union))</p>
 <pre><code>
 Finally, we apply the MERLIN methods.
 
