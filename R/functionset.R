@@ -67,6 +67,7 @@ matchpanel <- function(ss, stringname3){
   message("Step 2/6: Reading GWAS summary statistics...")
   ss.gwas <- readr::read_delim(ss)
   ss.gwas <- data.frame(ss.gwas)
+  cat("\n")
 
   message("Step 3/6: Preprocessing GWAS data...")
   ss.gwas <- na.omit(ss.gwas)
@@ -116,35 +117,47 @@ matchpanel <- function(ss, stringname3){
 }
 
 
-ivselect <- function(expgwas_dir, expgwis_dir, outgwas_dir, outgwis_dir,
+ivselect <- function(expgwas_dir, expgwis_dir = NULL, 
+                     outgwas_dir, outgwis_dir = NULL,
                      stringname3, block_file, plink_dir = NULL,
                      pval_cutoff_gwas = 0.00000005, pval_cutoff_gwis = 0.00000005,
                      r2_cutoff = 0.01, kb_cutoff = 1024, maf_cutoff = 0.05,
                      lam = 0.1, coreNum = 1, intersect_mode = FALSE){
-
+  
   start_time <- Sys.time()
   message("Starting MERLIN IV selection process...")
-
+  
+  # Step 1: Read Reference Panel
   message("Step 1/7: Reading reference panel (bim file)...")
   bim <- data.table::fread(paste0(stringname3,".bim"), header = FALSE)
   bim <- data.frame(bim)
-
+  
+  # Step 2: Read Summary Statistics Conditionally
   message("Step 2/7: Reading GWAS summary statistics...")
-  expgwas <- readr::read_delim(expgwas_dir, col_names=TRUE)
-  expgwas <- data.frame(expgwas)
-  expgwis <- readr::read_delim(expgwis_dir, col_names=TRUE)
-  expgwis <- data.frame(expgwis)
-  outgwas <- readr::read_delim(outgwas_dir, col_names=TRUE)
-  outgwas <- data.frame(outgwas)
-  outgwis <- readr::read_delim(outgwis_dir, col_names=TRUE)
-  outgwis <- data.frame(outgwis)
-
+  
+  expgwas <- data.frame(readr::read_delim(expgwas_dir, col_names=TRUE, show_col_types = FALSE))
+  outgwas <- data.frame(readr::read_delim(outgwas_dir, col_names=TRUE, show_col_types = FALSE))
+  
+  expgwis <- NULL
+  if (!is.null(expgwis_dir)) {
+    message("  - Reading exposure GWIS...")
+    expgwis <- data.frame(readr::read_delim(expgwis_dir, col_names=TRUE, show_col_types = FALSE))
+  }
+  
+  outgwis <- NULL
+  if (!is.null(outgwis_dir)) {
+    message("  - Reading outcome GWIS...")
+    outgwis <- data.frame(readr::read_delim(outgwis_dir, col_names=TRUE, show_col_types = FALSE))
+  }
+  
+  # Step 3: PLINK Setup
   message("Step 3/7: Setting up PLINK...")
   if (is.null(plink_dir)) {
     plink_dir <- bigsnpr::download_plink()
   }
   message("  ✓ Using PLINK: ", plink_dir)
-
+  
+  # Step 4: LD Clumping for Exposure GWAS
   message("Step 4/7: Running LD clumping for exposure GWAS...")
   expgwas.LD.cmd <- paste(plink_dir, " --bfile ", stringname3,
                           " --clump-p1 ", pval_cutoff_gwas,
@@ -154,96 +167,103 @@ ivselect <- function(expgwas_dir, expgwis_dir, outgwas_dir, outgwis_dir,
                           " --clump ", expgwas_dir,
                           " --clump-snp-field SNP --clump-field P --out ld_result1",
                           sep="")
-  system(expgwas.LD.cmd)
+  system(expgwas.LD.cmd, ignore.stdout = TRUE)
+  
+  if (!file.exists("ld_result1.clumped")) stop("PLINK clumping failed for exposure GWAS.")
   expgwas.LD <- data.table::fread("ld_result1.clumped")
   snp.expgwas.LD <- expgwas.LD$SNP
-  file.remove("ld_result1.clumped")
-  file.remove("ld_result1.log")
-
-  message("Step 5/7: Running LD clumping for exposure GWIS...")
-  expgwis.LD.cmd <- paste(plink_dir, " --bfile ", stringname3,
-                          " --clump-p1 ", pval_cutoff_gwis,
-                          " --clump-r2 ", r2_cutoff,
-                          " --clump-kb ", kb_cutoff,
-                          " --maf ", maf_cutoff,
-                          " --clump ", expgwis_dir,
-                          " --clump-snp-field SNP --clump-field P --out ld_result2",
-                          sep="")
-  system(expgwis.LD.cmd)
-  expgwis.LD <- data.table::fread("ld_result2.clumped")
-  snp.expgwis.LD <- expgwis.LD$SNP
-  file.remove("ld_result2.clumped")
-  file.remove("ld_result2.log")
-
-  message("Step 6/7: Selecting causal SNPs...")
-  message("  - Mode: ", ifelse(intersect_mode, "Intersection", "Union"))
-  if (intersect_mode == TRUE) {
-    # intersect mode
-    # appropriate when stringent quality criteria for instrumental variables are prioritized
-    # potentially yielding fewer eligible variants.
-    snp.causal <- intersect(snp.expgwas.LD, snp.expgwis.LD)
-
+  file.remove("ld_result1.clumped", "ld_result1.log")
+  
+  # Step 5 & 6: LD Clumping for GWIS & Causal SNP Selection
+  if (!is.null(expgwis_dir)) {
+    message("Step 5/7: Running LD clumping for exposure GWIS...")
+    expgwis.LD.cmd <- paste(plink_dir, " --bfile ", stringname3,
+                            " --clump-p1 ", pval_cutoff_gwis,
+                            " --clump-r2 ", r2_cutoff,
+                            " --clump-kb ", kb_cutoff,
+                            " --maf ", maf_cutoff,
+                            " --clump ", expgwis_dir,
+                            " --clump-snp-field SNP --clump-field P --out ld_result2",
+                            sep="")
+    system(expgwis.LD.cmd, ignore.stdout = TRUE)
+    
+    if (!file.exists("ld_result2.clumped")) stop("PLINK clumping failed for exposure GWIS.")
+    expgwis.LD <- data.table::fread("ld_result2.clumped")
+    snp.expgwis.LD <- expgwis.LD$SNP
+    file.remove("ld_result2.clumped", "ld_result2.log")
+    
+    message("Step 6/7: Selecting causal SNPs...")
+    message("  - Mode: ", ifelse(intersect_mode, "Intersection", "Union"))
+    
+    if (intersect_mode == TRUE) {
+      snp.causal <- intersect(snp.expgwas.LD, snp.expgwis.LD)
+    } else {
+      union.snp <- union(snp.expgwas.LD, snp.expgwis.LD)
+      union.snp.df <- data.frame(SNP = union.snp, P = 1)
+      union.dir <- "union.snp.txt"
+      write.table(union.snp.df, file = union.dir, quote = FALSE, row.names = FALSE)
+      
+      union.LD.cmd <- paste(plink_dir, " --bfile ", stringname3,
+                            " --clump-p1 ", 1,
+                            " --clump-r2 ", r2_cutoff,
+                            " --clump-kb ", kb_cutoff,
+                            " --maf ", maf_cutoff,
+                            " --clump ", union.dir,
+                            " --clump-snp-field SNP --clump-field P --out ld_result3",
+                            sep="")
+      system(union.LD.cmd, ignore.stdout = TRUE)
+      union.LD <- data.table::fread("ld_result3.clumped")
+      snp.causal <- union.LD$SNP
+      file.remove(union.dir, "ld_result3.clumped", "ld_result3.log")
+    }
   } else {
-    union.snp <- union(snp.expgwas.LD, snp.expgwis.LD)
-    union.snp.df <- data.frame(SNP = union.snp, P = 1)
-    union.dir <- "union.snp.txt"
-    write.table(union.snp.df, file = union.dir,
-                quote = FALSE, row.names = FALSE)
-
-    union.LD.cmd <- paste(plink_dir, " --bfile ", stringname3,
-                          " --clump-p1 ", 1,
-                          " --clump-r2 ", r2_cutoff,
-                          " --clump-kb ", kb_cutoff,
-                          " --maf ", maf_cutoff,
-                          " --clump ", union.dir,
-                          " --clump-snp-field SNP --clump-field P --out ld_result3",
-                          sep="")
-    system(union.LD.cmd)
-    union.LD <- data.table::fread("ld_result3.clumped")
-    snp.causal <- union.LD$SNP
-    file.remove(union.dir)
-    file.remove("ld_result3.clumped")
-    file.remove("ld_result3.log")
+    message("Step 5 & 6/7: Exposure GWIS not provided. Using GWAS clumped SNPs as causal SNPs...")
+    snp.causal <- snp.expgwas.LD
   }
-
+  
+  # Ensure causal SNPs exist in all provided datasets
   snp.causal <- intersect(snp.causal, expgwas$SNP)
-  snp.causal <- intersect(snp.causal, expgwis$SNP)
   snp.causal <- intersect(snp.causal, outgwas$SNP)
-  snp.causal <- intersect(snp.causal, outgwis$SNP)
-
+  if (!is.null(expgwis)) snp.causal <- intersect(snp.causal, expgwis$SNP)
+  if (!is.null(outgwis)) snp.causal <- intersect(snp.causal, outgwis$SNP)
+  
   if (length(snp.causal) == 0) {
-    stop("No SNPs remaining after filtering.")
+    stop("No SNPs remaining after intersecting across all provided datasets.")
   } else {
-    message("Numbers of causal SNPs selected:",length(snp.causal))
+    message("  ✓ Final number of causal SNPs selected: ", length(snp.causal))
   }
-
+  
+  # Match with BIM file
   avbIndex <- match(snp.causal, bim$V2)
   avbIndex <- as.matrix(avbIndex[order(avbIndex)])
   snp.causal <- bim[avbIndex, ]$V2
-
+  
+  # Align all datasets
   expgwas.order <- expgwas[match(snp.causal, expgwas$SNP), ]
-  expgwis.order <- expgwis[match(snp.causal, expgwis$SNP), ]
   outgwas.order <- outgwas[match(snp.causal, outgwas$SNP), ]
-  outgwis.order <- outgwis[match(snp.causal, outgwis$SNP), ]
-
+  
   bh11ld <- expgwas.order$BETA
   se11ld <- expgwas.order$SE
-  bh12ld <- expgwis.order$BETA
-  se12ld <- expgwis.order$SE
   bh21ld <- outgwas.order$BETA
   se21ld <- outgwas.order$SE
-  bh22ld <- outgwis.order$BETA
-  se22ld <- outgwis.order$SE
-
+  
+  # Extract conditionally
+  bh12ld <- if (!is.null(expgwis)) expgwis[match(snp.causal, expgwis$SNP), ]$BETA else NULL
+  se12ld <- if (!is.null(expgwis)) expgwis[match(snp.causal, expgwis$SNP), ]$SE else NULL
+  
+  bh22ld <- if (!is.null(outgwis)) outgwis[match(snp.causal, outgwis$SNP), ]$BETA else NULL
+  se22ld <- if (!is.null(outgwis)) outgwis[match(snp.causal, outgwis$SNP), ]$SE else NULL
+  
   bp <- expgwas.order$BP
   chr <- expgwas.order$CHR
   idx4panel <- matrix(numeric(0), nrow = 0, ncol = 1)
-
+  
+  # Step 7: Calculate R Matrix
   message("Step 7/7: Calculating correlation matrix...")
   Rblockres <- Cal_block_Rmatrix(bp, chr, avbIndex-1, idx4panel,
                                  block_file, stringname3, 1, coreNum, lam)
   R <- Rblockres$R; diag(R) <- 1
-
+  
   end_time <- Sys.time()
   duration <- round(as.numeric(difftime(end_time, start_time, units = "secs")), 1)
   message("\n", rep("-", 50))
@@ -251,52 +271,166 @@ ivselect <- function(expgwas_dir, expgwis_dir, outgwas_dir, outgwis_dir,
   message("Total SNPs selected: ", length(snp.causal))
   message("Total processing time: ", duration, " seconds")
   message(rep("-", 50))
-
-  return(list(snp.causal = snp.causal, gammah1 = bh11ld, gammah3 = bh12ld,
+  
+  return(list(snp.causal = snp.causal, 
+              gammah1 = bh11ld, gammah3 = bh12ld,
               Gammah1 = bh21ld, Gammah3 = bh22ld,
-              se1 = se11ld, se2 = se12ld, se3 = se21ld, se4 = se22ld, R = R))
-
+              se1 = se11ld, se2 = se12ld, se3 = se21ld, se4 = se22ld, 
+              R = R))
 }
 
 
-MERLIN <- function(gammah1, gammah3, Gammah1, Gammah3,
-                  se1, se2, se3, se4, R, rho_1, rho_2) {
-
-  if (!all.equal(
-    length(gammah1), length(gammah3), length(Gammah1), length(Gammah3),
-    length(se1), length(se2), length(se3), length(se4),
-    nrow(R), ncol(R)
-  )) {
-    stop("All input vectors must have the same length as the LD matrix dimensions")
+MERLIN <- function(gammah1, gammah3 = NULL, Gammah1, Gammah3 = NULL,
+                   se1 = NULL, se2 = NULL, se3 = NULL, se4 = NULL, 
+                   R, rho_1 = NULL, rho_2 = NULL,
+                   model = c("standard", "continuous_E", "binary", "drop_G3", "drop_g3"),
+                   p1 = NULL, maxIter = 12000, burnin = 5000, thin = 10, seed = NULL) {
+  
+  # Match the model argument, defaulting to "standard"
+  model <- match.arg(model)
+  
+  # Set random seed for reproducibility
+  if (!is.null(seed)) {
+    if (!is.numeric(seed) || length(seed) != 1) stop("Error: 'seed' must be a single integer.")
+    set.seed(as.integer(seed))
   }
-
+  
+  # Validate MCMC parameters
+  if (!is.numeric(maxIter) || maxIter <= 0) stop("Error: 'maxIter' must be a positive integer.")
+  if (!is.numeric(burnin) || burnin < 0) stop("Error: 'burnin' must be a non-negative integer.")
+  if (!is.numeric(thin) || thin <= 0) stop("Error: 'thin' must be a positive integer.")
+  if (maxIter %% thin != 0) stop("Error: 'maxIter' must be exactly divisible by 'thin'.")
+  
+  maxIter <- as.integer(maxIter)
+  burnin <- as.integer(burnin)
+  thin <- as.integer(thin)
+  
+  # Check core vectors required by all models
+  core_vecs <- list(gammah1 = gammah1, Gammah1 = Gammah1)
+  for (name in names(core_vecs)) {
+    if (!is.numeric(core_vecs[[name]])) {
+      stop(sprintf("Error: '%s' must be a numeric vector.", name))
+    }
+    if (anyNA(core_vecs[[name]]) || any(is.infinite(core_vecs[[name]]))) {
+      stop(sprintf("Error: '%s' cannot contain NA, NaN, or Inf values.", name))
+    }
+  }
+  
+  # Check the LD matrix R
+  if (!is.matrix(R) || !is.numeric(R)) stop("Error: 'R' must be a numeric matrix.")
+  if (nrow(R) != ncol(R)) stop("Error: 'R' must be a square matrix.")
+  if (anyNA(R) || any(is.infinite(R))) stop("Error: Matrix 'R' cannot contain NA, NaN, or Inf values.")
+  
+  p <- nrow(R)
+  
+  # Check dimension alignment between core vectors and matrix R
+  for (name in names(core_vecs)) {
+    if (length(core_vecs[[name]]) != p) {
+      stop(sprintf("Error: The length of '%s' must match the dimension of matrix R.", name))
+    }
+  }
+  
   start_time <- Sys.time()
-  message("Running MERLIN method...")
-
-  result <- MRGEI_Gam3seo(
-    gammah1 = gammah1,
-    gammah3 = gammah3,
-    Gammah1 = Gammah1,
-    Gammah3 = Gammah3,
-    se1 = se1,
-    se2 = se2,
-    se3 = se3,
-    se4 = se4,
-    R = R,
-    rho_1 = rho_1,
-    rho_2 = rho_2
-  )
-
+  message(sprintf("Running MERLIN method (Model: %s)...", model))
+  
+  # Helper function to check model-specific required vectors
+  check_required_vec <- function(vec, name) {
+    if (is.null(vec)) stop(sprintf("Error: '%s' is required for the '%s' model.", name, model))
+    if (!is.numeric(vec)) stop(sprintf("Error: '%s' must be a numeric vector.", name))
+    if (length(vec) != p) stop(sprintf("Error: The length of '%s' must match the dimension of matrix R.", name))
+    if (anyNA(vec) || any(is.infinite(vec))) stop(sprintf("Error: '%s' cannot contain NA, NaN, or Inf values.", name))
+  }
+  
+  # C++ Dispatch and Model-Specific Validation
+  
+  if (model %in% c("standard", "continuous_E", "binary")) {
+    
+    check_required_vec(gammah3, "gammah3")
+    check_required_vec(Gammah3, "Gammah3")
+    check_required_vec(se1, "se1"); check_required_vec(se2, "se2")
+    check_required_vec(se3, "se3"); check_required_vec(se4, "se4")
+    
+    if (any(se1 <= 0) || any(se2 <= 0) || any(se3 <= 0) || any(se4 <= 0)) {
+      stop("Error: All standard errors (se1, se2, se3, se4) must be strictly greater than 0.")
+    }
+    if (is.null(rho_1) || is.null(rho_2) || !is.numeric(rho_1) || !is.numeric(rho_2)) {
+      stop("Error: 'rho_1' and 'rho_2' must be single numeric values.")
+    }
+    if (abs(rho_1) >= 1 || abs(rho_2) >= 1) {
+      stop("Error: 'rho_1' and 'rho_2' must be strictly between -1 and 1.")
+    }
+    
+    if (model == "standard") {
+      result <- MRGEI_Gam3seo(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, maxIter, burnin, thin)
+    } else if (model == "continuous_E") {
+      result <- MRGEI_Gam3seo_addE2(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, maxIter, burnin, thin)
+    } else if (model == "binary") {
+      if (is.null(p1) || !is.numeric(p1) || length(p1) != 1 || p1 <= 0 || p1 >= 1) {
+        stop("Error: For the 'binary' model, 'p1' must be a single numeric value strictly between 0 and 1.")
+      }
+      result <- MRGEI_Gam3seo_binary(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, as.numeric(p1), maxIter, burnin, thin)
+    }
+    
+  } else if (model == "drop_G3") { 
+    
+    # The new MRGEI_Gamseo function acts as the drop_G3 model. 
+    # It requires gammah3, se1, se2, se3, and rho_1 (passed as rho).
+    check_required_vec(gammah3, "gammah3")
+    check_required_vec(se1, "se1")
+    check_required_vec(se2, "se2")
+    check_required_vec(se3, "se3")
+    
+    if (any(se1 <= 0) || any(se2 <= 0) || any(se3 <= 0)) {
+      stop("Error: Standard errors (se1, se2, se3) must be strictly greater than 0.")
+    }
+    if (is.null(rho_1) || !is.numeric(rho_1) || length(rho_1) != 1) {
+      stop("Error: 'rho_1' must be a single numeric value.")
+    }
+    if (abs(rho_1) >= 1) {
+      stop("Error: 'rho_1' must be strictly between -1 and 1.")
+    }
+    
+    res.beta1 <- TwoSampleMR::mr_egger_regression(gammah1, Gammah1, se1, se3)
+    b1 <- res.beta1$b
+    result <- MRGEI_Gamseo_fixb1(gammah1, gammah3, Gammah1, se1, se2, se3, R, rho_1, b1, maxIter, burnin, thin)
+    
+  } else if (model == "drop_g3") { 
+    
+    check_required_vec(Gammah3, "Gammah3")
+    check_required_vec(se1, "se1")
+    check_required_vec(se3, "se3")
+    check_required_vec(se4, "se4")
+    
+    if (any(se1 <= 0) || any(se3 <= 0) || any(se4 <= 0)) {
+      stop("Error: Standard errors (se1, se3, se4) must be strictly greater than 0.")
+    }
+    
+    res.beta1 <- TwoSampleMR::mr_egger_regression(gammah1, Gammah1, se1, se3)
+    res.beta4 <- TwoSampleMR::mr_egger_regression(gammah1, Gammah3, se1, se4)
+    
+    result <- list(
+      Beta1.hat  = res.beta1$b,
+      Beta1.se   = res.beta1$se,
+      Beta1.pval = res.beta1$pval,
+      
+      Beta4.hat  = res.beta4$b,
+      Beta4.se   = res.beta4$se,
+      Beta4.pval = res.beta4$pval
+    )
+  }
+  
   end_time <- Sys.time()
   duration <- round(as.numeric(difftime(end_time, start_time, units = "secs")), 1)
-
+  
   message("\n", rep("-", 50))
   message("MERLIN Analysis Completed Successfully!")
   message("Total processing time: ", duration, " seconds")
   message(rep("-", 50))
-
+  
   return(result)
 }
+
+
 
 traceplot <- function(bhatpoint){
   y <- bhatpoint
@@ -319,6 +453,7 @@ traceplot <- function(bhatpoint){
 
   return(p1)
 }
+
 
 # copy from QingCheng0218/MR.CUE - GitHub
 mhcstart = 28477797;
@@ -438,7 +573,7 @@ summaryQC = function(mhcstart, mhcend, bh1, bh2, s12, s22, bp, chr,
 
 
 EstRhofun <- function(fileexposure, fileoutcome, stringname3,
-                      ld_r2_thresh, lam, pth){
+                      ld_r2_thresh, lam, pth, coreNum = 1){
 
   # Estimate the rho
   res = matchsnp(fileexposure, fileoutcome, stringname3, FALSE);
@@ -467,7 +602,17 @@ EstRhofun <- function(fileexposure, fileoutcome, stringname3,
   px = QCresult$px;
   py = QCresult$py;
 
-  coreNum = 24;
+  max_cores <- parallel::detectCores()
+  
+  if (is.null(coreNum) || !is.numeric(coreNum) || coreNum < 1) {
+    coreNum <- 1
+    warning("Invalid 'coreNum' provided. Defaulting to 1 core.")
+  } else if (coreNum > max_cores) {
+    coreNum <- max_cores
+    warning(sprintf("Requested 'coreNum' exceeds available cores. Adjusting to maximum available: %d cores.", max_cores))
+  }
+  
+  coreNum <- as.integer(coreNum)
 
   IndSumRes = IndepSummary(bpnew, chrnew, avbIndexnew - 1, block_file, stringname3,
                            bh1new, bh2new, s12new, s22new, coreNum,
@@ -526,7 +671,7 @@ EstRhofun <- function(fileexposure, fileoutcome, stringname3,
     }
   }
   # ---------------------------------------------------------
-  return(list(rhohat = rhohat, pvalue = pvalue, pres = pres, Rhores = Rhores));
+  return(list(rhohat = rhohat, pvalue = pvalue, pres = pres, Rhores = Rhores))
 
 }
 
