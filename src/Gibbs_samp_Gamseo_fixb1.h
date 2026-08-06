@@ -16,7 +16,7 @@ using namespace std;
 
 
 
-struct ObjGibbs_Gam3seo{
+struct ObjGibbs_Gamseo_fixb1{
   vec gamma1;
   vec beta2;
   vec gamma3;
@@ -25,11 +25,19 @@ struct ObjGibbs_Gam3seo{
   vec Sg12Res;
   vec Sg22Res;
   vec Sg32Res;
+  vec s3rs3_temp;
 };
 
-ObjGibbs_Gam3seo MRGibbs_Gam3seo(arma::vec &gammah1,arma::vec &gammah3, arma::vec &Gammah1, arma::vec &Gammah3, 
-                                 arma::vec &se1, arma::vec &se2, arma::vec &se3, arma::vec &se4, arma::mat &R, 
-                                 double &rho_1, double &rho_2, int maxIter, int burnin, int thin);
+ObjGibbs_Gamseo_fixb1 MRGibbs_Gamseo_fixb1(arma::vec &gammah1,arma::vec &gammah3, arma::vec &Gammah1, 
+                                           arma::vec &se1, arma::vec &se2, arma::vec &se3, 
+                                           arma::mat &R, double &rho, double &b1,
+                                           int maxIter, int burnin, int thin);
+
+
+
+
+
+
 
 
 
