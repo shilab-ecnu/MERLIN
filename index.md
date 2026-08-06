@@ -16,7 +16,7 @@ To install this package, run the following command in R.
 
 Load the package using the following command:
 
-`{r} library(MERLIN)`
+    library(MERLIN)
 
 ## Fit MERLIN using simulated data
 
