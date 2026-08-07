@@ -25,6 +25,10 @@ navbar:
 
 
 articles:
+  - title: "MERLIN Functions"
+    contents:
+      - MERLIN.functions
+
   - title: "Getting started"
     contents:
       - MERLIN.intro
