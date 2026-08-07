@@ -189,7 +189,7 @@ P.
 
     example <- read.table("example.txt", header = TRUE)
 
-`{r, echo=FALSE, results='asis'} knitr::kable(example, digits = 6, caption = "\\label{exp}Data format used for exposure and outcome data.")`
+    knitr::kable(example, digits = 6, caption = "\\label{exp}Data format used for exposure and outcome data.")
 
 If GWAS and GWIS data cannot be directly obtained, and the environmental
 factor is a binary variable (e.g., sex), one can generate the required
@@ -231,7 +231,10 @@ reference panel data, alongside initial data quality control. The output
 includes a data frame (`$data`) and the corresponding storage path
 (`$data_dir`).
 
-`{r, eval = FALSE} expgwas.match <- matchpanel(expgwas,stringname3)$data_dir; expgwis.match <- matchpanel(expgwis,stringname3)$data_dir; outgwas.match <- matchpanel(outgwas,stringname3)$data_dir; outgwis.match <- matchpanel(outgwis,stringname3)$data_dir;`
+    expgwas.match <- matchpanel(expgwas,stringname3)$data_dir;
+    expgwis.match <- matchpanel(expgwis,stringname3)$data_dir;
+    outgwas.match <- matchpanel(outgwas,stringname3)$data_dir;
+    outgwis.match <- matchpanel(outgwis,stringname3)$data_dir;
 
 Having given that we have the formatted data, we can use the `ivselect`
 function to screen the instrumental variables (IVs) and estimate the
@@ -247,15 +250,36 @@ indicates the number of CPU cores to be used for parallel computation.
 `intersect_mode` controls whether to merge GWAS and GWIS IVs using
 intersection (default: union).
 
-`{r, eval = FALSE} plink_dir <- NULL; pval_cutoff_gwas <- 5e-8; pval_cutoff_gwis <- 5e-8; r2_cutoff <- 0.5; kb_cutoff <- 1024; maf_cutoff <- 0.05; lam <- 0.1; coreNum <- 1; intersect_mode <- FALSE;`
+    plink_dir <- NULL;
+    pval_cutoff_gwas <- 5e-8;
+    pval_cutoff_gwis <- 5e-8;
+    r2_cutoff <- 0.5;
+    kb_cutoff <- 1024;
+    maf_cutoff <- 0.05;
+    lam <- 0.1;
+    coreNum <- 1;
+    intersect_mode <- FALSE;
 
-`{r, eval = FALSE} ivselect.res <- ivselect(expgwas.match, expgwis.match, outgwas.match, outgwis.match, stringname3, block_file, plink_dir, pval_cutoff_gwas, pval_cutoff_gwis, r2_cutoff, kb_cutoff, maf_cutoff, lam, coreNum, intersect_mode); snp.causal <- ivselect.res$snp.causal; gammah1 <- ivselect.res$gammah1; gammah3 <- ivselect.res$gammah3; Gammah1 <- ivselect.res$Gammah1; Gammah3 <- ivselect.res$Gammah3; se1 <- ivselect.res$se1; se2 <- ivselect.res$se2; se3 <- ivselect.res$se3; se4 <- ivselect.res$se4; R <- ivselect.res$R;`
+    ivselect.res <- ivselect(expgwas.match, expgwis.match, outgwas.match, outgwis.match,
+                             stringname3, block_file, plink_dir,
+                             pval_cutoff_gwas, pval_cutoff_gwis, r2_cutoff,
+                             kb_cutoff, maf_cutoff, lam, coreNum, intersect_mode);
+    snp.causal <- ivselect.res$snp.causal;
+    gammah1 <- ivselect.res$gammah1;
+    gammah3 <- ivselect.res$gammah3;
+    Gammah1 <- ivselect.res$Gammah1;
+    Gammah3 <- ivselect.res$Gammah3;
+    se1 <- ivselect.res$se1;
+    se2 <- ivselect.res$se2;
+    se3 <- ivselect.res$se3;
+    se4 <- ivselect.res$se4;
+    R <- ivselect.res$R;
 
 When the exposure and outcome samples are independent, the sample
 correlation parameters `rho1` (for GWAS) and `rho2` (for GWIS) are set
 to 0.
 
-`{r, eval = FALSE} rho1 <- 0; rho2 <- 0;`
+    rho1 <- 0; rho2 <- 0;
 
 For data with sample overlap, $`\rho_1`$ and $`\rho_2`$ are estimated
 using summary statistics among independent variants following [Chen et
@@ -275,17 +299,27 @@ the shrinkage turning parameter for LD estimator.
 
 Now we can fit MERLIN using the function *MERLIN*.
 
-`{r, eval = FALSE} res <- MERLIN(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho1, rho2) str(res)`
+    res <- MERLIN(gammah1, gammah3, Gammah1, Gammah3,
+                 se1, se2, se3, se4, R, rho1, rho2)
+    str(res)
 
 Check the convergence of the Gibbs sampler using `traceplot`.
 
-`{r, eval = FALSE} traceplot(res$Beta1res); traceplot(res$Beta4res);`
+    traceplot(res$Beta1res);
+    traceplot(res$Beta4res);
 
-`{r, eval = FALSE} MERLINbeta1 <- res$Beta1.hat; MERLINse1 <- res$Beta1.se; MERLINpvalue1 <- res$Beta1.pval; MERLINbeta4 <- res$Beta4.hat; MERLINse4 <- res$Beta4.se; MERLINpvalue4 <- res$Beta4.pval;`
+    MERLINbeta1 <- res$Beta1.hat;
+    MERLINse1 <- res$Beta1.se;
+    MERLINpvalue1 <- res$Beta1.pval;
+    MERLINbeta4 <- res$Beta4.hat;
+    MERLINse4 <- res$Beta4.se;
+    MERLINpvalue4 <- res$Beta4.pval;
 
-`{r results="hide", eval = FALSE} cat("The estimated average effect of Testosterone on BD: ", MERLINbeta1, "\n with Standard error: ", MERLINse1, "and P-value: ", MERLINpvalue1);`
+    cat("The estimated average effect of Testosterone on BD: ", MERLINbeta1,
+        "\n with Standard error: ", MERLINse1, "and P-value: ", MERLINpvalue1);
 
-`{r results="hide", eval = FALSE} cat("The estimated heterogeneity effect of Testosterone on BD: ", MERLINbeta4, "\n with Standard error: ", MERLINse4, "and P-value: ", MERLINpvalue4)`
+    cat("The estimated heterogeneity effect of Testosterone on BD: ", MERLINbeta4,
+        "\n with Standard error: ", MERLINse4, "and P-value: ", MERLINpvalue4)
 
 # Package index
 
