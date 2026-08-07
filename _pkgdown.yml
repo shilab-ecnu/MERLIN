@@ -12,10 +12,17 @@ navbar:
     left:
       - home
       - reference
+      - functions
       - articles
     right:
       - search
       - github
+
+  components:
+    functions:
+      text: "MERLIN Functions"
+      href: articles/MERLIN.functions.html
+
 
 articles:
   - title: "Getting started"
@@ -25,10 +32,8 @@ articles:
   - title: "Data preparation"
     contents:
       - MERLIN.preprocess
-      
 
   - title: "Analysis and simulation"
     contents:
-      - MERLIN.functions
       - MERLIN.sim
       - MERLIN.realdata
