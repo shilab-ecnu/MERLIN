@@ -105,62 +105,86 @@
 <span><span class="va">out_gwis</span> <span class="op">&lt;-</span> <span class="va">Y</span><span class="op">[</span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="va">n_out</span><span class="op">)</span><span class="op">]</span>;</span>
 <span><span class="va">out_E</span> <span class="op">&lt;-</span> <span class="va">E_x</span><span class="op">[</span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="va">n_out</span><span class="op">)</span><span class="op">]</span></span></code></pre>
 <p>We then conduct single-variant analysis to obtain the summary statistics.</p>
-<p>```{r, eval = FALSE} get_sumstats &lt;- function(G, pheno, interaction = FALSE, E = NULL) { betas &lt;- numeric(ncol(G)); ses &lt;- numeric(ncol(G));</p>
-<p>for(i in 1:ncol(G)) { if(interaction) { # Model with G×E interaction term model &lt;- lm(pheno ~ G[, i] + E + G[, i]:E); betas[i] &lt;- coef(model)[4]; ses[i] &lt;- summary(model)<span class="math inline">$coefficients[4, 2];
-    } else {
-      # Standard additive genetic model
-      model &lt;- lm(pheno ~ G[, i]);
-      betas[i] &lt;- coef(model)[2];
-      ses[i] &lt;- summary(model)$</span>coefficients[2, 2] } } return(list(beta = betas, se = ses)) }</p>
-<p>exp_gwas_sum &lt;- get_sumstats(G[1:n_exp, ], exp_gwas); exp_gwis_sum &lt;- get_sumstats(G[1:n_exp, ], exp_gwis, interaction = TRUE, E = exp_E);</p>
-<p>out_gwas_sum &lt;- get_sumstats(G[(n_exp + 1):(n_exp + n_out), ], out_gwas); out_gwis_sum &lt;- get_sumstats(G[(n_exp + 1):(n_exp + n_out), ], out_gwis, interaction = TRUE, E = out_E)</p>
-<pre><code>
-We select genetic instruments using a p-value threshold. SNPs in either the GWAS or GWIS analysis are included in the union set of instruments.
-
-```{r, eval = FALSE}
-p_threshold &lt;- 5e-8;
-
-pvals_gwas &lt;- 2 * pnorm(-abs(exp_gwas_sum$beta / exp_gwas_sum$se));
-iv_gwas &lt;- which(pvals_gwas &lt; p_threshold);
-
-pvals_gwis &lt;- 2 * pnorm(-abs(exp_gwis_sum$beta / exp_gwis_sum$se));
-iv_gwis &lt;- which(pvals_gwis &lt; p_threshold);
-
-iv_union &lt;- union(iv_gwas, iv_gwis);
-R &lt;- diag(length(iv_union)) </code></pre>
+<pre><code><span><span class="va">get_sumstats</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">G</span>, <span class="va">pheno</span>, <span class="va">interaction</span> <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">E</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">betas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">G</span><span class="op">)</span><span class="op">)</span>;</span>
+<span>  <span class="va">ses</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">G</span><span class="op">)</span><span class="op">)</span>;</span>
+<span></span>
+<span>  <span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">G</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw">if</span><span class="op">(</span><span class="va">interaction</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="co"># Model with G×E interaction term</span></span>
+<span>      <span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">pheno</span> <span class="op">~</span> <span class="va">G</span><span class="op">[</span>, <span class="va">i</span><span class="op">]</span> <span class="op">+</span> <span class="va">E</span> <span class="op">+</span> <span class="va">G</span><span class="op">[</span>, <span class="va">i</span><span class="op">]</span><span class="op">:</span><span class="va">E</span><span class="op">)</span>;</span>
+<span>      <span class="va">betas</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>;</span>
+<span>      <span class="va">ses</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">4</span>, <span class="fl">2</span><span class="op">]</span>;</span>
+<span>    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>      <span class="co"># Standard additive genetic model</span></span>
+<span>      <span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">pheno</span> <span class="op">~</span> <span class="va">G</span><span class="op">[</span>, <span class="va">i</span><span class="op">]</span><span class="op">)</span>;</span>
+<span>      <span class="va">betas</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>;</span>
+<span>      <span class="va">ses</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">]</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>beta <span class="op">=</span> <span class="va">betas</span>, se <span class="op">=</span> <span class="va">ses</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">exp_gwas_sum</span> <span class="op">&lt;-</span> <span class="fu">get_sumstats</span><span class="op">(</span><span class="va">G</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">n_exp</span>, <span class="op">]</span>, <span class="va">exp_gwas</span><span class="op">)</span>;</span>
+<span><span class="va">exp_gwis_sum</span> <span class="op">&lt;-</span> <span class="fu">get_sumstats</span><span class="op">(</span><span class="va">G</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">n_exp</span>, <span class="op">]</span>, <span class="va">exp_gwis</span>, interaction <span class="op">=</span> <span class="cn">TRUE</span>, E <span class="op">=</span> <span class="va">exp_E</span><span class="op">)</span>;</span>
+<span></span>
+<span><span class="va">out_gwas_sum</span> <span class="op">&lt;-</span> <span class="fu">get_sumstats</span><span class="op">(</span><span class="va">G</span><span class="op">[</span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="va">n_out</span><span class="op">)</span>, <span class="op">]</span>, <span class="va">out_gwas</span><span class="op">)</span>;</span>
+<span><span class="va">out_gwis_sum</span> <span class="op">&lt;-</span> <span class="fu">get_sumstats</span><span class="op">(</span><span class="va">G</span><span class="op">[</span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="va">n_out</span><span class="op">)</span>, <span class="op">]</span>, <span class="va">out_gwis</span>,</span>
+<span>                            interaction <span class="op">=</span> <span class="cn">TRUE</span>, E <span class="op">=</span> <span class="va">out_E</span><span class="op">)</span></span></code></pre>
+<p>We select genetic instruments using a p-value threshold. SNPs in either the GWAS or GWIS analysis are included in the union set of instruments.</p>
+<pre><code><span><span class="va">p_threshold</span> <span class="op">&lt;-</span> <span class="fl">5e-8</span>;</span>
+<span></span>
+<span><span class="va">pvals_gwas</span> <span class="op">&lt;-</span> <span class="fl">2</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">exp_gwas_sum</span><span class="op">$</span><span class="va">beta</span> <span class="op">/</span> <span class="va">exp_gwas_sum</span><span class="op">$</span><span class="va">se</span><span class="op">)</span><span class="op">)</span>;</span>
+<span><span class="va">iv_gwas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">pvals_gwas</span> <span class="op">&lt;</span> <span class="va">p_threshold</span><span class="op">)</span>;</span>
+<span></span>
+<span><span class="va">pvals_gwis</span> <span class="op">&lt;-</span> <span class="fl">2</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">exp_gwis_sum</span><span class="op">$</span><span class="va">beta</span> <span class="op">/</span> <span class="va">exp_gwis_sum</span><span class="op">$</span><span class="va">se</span><span class="op">)</span><span class="op">)</span>;</span>
+<span><span class="va">iv_gwis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">pvals_gwis</span> <span class="op">&lt;</span> <span class="va">p_threshold</span><span class="op">)</span>;</span>
+<span></span>
+<span><span class="va">iv_union</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">union</a></span><span class="op">(</span><span class="va">iv_gwas</span>, <span class="va">iv_gwis</span><span class="op">)</span>;</span>
+<span><span class="va">R</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">iv_union</span><span class="op">)</span><span class="op">)</span> </span></code></pre>
 <p>Finally, we apply the MERLIN methods.</p>
-<p>```{r, eval = FALSE} gamma_hat &lt;- exp_gwas_sum<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mi>e</mi><mi>t</mi><mi>a</mi><mo stretchy="false" form="prefix">[</mo><mi>i</mi><msub><mi>v</mi><mi>u</mi></msub><mi>n</mi><mi>i</mi><mi>o</mi><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo>;</mo><mi>g</mi><mi>a</mi><mi>m</mi><mi>m</mi><mi>a</mi><msub><mn>3</mn><mi>h</mi></msub><mi>a</mi><mi>t</mi><mo>&lt;</mo><mi>−</mi><mi>e</mi><mi>x</mi><msub><mi>p</mi><mi>g</mi></msub><mi>w</mi><mi>i</mi><msub><mi>s</mi><mi>s</mi></msub><mi>u</mi><mi>m</mi></mrow><annotation encoding="application/x-tex">beta[iv_union];
-gamma3_hat &lt;- exp_gwis_sum</annotation></semantics></math>beta[iv_union]; Gamma_hat &lt;- out_gwas_sum<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mi>e</mi><mi>t</mi><mi>a</mi><mo stretchy="false" form="prefix">[</mo><mi>i</mi><msub><mi>v</mi><mi>u</mi></msub><mi>n</mi><mi>i</mi><mi>o</mi><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo>;</mo><mi>G</mi><mi>a</mi><mi>m</mi><mi>m</mi><mi>a</mi><msub><mn>3</mn><mi>h</mi></msub><mi>a</mi><mi>t</mi><mo>&lt;</mo><mi>−</mi><mi>o</mi><mi>u</mi><msub><mi>t</mi><mi>g</mi></msub><mi>w</mi><mi>i</mi><msub><mi>s</mi><mi>s</mi></msub><mi>u</mi><mi>m</mi></mrow><annotation encoding="application/x-tex">beta[iv_union];
-Gamma3_hat &lt;- out_gwis_sum</annotation></semantics></math>beta[iv_union];</p>
-<p>se_gamma &lt;- exp_gwas_sum<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mi>e</mi><mo stretchy="false" form="prefix">[</mo><mi>i</mi><msub><mi>v</mi><mi>u</mi></msub><mi>n</mi><mi>i</mi><mi>o</mi><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo>;</mo><mi>s</mi><msub><mi>e</mi><mi>g</mi></msub><mi>a</mi><mi>m</mi><mi>m</mi><mi>a</mi><mn>3</mn><mo>&lt;</mo><mi>−</mi><mi>e</mi><mi>x</mi><msub><mi>p</mi><mi>g</mi></msub><mi>w</mi><mi>i</mi><msub><mi>s</mi><mi>s</mi></msub><mi>u</mi><mi>m</mi></mrow><annotation encoding="application/x-tex">se[iv_union];
-se_gamma3 &lt;- exp_gwis_sum</annotation></semantics></math>se[iv_union]; se_Gamma &lt;- out_gwas_sum<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mi>e</mi><mo stretchy="false" form="prefix">[</mo><mi>i</mi><msub><mi>v</mi><mi>u</mi></msub><mi>n</mi><mi>i</mi><mi>o</mi><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo>;</mo><mi>s</mi><msub><mi>e</mi><mi>G</mi></msub><mi>a</mi><mi>m</mi><mi>m</mi><mi>a</mi><mn>3</mn><mo>&lt;</mo><mi>−</mi><mi>o</mi><mi>u</mi><msub><mi>t</mi><mi>g</mi></msub><mi>w</mi><mi>i</mi><msub><mi>s</mi><mi>s</mi></msub><mi>u</mi><mi>m</mi></mrow><annotation encoding="application/x-tex">se[iv_union];
-se_Gamma3 &lt;- out_gwis_sum</annotation></semantics></math>se[iv_union];</p>
-<p>rho_1 &lt;- 0; rho_2 &lt;- 0;</p>
-<p>res &lt;- MERLIN(gamma_hat, gamma3_hat, Gamma_hat, Gamma3_hat, se_gamma, se_gamma3, se_Gamma, se_Gamma3, R, rho_1, rho_2); str(res);</p>
-<p>beta1_hat &lt;- res<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>e</mi><mi>t</mi><mi>a</mi><mn>1</mn><mi>.</mi><mi>h</mi><mi>a</mi><mi>t</mi><mo>;</mo><mi>s</mi><mi>e</mi><msub><mn>1</mn><mi>h</mi></msub><mi>a</mi><mi>t</mi><mo>&lt;</mo><mi>−</mi><mi>r</mi><mi>e</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">Beta1.hat;
-se1_hat &lt;- res</annotation></semantics></math>Beta1.se; pval1 &lt;- res<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>e</mi><mi>t</mi><mi>a</mi><mn>1</mn><mi>.</mi><mi>p</mi><mi>v</mi><mi>a</mi><mi>l</mi><mo>;</mo><mi>b</mi><mi>e</mi><mi>t</mi><mi>a</mi><msub><mn>4</mn><mi>h</mi></msub><mi>a</mi><mi>t</mi><mo>&lt;</mo><mi>−</mi><mi>r</mi><mi>e</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">Beta1.pval;
-beta4_hat &lt;- res</annotation></semantics></math>Beta4.hat; se4_hat &lt;- res<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mi>e</mi><mi>t</mi><mi>a</mi><mn>4</mn><mi>.</mi><mi>s</mi><mi>e</mi><mo>;</mo><mi>p</mi><mi>v</mi><mi>a</mi><mi>l</mi><mn>4</mn><mo>&lt;</mo><mi>−</mi><mi>r</mi><mi>e</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">Beta4.se;
-pval4 &lt;- res</annotation></semantics></math>Beta4.pval</p>
-<pre><code>
-beta1_hat, se1_hat, and pval1 are the estimated average causal effect, corresponding standard error, and p-value of beta1_hat. beta4_hat, se4_hat, and pval4 are the estimated heterogeneity causal effect, corresponding standard error, and p-value of beta4_hat.
-
-## Real data
-### The Testosterone-BD study with environmental factor sex
-
-All the raw data for the real-data analyses in the replicated paper are stored on &lt;a href="https://figshare.com/articles/dataset/Data_for_MERLIN/29910116"&gt;MERLIN Dataset on Figshare&lt;/a&gt;. Here, we take the dataset “The Testosterone–BD study with the environmental factor sex” as an example.
-
-Furthermore, we give an example to illustrate the implementation of MERLIN for real data analysis. The following datasets ('Testosterone.GWAS.txt.gz', 'Testosterone.GWIS.txt.gz', 'BD.GWAS.txt.gz', 'BD.GWIS.txt.gz', 'g1000_eur.bed','g1000_eur.fam', 'g1000_eur.bim', 'all.bed') should be prepared. Download here: &lt;a href="https://figshare.com/articles/dataset/Data_for_MERLIN/29910116"&gt;MERLIN Dataset on Figshare&lt;/a&gt;
-
-```{r}
-expgwas &lt;- "Testosterone.GWAS.txt.gz";
-expgwis &lt;- "Testosterone.GWIS.txt.gz";
-outgwas &lt;- "BD.GWAS.txt.gz";
-outgwis &lt;- "BD.GWIS.txt.gz";
-stringname3 &lt;- "g1000_eur";
-block_file &lt;- "all.bed";</code></pre>
+<pre><code><span><span class="va">gamma_hat</span> <span class="op">&lt;-</span> <span class="va">exp_gwas_sum</span><span class="op">$</span><span class="va">beta</span><span class="op">[</span><span class="va">iv_union</span><span class="op">]</span>;</span>
+<span><span class="va">gamma3_hat</span> <span class="op">&lt;-</span> <span class="va">exp_gwis_sum</span><span class="op">$</span><span class="va">beta</span><span class="op">[</span><span class="va">iv_union</span><span class="op">]</span>;</span>
+<span><span class="va">Gamma_hat</span> <span class="op">&lt;-</span> <span class="va">out_gwas_sum</span><span class="op">$</span><span class="va">beta</span><span class="op">[</span><span class="va">iv_union</span><span class="op">]</span>;</span>
+<span><span class="va">Gamma3_hat</span> <span class="op">&lt;-</span> <span class="va">out_gwis_sum</span><span class="op">$</span><span class="va">beta</span><span class="op">[</span><span class="va">iv_union</span><span class="op">]</span>;</span>
+<span></span>
+<span><span class="va">se_gamma</span> <span class="op">&lt;-</span> <span class="va">exp_gwas_sum</span><span class="op">$</span><span class="va">se</span><span class="op">[</span><span class="va">iv_union</span><span class="op">]</span>;</span>
+<span><span class="va">se_gamma3</span> <span class="op">&lt;-</span> <span class="va">exp_gwis_sum</span><span class="op">$</span><span class="va">se</span><span class="op">[</span><span class="va">iv_union</span><span class="op">]</span>;</span>
+<span><span class="va">se_Gamma</span> <span class="op">&lt;-</span> <span class="va">out_gwas_sum</span><span class="op">$</span><span class="va">se</span><span class="op">[</span><span class="va">iv_union</span><span class="op">]</span>;</span>
+<span><span class="va">se_Gamma3</span> <span class="op">&lt;-</span> <span class="va">out_gwis_sum</span><span class="op">$</span><span class="va">se</span><span class="op">[</span><span class="va">iv_union</span><span class="op">]</span>;</span>
+<span></span>
+<span><span class="va">rho_1</span> <span class="op">&lt;-</span> <span class="fl">0</span>;</span>
+<span><span class="va">rho_2</span> <span class="op">&lt;-</span> <span class="fl">0</span>;</span>
+<span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/MERLIN-package.html">MERLIN</a></span><span class="op">(</span><span class="va">gamma_hat</span>, <span class="va">gamma3_hat</span>, <span class="va">Gamma_hat</span>, <span class="va">Gamma3_hat</span>,</span>
+<span>            <span class="va">se_gamma</span>, <span class="va">se_gamma3</span>, <span class="va">se_Gamma</span>, <span class="va">se_Gamma3</span>, <span class="va">R</span>, <span class="va">rho_1</span>, <span class="va">rho_2</span><span class="op">)</span>;</span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span>;</span>
+<span></span>
+<span><span class="va">beta1_hat</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">Beta1.hat</span>;</span>
+<span><span class="va">se1_hat</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">Beta1.se</span>;</span>
+<span><span class="va">pval1</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">Beta1.pval</span>;</span>
+<span><span class="va">beta4_hat</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">Beta4.hat</span>;</span>
+<span><span class="va">se4_hat</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">Beta4.se</span>;</span>
+<span><span class="va">pval4</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">Beta4.pval</span></span></code></pre>
+<p>beta1_hat, se1_hat, and pval1 are the estimated average causal effect, corresponding standard error, and p-value of beta1_hat. beta4_hat, se4_hat, and pval4 are the estimated heterogeneity causal effect, corresponding standard error, and p-value of beta4_hat.</p>
+</div>
+<div class="section level2">
+<h2 id="real-data">Real data<a class="anchor" aria-label="anchor" href="#real-data"></a>
+</h2>
+<div class="section level3">
+<h3 id="the-testosterone-bd-study-with-environmental-factor-sex">The Testosterone-BD study with environmental factor sex<a class="anchor" aria-label="anchor" href="#the-testosterone-bd-study-with-environmental-factor-sex"></a>
+</h3>
+<p>All the raw data for the real-data analyses in the replicated paper are stored on <a href="https://figshare.com/articles/dataset/Data_for_MERLIN/29910116" class="external-link">MERLIN Dataset on Figshare</a>. Here, we take the dataset “The Testosterone–BD study with the environmental factor sex” as an example.</p>
+<p>Furthermore, we give an example to illustrate the implementation of MERLIN for real data analysis. The following datasets (‘Testosterone.GWAS.txt.gz’, ‘Testosterone.GWIS.txt.gz’, ‘BD.GWAS.txt.gz’, ‘BD.GWIS.txt.gz’, ‘g1000_eur.bed’,‘g1000_eur.fam’, ‘g1000_eur.bim’, ‘all.bed’) should be prepared. Download here: <a href="https://figshare.com/articles/dataset/Data_for_MERLIN/29910116" class="external-link">MERLIN Dataset on Figshare</a></p>
+<pre><code><span><span class="va">expgwas</span> <span class="op">&lt;-</span> <span class="st">"Testosterone.GWAS.txt.gz"</span>;</span>
+<span><span class="va">expgwis</span> <span class="op">&lt;-</span> <span class="st">"Testosterone.GWIS.txt.gz"</span>;</span>
+<span><span class="va">outgwas</span> <span class="op">&lt;-</span> <span class="st">"BD.GWAS.txt.gz"</span>;</span>
+<span><span class="va">outgwis</span> <span class="op">&lt;-</span> <span class="st">"BD.GWIS.txt.gz"</span>;</span>
+<span><span class="va">stringname3</span> <span class="op">&lt;-</span> <span class="st">"g1000_eur"</span>;</span>
+<span><span class="va">block_file</span> <span class="op">&lt;-</span> <span class="st">"all.bed"</span>;</span></code></pre>
 <p>‘expgwas’, ‘expgwis’, ‘outgwas’, and ‘outgwis’ are the dataset names for exposure GWAS, exposure GWIS, outcome GWAS, and outcome GWIS, respectively. Here, the environment variable is sex.</p>
 <p>These four datasets must have the following format (note that it must be tab-delimited): including columns as SNP, CHR, BP, A1, A2, BETA, SE, and P.</p>
-<p><code>{r, echo=FALSE} example &lt;- read.table("example.txt", header = TRUE)</code></p>
+<pre><code><span><span class="va">example</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="st">"example.txt"</span>, header <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre>
 <p><code>{r, echo=FALSE, results='asis'} knitr::kable(example, digits = 6, caption = "\\label{exp}Data format used for exposure and outcome data.")</code></p>
 <p>If GWAS and GWIS data cannot be directly obtained, and the environmental factor is a binary variable (e.g., sex), one can generate the required GWAS and GWIS inputs for MERLIN by converting the sex-stratified summary statistics (e.g., Testosterone.male.txt and Testosterone.female.txt) as follows.</p>
 <p>The GWAS summary statistics can be generated by meta-analyzing the male and female data using inverse-variance weighting, as implemented in METAL (<a href="https://github.com/statgen/METAL" class="external-link">https://github.com/statgen/METAL</a>). After installing the software, the analysis can be executed via the command line (e.g., in Linux or other shell environments) using a configuration file. A sample configuration file ‘metal.config.Testosterone.txt’ is available for download: <a href="https://figshare.com/articles/dataset/Data_for_MERLIN/29910116" class="external-link">MERLIN Dataset on Figshare</a>.</p>
@@ -191,6 +215,7 @@ block_file &lt;- "all.bed";</code></pre>
 <p><code>{r, eval = FALSE} MERLINbeta1 &lt;- res$Beta1.hat; MERLINse1 &lt;- res$Beta1.se; MERLINpvalue1 &lt;- res$Beta1.pval; MERLINbeta4 &lt;- res$Beta4.hat; MERLINse4 &lt;- res$Beta4.se; MERLINpvalue4 &lt;- res$Beta4.pval;</code></p>
 <p><code>{r results="hide", eval = FALSE} cat("The estimated average effect of Testosterone on BD: ", MERLINbeta1,      "\n with Standard error: ", MERLINse1, "and P-value: ", MERLINpvalue1);</code></p>
 <p><code>{r results="hide", eval = FALSE} cat("The estimated heterogeneity effect of Testosterone on BD: ", MERLINbeta4,      "\n with Standard error: ", MERLINse4, "and P-value: ", MERLINpvalue4)</code></p>
+</div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">

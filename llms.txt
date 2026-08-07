@@ -82,30 +82,36 @@ genetic effects defined.
 We then conduct single-variant analysis to obtain the summary
 statistics.
 
-\`\`\`{r, eval = FALSE} get_sumstats \<- function(G, pheno, interaction
-= FALSE, E = NULL) { betas \<- numeric(ncol(G)); ses \<-
-numeric(ncol(G));
+    get_sumstats <- function(G, pheno, interaction = FALSE, E = NULL) {
+      betas <- numeric(ncol(G));
+      ses <- numeric(ncol(G));
 
-for(i in 1:ncol(G)) { if(interaction) { \# Model with G×E interaction
-term model \<- lm(pheno ~ G\[, i\] + E + G\[, i\]:E); betas\[i\] \<-
-coef(model)\[4\]; ses\[i\] \<- summary(model)\$coefficients\[4, 2\]; }
-else { \# Standard additive genetic model model \<- lm(pheno ~ G\[,
-i\]); betas\[i\] \<- coef(model)\[2\]; ses\[i\] \<-
-summary(model)\$coefficients\[2, 2\] } } return(list(beta = betas, se =
-ses)) }
+      for(i in 1:ncol(G)) {
+        if(interaction) {
+          # Model with G×E interaction term
+          model <- lm(pheno ~ G[, i] + E + G[, i]:E);
+          betas[i] <- coef(model)[4];
+          ses[i] <- summary(model)$coefficients[4, 2];
+        } else {
+          # Standard additive genetic model
+          model <- lm(pheno ~ G[, i]);
+          betas[i] <- coef(model)[2];
+          ses[i] <- summary(model)$coefficients[2, 2]
+        }
+      }
+      return(list(beta = betas, se = ses))
+    }
 
-exp_gwas_sum \<- get_sumstats(G\[1:n_exp, \], exp_gwas); exp_gwis_sum
-\<- get_sumstats(G\[1:n_exp, \], exp_gwis, interaction = TRUE, E =
-exp_E);
+    exp_gwas_sum <- get_sumstats(G[1:n_exp, ], exp_gwas);
+    exp_gwis_sum <- get_sumstats(G[1:n_exp, ], exp_gwis, interaction = TRUE, E = exp_E);
 
-out_gwas_sum \<- get_sumstats(G\[(n_exp + 1):(n_exp + n_out), \],
-out_gwas); out_gwis_sum \<- get_sumstats(G\[(n_exp + 1):(n_exp + n_out),
-\], out_gwis, interaction = TRUE, E = out_E)
+    out_gwas_sum <- get_sumstats(G[(n_exp + 1):(n_exp + n_out), ], out_gwas);
+    out_gwis_sum <- get_sumstats(G[(n_exp + 1):(n_exp + n_out), ], out_gwis,
+                                interaction = TRUE, E = out_E)
 
+We select genetic instruments using a p-value threshold. SNPs in either
+the GWAS or GWIS analysis are included in the union set of instruments.
 
-    We select genetic instruments using a p-value threshold. SNPs in either the GWAS or GWIS analysis are included in the union set of instruments.
-
-    ```{r, eval = FALSE}
     p_threshold <- 5e-8;
 
     pvals_gwas <- 2 * pnorm(-abs(exp_gwas_sum$beta / exp_gwas_sum$se));
@@ -119,37 +125,53 @@ out_gwas); out_gwis_sum \<- get_sumstats(G\[(n_exp + 1):(n_exp + n_out),
 
 Finally, we apply the MERLIN methods.
 
-\`\`\`{r, eval = FALSE} gamma_hat \<- exp_gwas_sum$`beta[iv_union];
-gamma3_hat <- exp_gwis_sum`$beta\[iv_union\]; Gamma_hat \<-
-out_gwas_sum$`beta[iv_union];
-Gamma3_hat <- out_gwis_sum`$beta\[iv_union\];
+    gamma_hat <- exp_gwas_sum$beta[iv_union];
+    gamma3_hat <- exp_gwis_sum$beta[iv_union];
+    Gamma_hat <- out_gwas_sum$beta[iv_union];
+    Gamma3_hat <- out_gwis_sum$beta[iv_union];
 
-se_gamma \<- exp_gwas_sum$`se[iv_union];
-se_gamma3 <- exp_gwis_sum`$se\[iv_union\]; se_Gamma \<-
-out_gwas_sum$`se[iv_union];
-se_Gamma3 <- out_gwis_sum`$se\[iv_union\];
+    se_gamma <- exp_gwas_sum$se[iv_union];
+    se_gamma3 <- exp_gwis_sum$se[iv_union];
+    se_Gamma <- out_gwas_sum$se[iv_union];
+    se_Gamma3 <- out_gwis_sum$se[iv_union];
 
-rho_1 \<- 0; rho_2 \<- 0;
+    rho_1 <- 0;
+    rho_2 <- 0;
 
-res \<- MERLIN(gamma_hat, gamma3_hat, Gamma_hat, Gamma3_hat, se_gamma,
-se_gamma3, se_Gamma, se_Gamma3, R, rho_1, rho_2); str(res);
+    res <- MERLIN(gamma_hat, gamma3_hat, Gamma_hat, Gamma3_hat,
+                se_gamma, se_gamma3, se_Gamma, se_Gamma3, R, rho_1, rho_2);
+    str(res);
 
-beta1_hat \<- res$`Beta1.hat;
-se1_hat <- res`$Beta1.se; pval1 \<- res$`Beta1.pval;
-beta4_hat <- res`$Beta4.hat; se4_hat \<- res$`Beta4.se;
-pval4 <- res`$Beta4.pval
+    beta1_hat <- res$Beta1.hat;
+    se1_hat <- res$Beta1.se;
+    pval1 <- res$Beta1.pval;
+    beta4_hat <- res$Beta4.hat;
+    se4_hat <- res$Beta4.se;
+    pval4 <- res$Beta4.pval
 
+beta1_hat, se1_hat, and pval1 are the estimated average causal effect,
+corresponding standard error, and p-value of beta1_hat. beta4_hat,
+se4_hat, and pval4 are the estimated heterogeneity causal effect,
+corresponding standard error, and p-value of beta4_hat.
 
-    beta1_hat, se1_hat, and pval1 are the estimated average causal effect, corresponding standard error, and p-value of beta1_hat. beta4_hat, se4_hat, and pval4 are the estimated heterogeneity causal effect, corresponding standard error, and p-value of beta4_hat.
+## Real data
 
-    ## Real data
-    ### The Testosterone-BD study with environmental factor sex
+### The Testosterone-BD study with environmental factor sex
 
-    All the raw data for the real-data analyses in the replicated paper are stored on <a href="https://figshare.com/articles/dataset/Data_for_MERLIN/29910116">MERLIN Dataset on Figshare</a>. Here, we take the dataset “The Testosterone–BD study with the environmental factor sex” as an example.
+All the raw data for the real-data analyses in the replicated paper are
+stored on [MERLIN Dataset on
+Figshare](https://figshare.com/articles/dataset/Data_for_MERLIN/29910116).
+Here, we take the dataset “The Testosterone–BD study with the
+environmental factor sex” as an example.
 
-    Furthermore, we give an example to illustrate the implementation of MERLIN for real data analysis. The following datasets ('Testosterone.GWAS.txt.gz', 'Testosterone.GWIS.txt.gz', 'BD.GWAS.txt.gz', 'BD.GWIS.txt.gz', 'g1000_eur.bed','g1000_eur.fam', 'g1000_eur.bim', 'all.bed') should be prepared. Download here: <a href="https://figshare.com/articles/dataset/Data_for_MERLIN/29910116">MERLIN Dataset on Figshare</a>
+Furthermore, we give an example to illustrate the implementation of
+MERLIN for real data analysis. The following datasets
+(‘Testosterone.GWAS.txt.gz’, ‘Testosterone.GWIS.txt.gz’,
+‘BD.GWAS.txt.gz’, ‘BD.GWIS.txt.gz’, ‘g1000_eur.bed’,‘g1000_eur.fam’,
+‘g1000_eur.bim’, ‘all.bed’) should be prepared. Download here: [MERLIN
+Dataset on
+Figshare](https://figshare.com/articles/dataset/Data_for_MERLIN/29910116)
 
-    ```{r}
     expgwas <- "Testosterone.GWAS.txt.gz";
     expgwis <- "Testosterone.GWIS.txt.gz";
     outgwas <- "BD.GWAS.txt.gz";
@@ -165,7 +187,7 @@ These four datasets must have the following format (note that it must be
 tab-delimited): including columns as SNP, CHR, BP, A1, A2, BETA, SE, and
 P.
 
-`{r, echo=FALSE} example <- read.table("example.txt", header = TRUE)`
+    example <- read.table("example.txt", header = TRUE)
 
 `{r, echo=FALSE, results='asis'} knitr::kable(example, digits = 6, caption = "\\label{exp}Data format used for exposure and outcome data.")`
 
