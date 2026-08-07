@@ -12,6 +12,7 @@ navbar:
     left:
       - home
       - reference
+      - MERLIN.functions
       - articles
     right:
       - search
@@ -29,6 +30,5 @@ articles:
 
   - title: "Analysis and simulation"
     contents:
-      - MERLIN.functions
       - MERLIN.sim
       - MERLIN.realdata
