@@ -18,10 +18,10 @@ navbar:
       - search
       - github
 
-functions：
-  - title: "MERLIN Functions"
-    contents:
-      - MERLIN.functions
+components:
+    functions:
+      text: "MERLIN Functions"
+      href: articles/MERLIN.functions.html
 
 articles:
   - title: "Getting started"
