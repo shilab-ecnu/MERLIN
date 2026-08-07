@@ -1,5 +1,10 @@
 # Articles
 
+### MERLIN Functions
+
+- [MERLIN
+  Functions](https://shilab-ecnu.github.io/MERLIN/articles/MERLIN.functions.md):
+
 ### Getting started
 
 - [Part 1: Introduction and Data
@@ -12,8 +17,6 @@
 
 ### Analysis and simulation
 
-- [MERLIN
-  Functions](https://shilab-ecnu.github.io/MERLIN/articles/MERLIN.functions.md):
 - [Part 3: Model Fitting Using Simulated
   Data](https://shilab-ecnu.github.io/MERLIN/articles/MERLIN.sim.md):
 - [Part 4: Real Data Analysis and Convergence

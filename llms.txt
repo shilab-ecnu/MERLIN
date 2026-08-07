@@ -331,6 +331,11 @@ Check the convergence of the Gibbs sampler using `traceplot`.
 
 # Articles
 
+### MERLIN Functions
+
+- [MERLIN
+  Functions](https://shilab-ecnu.github.io/MERLIN/articles/MERLIN.functions.md):
+
 ### Getting started
 
 - [Part 1: Introduction and Data
@@ -343,8 +348,6 @@ Check the convergence of the Gibbs sampler using `traceplot`.
 
 ### Analysis and simulation
 
-- [MERLIN
-  Functions](https://shilab-ecnu.github.io/MERLIN/articles/MERLIN.functions.md):
 - [Part 3: Model Fitting Using Simulated
   Data](https://shilab-ecnu.github.io/MERLIN/articles/MERLIN.sim.md):
 - [Part 4: Real Data Analysis and Convergence
