@@ -78,27 +78,32 @@
 <span><span class="va">G</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">G</span>, center <span class="op">=</span> <span class="cn">TRUE</span>, scale <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>;</span>
 <span><span class="va">E_x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="va">n_out</span><span class="op">)</span></span></code></pre>
 <p>Now simulate the genetic effect sizes. The main genetic effects (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>γ</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\gamma_1</annotation></semantics></math>) and G×E interaction effects (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>γ</mi><mn>3</mn></msub><annotation encoding="application/x-tex">\gamma_3</annotation></semantics></math>) are generated as correlated multivariate normal variables with specified heritabilities.</p>
-<p>```{r, eval = FALSE} sigma2g1 &lt;- h_g1 / m; sigma2g3 &lt;- h_g3 / m;</p>
-<p>cov_matrix &lt;- matrix(c(sigma2g1, cor_g1g3 * sqrt(sigma2g1 * sigma2g3), cor_g1g3 * sqrt(sigma2g1 * sigma2g3), sigma2g3), ncol = 2);</p>
-<p>gamma1_3 &lt;- rmvnorm(m, mean = c(0, 0), sigma = cov_matrix) gamma_1x &lt;- gamma1_3[, 1]; gamma_3x &lt;- gamma1_3[, 2]</p>
-<pre><code>
-Generate the exposure ($X$) and outcome ($Y$) variables with the genetic effects defined.
-
-```{r, eval = FALSE}
-GE &lt;- G * E_x;
-
-noise_x &lt;- rnorm(n_exp + n_out, sd = sqrt(1 - h_g1 - h_g3));
-X &lt;- G %*% gamma_1x + GE %*% gamma_3x + noise_x;
-
-noise_y &lt;- rnorm(n_exp + n_out, sd = sqrt(1 - b1^2 - b4^2));
-Y &lt;- X * b1 + X * E_x * b4 + noise_y;
-
-exp_gwas &lt;- X[1:n_exp];
-exp_gwis &lt;- X[1:n_exp];
-exp_E &lt;- E_x[1:n_exp];
-out_gwas &lt;- Y[(n_exp + 1):(n_exp + n_out)];
-out_gwis &lt;- Y[(n_exp + 1):(n_exp + n_out)];
-out_E &lt;- E_x[(n_exp + 1):(n_exp + n_out)]</code></pre>
+<pre><code><span><span class="va">sigma2g1</span> <span class="op">&lt;-</span> <span class="va">h_g1</span> <span class="op">/</span> <span class="va">m</span>;</span>
+<span><span class="va">sigma2g3</span> <span class="op">&lt;-</span> <span class="va">h_g3</span> <span class="op">/</span> <span class="va">m</span>;</span>
+<span></span>
+<span><span class="va">cov_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">sigma2g1</span>,</span>
+<span>                      <span class="va">cor_g1g3</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">sigma2g1</span> <span class="op">*</span> <span class="va">sigma2g3</span><span class="op">)</span>,</span>
+<span>                      <span class="va">cor_g1g3</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">sigma2g1</span> <span class="op">*</span> <span class="va">sigma2g3</span><span class="op">)</span>,</span>
+<span>                      <span class="va">sigma2g3</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>;</span>
+<span></span>
+<span><span class="va">gamma1_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/Mvnorm.html" class="external-link">rmvnorm</a></span><span class="op">(</span><span class="va">m</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, sigma <span class="op">=</span> <span class="va">cov_matrix</span><span class="op">)</span></span>
+<span><span class="va">gamma_1x</span> <span class="op">&lt;-</span> <span class="va">gamma1_3</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>;</span>
+<span><span class="va">gamma_3x</span> <span class="op">&lt;-</span> <span class="va">gamma1_3</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span></span></code></pre>
+<p>Generate the exposure (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>) and outcome (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>) variables with the genetic effects defined.</p>
+<pre><code><span><span class="va">GE</span> <span class="op">&lt;-</span> <span class="va">G</span> <span class="op">*</span> <span class="va">E_x</span>;</span>
+<span></span>
+<span><span class="va">noise_x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="va">n_out</span>, sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">h_g1</span> <span class="op">-</span> <span class="va">h_g3</span><span class="op">)</span><span class="op">)</span>;</span>
+<span><span class="va">X</span> <span class="op">&lt;-</span> <span class="va">G</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">gamma_1x</span> <span class="op">+</span> <span class="va">GE</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">gamma_3x</span> <span class="op">+</span> <span class="va">noise_x</span>;</span>
+<span></span>
+<span><span class="va">noise_y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="va">n_out</span>, sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">b1</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="va">b4</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>;</span>
+<span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="va">X</span> <span class="op">*</span> <span class="va">b1</span> <span class="op">+</span> <span class="va">X</span> <span class="op">*</span> <span class="va">E_x</span> <span class="op">*</span> <span class="va">b4</span> <span class="op">+</span> <span class="va">noise_y</span>;</span>
+<span></span>
+<span><span class="va">exp_gwas</span> <span class="op">&lt;-</span> <span class="va">X</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">n_exp</span><span class="op">]</span>;</span>
+<span><span class="va">exp_gwis</span> <span class="op">&lt;-</span> <span class="va">X</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">n_exp</span><span class="op">]</span>;</span>
+<span><span class="va">exp_E</span> <span class="op">&lt;-</span> <span class="va">E_x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">n_exp</span><span class="op">]</span>;</span>
+<span><span class="va">out_gwas</span> <span class="op">&lt;-</span> <span class="va">Y</span><span class="op">[</span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="va">n_out</span><span class="op">)</span><span class="op">]</span>;</span>
+<span><span class="va">out_gwis</span> <span class="op">&lt;-</span> <span class="va">Y</span><span class="op">[</span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="va">n_out</span><span class="op">)</span><span class="op">]</span>;</span>
+<span><span class="va">out_E</span> <span class="op">&lt;-</span> <span class="va">E_x</span><span class="op">[</span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="va">n_out</span><span class="op">)</span><span class="op">]</span></span></code></pre>
 <p>We then conduct single-variant analysis to obtain the summary statistics.</p>
 <p>```{r, eval = FALSE} get_sumstats &lt;- function(G, pheno, interaction = FALSE, E = NULL) { betas &lt;- numeric(ncol(G)); ses &lt;- numeric(ncol(G));</p>
 <p>for(i in 1:ncol(G)) { if(interaction) { # Model with G×E interaction term model &lt;- lm(pheno ~ G[, i] + E + G[, i]:E); betas[i] &lt;- coef(model)[4]; ses[i] &lt;- summary(model)<span class="math inline">$coefficients[4, 2];

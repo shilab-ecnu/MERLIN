@@ -49,18 +49,21 @@ Now simulate the genetic effect sizes. The main genetic effects
 as correlated multivariate normal variables with specified
 heritabilities.
 
-\`\`\`{r, eval = FALSE} sigma2g1 \<- h_g1 / m; sigma2g3 \<- h_g3 / m;
+    sigma2g1 <- h_g1 / m;
+    sigma2g3 <- h_g3 / m;
 
-cov_matrix \<- matrix(c(sigma2g1, cor_g1g3 \* sqrt(sigma2g1 \*
-sigma2g3), cor_g1g3 \* sqrt(sigma2g1 \* sigma2g3), sigma2g3), ncol = 2);
+    cov_matrix <- matrix(c(sigma2g1,
+                          cor_g1g3 * sqrt(sigma2g1 * sigma2g3),
+                          cor_g1g3 * sqrt(sigma2g1 * sigma2g3),
+                          sigma2g3), ncol = 2);
 
-gamma1_3 \<- rmvnorm(m, mean = c(0, 0), sigma = cov_matrix) gamma_1x \<-
-gamma1_3\[, 1\]; gamma_3x \<- gamma1_3\[, 2\]
+    gamma1_3 <- rmvnorm(m, mean = c(0, 0), sigma = cov_matrix)
+    gamma_1x <- gamma1_3[, 1];
+    gamma_3x <- gamma1_3[, 2]
 
+Generate the exposure ($`X`$) and outcome ($`Y`$) variables with the
+genetic effects defined.
 
-    Generate the exposure ($X$) and outcome ($Y$) variables with the genetic effects defined.
-
-    ```{r, eval = FALSE}
     GE <- G * E_x;
 
     noise_x <- rnorm(n_exp + n_out, sd = sqrt(1 - h_g1 - h_g3));
