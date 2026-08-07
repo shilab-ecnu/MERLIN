@@ -12,11 +12,16 @@ navbar:
     left:
       - home
       - reference
-      - MERLIN.functions
+      - functions
       - articles
     right:
       - search
       - github
+
+functions：
+  - title: "MERLIN Functions"
+    contents:
+      - MERLIN.functions
 
 articles:
   - title: "Getting started"
