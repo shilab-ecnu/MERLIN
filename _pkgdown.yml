@@ -20,7 +20,7 @@ navbar:
 
   components:
     functions:
-      text: "MERLIN Functions"
+      text: "Functions"
       href: articles/MERLIN.functions.html
 
 
