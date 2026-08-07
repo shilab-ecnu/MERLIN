@@ -81,7 +81,7 @@ out_E <- E_x[(n_exp + 1):(n_exp + n_out)]
 
 We then conduct single-variant analysis to obtain the summary statistics.
 
-```{r, eval = FALSE}
+```
 get_sumstats <- function(G, pheno, interaction = FALSE, E = NULL) {
   betas <- numeric(ncol(G));
   ses <- numeric(ncol(G));
@@ -112,7 +112,7 @@ out_gwis_sum <- get_sumstats(G[(n_exp + 1):(n_exp + n_out), ], out_gwis,
 
 We select genetic instruments using a p-value threshold. SNPs in either the GWAS or GWIS analysis are included in the union set of instruments.
 
-```{r, eval = FALSE}
+```
 p_threshold <- 5e-8;
 
 pvals_gwas <- 2 * pnorm(-abs(exp_gwas_sum$beta / exp_gwas_sum$se));
@@ -127,7 +127,7 @@ R <- diag(length(iv_union))
 
 Finally, we apply the MERLIN methods. 
 
-```{r, eval = FALSE}
+```
 gamma_hat <- exp_gwas_sum$beta[iv_union];
 gamma3_hat <- exp_gwis_sum$beta[iv_union];
 Gamma_hat <- out_gwas_sum$beta[iv_union];
@@ -162,7 +162,7 @@ All the raw data for the real-data analyses in the replicated paper are stored o
 
 Furthermore, we give an example to illustrate the implementation of MERLIN for real data analysis. The following datasets ('Testosterone.GWAS.txt.gz', 'Testosterone.GWIS.txt.gz', 'BD.GWAS.txt.gz', 'BD.GWIS.txt.gz', 'g1000_eur.bed','g1000_eur.fam', 'g1000_eur.bim', 'all.bed') should be prepared. Download here: <a href="https://figshare.com/articles/dataset/Data_for_MERLIN/29910116">MERLIN Dataset on Figshare</a>
 
-```{r}
+```
 expgwas <- "Testosterone.GWAS.txt.gz";
 expgwis <- "Testosterone.GWIS.txt.gz";
 outgwas <- "BD.GWAS.txt.gz";
@@ -175,7 +175,7 @@ block_file <- "all.bed";
 
 These four datasets must have the following format (note that it must be tab-delimited): including columns as SNP, CHR, BP, A1, A2, BETA, SE, and P.
 
-```{r, echo=FALSE}
+```
 example <- read.table("example.txt", header = TRUE)
 ```
 
