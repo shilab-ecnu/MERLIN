@@ -103,8 +103,8 @@ Run the continuous-environment MERLIN MCMC kernel.
 `MRGEI_Gam3seo_binary()`  
 Run the binary-environment MERLIN MCMC kernel.
 
-`MRGEI_Gamseo()`  
-Run the `drop_G3`(without outcome gwis) MERLIN MCMC kernel.
+`MRGEI_Gamseo_fixb1()`  
+Run the `MO`(without outcome gwis) MERLIN MCMC kernel.
 
 #### Matrix and numerical utilities
 
