@@ -116,8 +116,6 @@ reference-panel data.
 `MRGEI_Gamseo()`  
   Run the `drop_G3`(without outcome gwis) MERLIN MCMC kernel.
   
-`MRGEI_dropg3()`  
-  Run the `drop_g3`(without exposure gwis) MERLIN MCMC kernel.
   
 ### Matrix and numerical utilities
 
@@ -181,7 +179,7 @@ MERLIN(
   R,
   rho_1 = NULL,
   rho_2 = NULL,
-  model = c("standard", "continuous_E", "binary", "drop_G3", "drop_g3"),
+  model = c("standard", "continuous_E", "binary", "MO", "ME"),
   p1 = NULL,
   maxIter = 12000,
   burnin = 5000,
@@ -194,9 +192,9 @@ MERLIN(
 | Argument | Description |
 |---|---|
 | `gammah1` | Numeric vector of exposure GWAS main-effect estimates. |
-| `gammah3` | Numeric vector of exposure GWIS interaction-effect estimates. Required for `standard`, `continuous_E`, `binary`, and `drop_G3`. |
+| `gammah3` | Numeric vector of exposure GWIS interaction-effect estimates. Required for `standard`, `continuous_E`, `binary`, and `MO`. |
 | `Gammah1` | Numeric vector of outcome GWAS main-effect estimates. |
-| `Gammah3` | Numeric vector of outcome GWIS interaction-effect estimates. Required for `standard`, `continuous_E`, `binary`, and `drop_g3`. |
+| `Gammah3` | Numeric vector of outcome GWIS interaction-effect estimates. Required for `standard`, `continuous_E`, `binary`, and `ME`. |
 | `se1`, `se2`, `se3`, `se4` | Standard-error vectors corresponding to `gammah1`, `gammah3`, `Gammah1`, and `Gammah3`. |
 | `R` | Numeric LD correlation matrix for the selected SNPs. |
 | `rho_1` | Correlation parameter for the GWAS summary-statistics components. |
@@ -751,7 +749,7 @@ A list of MERLIN estimates and saved MCMC samples.
 
 
 ### **`MRGEI_Gamseo_fixb1()`**
-Run the `drop_G3`(without outcome gwis) MERLIN MCMC kernel.
+Run the `MO`(without outcome gwis) MERLIN MCMC kernel.
 
 #### Usage
 ```r
@@ -766,7 +764,7 @@ MRGEI_Gamseo_fixb1(gammah1, gammah3, Gammah1, se1, se2, se3, R, rho, b1, maxIter
 | `se1`, `se2`, `se3` | Corresponding standard errors. |
 | `R` | LD correlation matrix. |
 | `rho` | Correlation parameter. |
-| `b1` | The main effect estimate ($\beta_1$), which can be either manually specified or obtained from an alternative MR method. When the "`drop_G3`" mode is selected, the Egger method is used to estimate $\beta_1$. |
+| `b1` | The main effect estimate ($\beta_1$), which can be either manually specified or obtained from an alternative MR method. When the "`MO`" mode is selected, the Egger method is used to estimate $\beta_1$. |
 | `maxIter`, `burnin`, `thin` | MCMC control parameters. |
 
 #### Value
