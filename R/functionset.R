@@ -371,9 +371,9 @@ MERLIN <- function(gammah1, gammah3 = NULL, Gammah1, Gammah3 = NULL,
       result <- MRGEI_Gam3seo_binary(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, as.numeric(p1), maxIter, burnin, thin)
     }
     
-  } else if (model == "drop_G3") { 
+  } else if (model == "MO") { 
     
-    # The new MRGEI_Gamseo function acts as the drop_G3 model. 
+    # The new MRGEI_Gamseo function acts as the MO model. 
     # It requires gammah3, se1, se2, se3, and rho_1 (passed as rho).
     check_required_vec(gammah3, "gammah3")
     check_required_vec(se1, "se1")
@@ -394,7 +394,7 @@ MERLIN <- function(gammah1, gammah3 = NULL, Gammah1, Gammah3 = NULL,
     b1 <- res.beta1$b
     result <- MRGEI_Gamseo_fixb1(gammah1, gammah3, Gammah1, se1, se2, se3, R, rho_1, b1, maxIter, burnin, thin)
     
-  } else if (model == "drop_g3") { 
+  } else if (model == "ME") { 
     
     check_required_vec(Gammah3, "Gammah3")
     check_required_vec(se1, "se1")
