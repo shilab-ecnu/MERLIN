@@ -39,14 +39,15 @@ navbar:
 
 
 articles:
+  - title: "Functions"
+    contents:
+      - MERLIN.functions
   - title: "Getting started"
     contents:
       - MERLIN.intro
-
   - title: "Data preparation"
     contents:
       - MERLIN.preprocess
-
   - title: "Analysis and simulation"
     contents:
       - MERLIN.sim
