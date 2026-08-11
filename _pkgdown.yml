@@ -17,38 +17,26 @@ navbar:
     right:
       - search
       - github
-      
+
   components:
-    articles:
-      text: Guide
-      menu:
-        - text: List of articles
-          href: articles/index.html
-        - text: Part 1: Introduction and Data Requirements
-          href: articles/MERLIN.intro.html
-        - text: Part 2: Data Preprocessing and Instrumental Variable Selection
-          href: articles/MERLIN.preprocess.html
-        - text: Part 3: Model Fitting Using Simulated Data
-          href: articles/MERLIN.sim.html
-        - text: Part 4: Real Data Analysis and Convergence Diagnostics
-          href: articles/MERLIN.realdata.html
     functions:
-      text: Functions
+      text: "Functions"
       href: articles/MERLIN.functions.html
-  
-        
 
 
 articles:
-  - title: "Functions"
+  - title: "MERLIN Functions"
     contents:
       - MERLIN.functions
+
   - title: "Getting started"
     contents:
       - MERLIN.intro
+
   - title: "Data preparation"
     contents:
       - MERLIN.preprocess
+
   - title: "Analysis and simulation"
     contents:
       - MERLIN.sim
