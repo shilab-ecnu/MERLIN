@@ -149,9 +149,6 @@ Run the binary-environment MERLIN MCMC kernel.</p>
 <p><code>MRGEI_Gamseo()</code><br>
 Run the <code>drop_G3</code>(without outcome gwis) MERLIN MCMC
 kernel.</p>
-<p><code>MRGEI_dropg3()</code><br>
-Run the <code>drop_g3</code>(without exposure gwis) MERLIN MCMC
-kernel.</p>
 </div>
 <div class="section level4">
 <h4 id="matrix-and-numerical-utilities">Matrix and numerical utilities<a class="anchor" aria-label="anchor" href="#matrix-and-numerical-utilities"></a>
@@ -220,7 +217,7 @@ routine.</p>
 <span>  <span class="va">R</span>,</span>
 <span>  rho_1 <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  rho_2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"standard"</span>, <span class="st">"continuous_E"</span>, <span class="st">"binary"</span>, <span class="st">"drop_G3"</span>, <span class="st">"drop_g3"</span><span class="op">)</span>,</span>
+<span>  model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"standard"</span>, <span class="st">"continuous_E"</span>, <span class="st">"binary"</span>, <span class="st">"MO"</span>, <span class="st">"ME"</span><span class="op">)</span>,</span>
 <span>  p1 <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  maxIter <span class="op">=</span> <span class="fl">12000</span>,</span>
 <span>  burnin <span class="op">=</span> <span class="fl">5000</span>,</span>
@@ -249,7 +246,7 @@ routine.</p>
 <td><code>gammah3</code></td>
 <td>Numeric vector of exposure GWIS interaction-effect estimates.
 Required for <code>standard</code>, <code>continuous_E</code>,
-<code>binary</code>, and <code>drop_G3</code>.</td>
+<code>binary</code>, and <code>MO</code>.</td>
 </tr>
 <tr class="odd">
 <td><code>Gammah1</code></td>
@@ -259,7 +256,7 @@ Required for <code>standard</code>, <code>continuous_E</code>,
 <td><code>Gammah3</code></td>
 <td>Numeric vector of outcome GWIS interaction-effect estimates.
 Required for <code>standard</code>, <code>continuous_E</code>,
-<code>binary</code>, and <code>drop_g3</code>.</td>
+<code>binary</code>, and <code>ME</code>.</td>
 </tr>
 <tr class="odd">
 <td>
@@ -1646,8 +1643,7 @@ should call <code><a href="../reference/MERLIN-package.html">MERLIN()</a></code>
 <h4 id="mrgei_gamseo_fixb1">
 <strong><code>MRGEI_Gamseo_fixb1()</code></strong><a class="anchor" aria-label="anchor" href="#mrgei_gamseo_fixb1"></a>
 </h4>
-<p>Run the <code>drop_G3</code>(without outcome gwis) MERLIN MCMC
-kernel.</p>
+<p>Run the <code>MO</code>(without outcome gwis) MERLIN MCMC kernel.</p>
 <div class="section level5">
 <h5 id="usage-25">Usage<a class="anchor" aria-label="anchor" href="#usage-25"></a>
 </h5>
@@ -1696,8 +1692,8 @@ kernel.</p>
 <td>The main effect estimate
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\beta_1</annotation></semantics></math>),
 which can be either manually specified or obtained from an alternative
-MR method. When the “<code>drop_G3</code>” mode is selected, the Egger
-method is used to estimate
+MR method. When the “<code>MO</code>” mode is selected, the Egger method
+is used to estimate
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\beta_1</annotation></semantics></math>.</td>
 </tr>
 <tr class="odd">

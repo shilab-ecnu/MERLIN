@@ -65,13 +65,13 @@ distinct modes:
   parameter `p1`, which represents the proportion/probability of the
   environmental factor taking the value 1 (i.e., $`P(E=1)`$).
 
-- “`drop_G3`”: Designed for practical scenarios where outcome GWIS
-  summary statistics are unavailable. This model drops the requirement
-  for `Gammah3`, `se4`, and `rho_2`.
+- “`MO`”: Designed for practical scenarios where outcome GWIS summary
+  statistics are unavailable. This model drops the requirement for
+  `Gammah3`, `se4`, and `rho_2`.
 
-- “`drop_g3`”: Designed for practical scenarios where exposure GWIS
-  summary statistics are unavailable. This model drops the requirement
-  for `gammah3`, `se2`, and `rho_2`.
+- “`ME`”: Designed for practical scenarios where exposure GWIS summary
+  statistics are unavailable. This model drops the requirement for
+  `gammah3`, `se2`, and `rho_2`.
 
 **MCMC Control Parameters**
 
@@ -156,8 +156,8 @@ List of 14
 MERLIN can still be applied when either the exposure GWIS or the outcome
 GWIS summary statistics are unavailable. As an illustrative example, we
 consider the case where the exposure GWIS data are missing. In this
-setting, users should specify `model = "drop_g3"`, and `gammah3`, `se2`,
-and `rho_2` can be omitted.
+setting, users should specify `model = "ME"`, and `gammah3`, `se2`, and
+`rho_2` can be omitted.
 
 ``` r
 
@@ -172,7 +172,7 @@ res.drop <- MERLIN(gammah1    = gammah1,
                    R          = R, 
                    rho_1      = rho1, 
                    rho_2      = NULL,
-                   model      = "drop_g3",
+                   model      = "ME",
                    maxIter    = 12000,       
                    burnin     = 5000, 
                    thin       = 10,
@@ -184,7 +184,7 @@ The console below shows the progress and output structure in this
 setting.
 
 ``` text
-Running MERLIN method (Model: drop_g3)...
+Running MERLIN method (Model: ME)...
 
 --------------------------------------------------
 MERLIN Analysis Completed Successfully!
@@ -239,9 +239,9 @@ certain regions, or shows a distinct upward/downward trend, you may need
 to increase the number of MCMC iterations or check your input data for
 extreme outliers.
 
-**Note**: When using the “`drop_G3`” or “`drop_g3`” model, parameter
-estimation is no longer performed via the MCMC procedure. Consequently,
-convergence diagnostics are not required.
+**Note**: When using the “`MO`” or “`ME`” model, parameter estimation is
+no longer performed via the MCMC procedure. Consequently, convergence
+diagnostics are not required.
 
 ## Results Extraction and Interpretation
 

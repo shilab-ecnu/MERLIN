@@ -123,11 +123,11 @@ additional parameter <code>p1</code>, which represents the
 proportion/probability of the environmental factor taking the value 1
 (i.e.,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>E</mi><mo>=</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P(E=1)</annotation></semantics></math>).</p></li>
-<li><p>“<code>drop_G3</code>”: Designed for practical scenarios where
-outcome GWIS summary statistics are unavailable. This model drops the
+<li><p>“<code>MO</code>”: Designed for practical scenarios where outcome
+GWIS summary statistics are unavailable. This model drops the
 requirement for <code>Gammah3</code>, <code>se4</code>, and
 <code>rho_2</code>.</p></li>
-<li><p>“<code>drop_g3</code>”: Designed for practical scenarios where
+<li><p>“<code>ME</code>”: Designed for practical scenarios where
 exposure GWIS summary statistics are unavailable. This model drops the
 requirement for <code>gammah3</code>, <code>se2</code>, and
 <code>rho_2</code>.</p></li>
@@ -204,9 +204,9 @@ List of 14
 <p>MERLIN can still be applied when either the exposure GWIS or the
 outcome GWIS summary statistics are unavailable. As an illustrative
 example, we consider the case where the exposure GWIS data are missing.
-In this setting, users should specify <code>model = "drop_g3"</code>,
-and <code>gammah3</code>, <code>se2</code>, and <code>rho_2</code> can
-be omitted.</p>
+In this setting, users should specify <code>model = "ME"</code>, and
+<code>gammah3</code>, <code>se2</code>, and <code>rho_2</code> can be
+omitted.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res.drop</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MERLIN-package.html">MERLIN</a></span><span class="op">(</span>gammah1    <span class="op">=</span> <span class="va">gammah1</span>, </span>
 <span>                   gammah3    <span class="op">=</span> <span class="cn">NULL</span>, </span>
@@ -219,7 +219,7 @@ be omitted.</p>
 <span>                   R          <span class="op">=</span> <span class="va">R</span>, </span>
 <span>                   rho_1      <span class="op">=</span> <span class="va">rho1</span>, </span>
 <span>                   rho_2      <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>                   model      <span class="op">=</span> <span class="st">"drop_g3"</span>,</span>
+<span>                   model      <span class="op">=</span> <span class="st">"ME"</span>,</span>
 <span>                   maxIter    <span class="op">=</span> <span class="fl">12000</span>,       </span>
 <span>                   burnin     <span class="op">=</span> <span class="fl">5000</span>, </span>
 <span>                   thin       <span class="op">=</span> <span class="fl">10</span>,</span>
@@ -227,7 +227,7 @@ be omitted.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">res.drop</span><span class="op">)</span></span></code></pre></div>
 <p>The console below shows the progress and output structure in this
 setting.</p>
-<pre class="text"><code>Running MERLIN method (Model: drop_g3)...
+<pre class="text"><code>Running MERLIN method (Model: ME)...
 
 --------------------------------------------------
 MERLIN Analysis Completed Successfully!
@@ -272,10 +272,10 @@ without any obvious long-term trends or drifting.</p>
 certain regions, or shows a distinct upward/downward trend, you may need
 to increase the number of MCMC iterations or check your input data for
 extreme outliers.</p>
-<p><strong>Note</strong>: When using the “<code>drop_G3</code>” or
-“<code>drop_g3</code>” model, parameter estimation is no longer
-performed via the MCMC procedure. Consequently, convergence diagnostics
-are not required.</p>
+<p><strong>Note</strong>: When using the “<code>MO</code>” or
+“<code>ME</code>” model, parameter estimation is no longer performed via
+the MCMC procedure. Consequently, convergence diagnostics are not
+required.</p>
 </div>
 <div class="section level2">
 <h2 id="results-extraction-and-interpretation">Results Extraction and Interpretation<a class="anchor" aria-label="anchor" href="#results-extraction-and-interpretation"></a>
