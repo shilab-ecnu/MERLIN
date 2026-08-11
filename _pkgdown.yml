@@ -22,7 +22,7 @@ navbar:
         - text: Part 4: Real Data Analysis and Convergence Diagnostics
           href: articles/MERLIN.realdata.html
     - text: "Functions"
-      href: reference/MERLIN.functions.html
+      href: articles/MERLIN.functions.html
           
   right:
     - search
