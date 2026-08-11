@@ -283,7 +283,7 @@ ivselect <- function(expgwas_dir, expgwis_dir = NULL,
 MERLIN <- function(gammah1, gammah3 = NULL, Gammah1, Gammah3 = NULL,
                    se1 = NULL, se2 = NULL, se3 = NULL, se4 = NULL, 
                    R, rho_1 = NULL, rho_2 = NULL,
-                   model = c("standard", "continuous_E", "binary", "drop_G3", "drop_g3"),
+                   model = c("standard", "continuous_E", "binary", "MO", "ME"),
                    p1 = NULL, maxIter = 12000, burnin = 5000, thin = 10, seed = NULL) {
   
   # Match the model argument, defaulting to "standard"
