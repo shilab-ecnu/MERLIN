@@ -42,6 +42,9 @@ navbar:
       href: https://github.com/shilab-ecnu/MERLIN
 
 articles:
+  - title: "Functions"
+    contents:
+      - MERLIN.functions
   - title: "Getting started"
     contents:
       - MERLIN.intro
@@ -55,5 +58,4 @@ articles:
       - MERLIN.sim
       - MERLIN.single-GWIS.sim
       - MERLIN.realdata
-exclude:
-  - MERLIN.functions.Rmd
+
