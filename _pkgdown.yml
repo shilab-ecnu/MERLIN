@@ -55,3 +55,5 @@ articles:
       - MERLIN.sim
       - MERLIN.single-GWIS.sim
       - MERLIN.realdata
+exclude:
+  - MERLIN.functions.Rmd
