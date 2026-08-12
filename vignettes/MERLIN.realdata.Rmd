@@ -1,6 +1,6 @@
 
 ---
-title: "Part 4: Real Data Analysis and Convergence Diagnostics"
+title: "Part 5: Real Data Analysis and Convergence Diagnostics"
 date: "\\small \\today"
 output:
   html_document:
@@ -11,7 +11,7 @@ editor_options:
   markdown:
     wrap: 72
 vignette: >
-  %\VignetteIndexEntry{Part 4: Real Data Analysis and Convergence Diagnostics}
+  %\VignetteIndexEntry{Part 5: Real Data Analysis and Convergence Diagnostics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
