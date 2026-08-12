@@ -1,0 +1,342 @@
+# Part 4: Model Fitting with a Single Available GWIS (MERLIN-MO and MERLIN-ME)
+
+## Introduction to the Single-GWIS Extensions
+
+GWIS summary statistics may be unavailable for either the exposure or
+the outcome. MERLIN therefore provides two reduced-data extensions:
+
+- **MERLIN-MO** is used when the **outcome GWIS is missing**. In the R
+  package, this model is selected using `model = "MO"`, where
+  $`\widehat{\Gamma}_3`$ denotes the outcome GWIS association.
+
+- **MERLIN-ME** is used when the **exposure GWIS is missing**. In the R
+  package, this model is selected using `model = "ME"`, where
+  $`\widehat{\gamma}_3`$ denotes the exposure GWIS association.
+
+The distinction between uppercase $`\Gamma`$ and lowercase $`\gamma`$ is
+important: uppercase quantities refer to the outcome, whereas lowercase
+quantities refer to the exposure.
+
+| Method | Exposure GWAS | Exposure GWIS | Outcome GWAS | Outcome GWIS | R model option |
+|:---|:--:|:--:|:--:|:--:|:---|
+| MERLIN-MO | Required | Required | Required | Not used | `"MO"` |
+| MERLIN-ME | Required | Not used | Required | Required | `"ME"` |
+
+This tutorial follows the simulation framework introduced in Part 3 and
+demonstrates these two settings separately. Each analysis uses two GWAS
+inputs and the single GWIS input.
+
+## Step-by-Step Simulation
+
+First, we load the required packages and set a random seed for
+reproducibility.
+
+``` r
+
+library(MERLIN)
+library(mvtnorm)
+set.seed(2027)
+```
+
+**Generating Genotypes and the Modifier**
+
+As in Part 3, we simulate $`m = 100`$ independent SNPs for 160,000
+individuals and divide them equally into an exposure cohort and an
+outcome cohort. The modifier $`E`$ is generated from a standard normal
+distribution.
+
+``` r
+
+n_exp <- 80000
+n_out <- 80000
+m <- 100
+
+# True causal parameters
+b1 <- 0
+b4 <- 0.3
+
+# Generate genotype matrix G
+maf <- runif(m, 0.05, 0.5)
+G <- matrix(
+  rbinom((n_exp + n_out) * m, 2,
+         rep(maf, each = n_exp + n_out)),
+  nrow = n_exp + n_out,
+  ncol = m
+)
+G <- scale(G, center = TRUE, scale = FALSE)
+
+# Generate modifier E
+E <- rnorm(n_exp + n_out)
+```
+
+**Simulating Genetic Effects**
+
+The main genetic effects ($`\gamma_1`$) and SNP-by-modifier interaction
+effects ($`\gamma_3`$) are simulated from a bivariate normal
+distribution. Their variances are controlled by `h_g1` and `h_g3`, and
+`cor_g1g3` determines the correlation between the two sets of genetic
+effects.
+
+``` r
+
+h_g1 <- 0.3
+h_g3 <- 0.1
+h_b <- 0.05
+cor_g1g3 <- 0
+
+sigma2g1 <- h_g1 / m
+sigma2g3 <- h_g3 / m
+sigma2b  <- h_b / m
+
+cov_matrix <- matrix(
+  c(sigma2g1,
+    cor_g1g3 * sqrt(sigma2g1 * sigma2g3),
+    cor_g1g3 * sqrt(sigma2g1 * sigma2g3),
+    sigma2g3),
+  ncol = 2
+)
+
+gamma1_3 <- rmvnorm(m, mean = c(0, 0), sigma = cov_matrix)
+gamma_1x <- gamma1_3[, 1]
+gamma_3x <- gamma1_3[, 2]
+beta_2   <- rnorm(m, 0, sqrt(sigma2b))
+```
+
+**Generating Exposure and Outcome Phenotypes**
+
+We use the same two-sample design as in Part 3. The residual errors for
+$`X`$ and $`Y`$ are correlated to represent unmeasured confounding,
+while the exposure and outcome summary statistics are calculated in
+non-overlapping cohorts.
+
+``` r
+
+# Construct the GxE term
+GE <- G * E
+
+# Correlation between the residual errors
+rhoxy <- 0.6
+
+var_noise_x <- 1 - h_g1 - h_g3
+var_noise_y <- 1 - b1*b1 - h_b - b4*b4
+cov_xy <- rhoxy * sqrt(var_noise_x * var_noise_y)
+
+sigma_noise <- matrix(
+  c(var_noise_x, cov_xy,
+    cov_xy, var_noise_y),
+  ncol = 2
+)
+
+noise_xy <- rmvnorm(
+  n_exp + n_out,
+  mean = c(0, 0),
+  sigma = sigma_noise
+)
+noise_x <- noise_xy[, 1]
+noise_y <- noise_xy[, 2]
+
+# Generate exposure and outcome
+X <- G %*% gamma_1x + GE %*% gamma_3x + noise_x
+Y <- X * b1 + G %*% beta_2 + X * E * b4 + noise_y
+
+# Split into non-overlapping exposure and outcome cohorts
+idx_exp <- seq_len(n_exp)
+idx_out <- n_exp + seq_len(n_out)
+
+exp_pheno <- X[idx_exp]
+exp_E <- E[idx_exp]
+
+out_pheno <- Y[idx_out]
+out_E <- E[idx_out]
+```
+
+## Obtaining Summary Statistics
+
+We use the same helper function as in Part 3 to obtain marginal GWAS and
+GWIS associations. For a GWIS, the coefficient and standard error of the
+$`G_j \times E`$ term are extracted from a single-variant interaction
+model.
+
+``` r
+
+get_sumstats <- function(G, pheno, interaction = FALSE, E = NULL) {
+  betas <- numeric(ncol(G))
+  ses <- numeric(ncol(G))
+
+  for (i in seq_len(ncol(G))) {
+    if (interaction) {
+      model <- lm(pheno ~ G[, i] + E + G[, i]:E)
+      betas[i] <- coef(model)[4]
+      ses[i] <- summary(model)$coefficients[4, 2]
+    } else {
+      model <- lm(pheno ~ G[, i])
+      betas[i] <- coef(model)[2]
+      ses[i] <- summary(model)$coefficients[2, 2]
+    }
+  }
+
+  list(beta = betas, se = ses)
+}
+
+# GWAS inputs shared by MERLIN-MO and MERLIN-ME
+exp_gwas_sum <- get_sumstats(
+  G[idx_exp, ], exp_pheno
+)
+out_gwas_sum <- get_sumstats(
+  G[idx_out, ], out_pheno
+)
+```
+
+**Available GWIS for MERLIN-MO**
+
+MERLIN-MO assumes that the exposure GWIS is available but the outcome
+GWIS is unavailable. We therefore calculate only the exposure GWIS
+needed for this analysis.
+
+``` r
+
+exp_gwis_sum <- get_sumstats(
+  G[idx_exp, ], exp_pheno,
+  interaction = TRUE, E = exp_E
+)
+```
+
+**Available GWIS for MERLIN-ME**
+
+MERLIN-ME assumes that the outcome GWIS is available but the exposure
+GWIS is unavailable. We therefore calculate only the outcome GWIS needed
+for this analysis.
+
+``` r
+
+out_gwis_sum <- get_sumstats(
+  G[idx_out, ], out_pheno,
+  interaction = TRUE, E = out_E
+)
+```
+
+The two GWIS objects above belong to different demonstrations.
+`out_gwis_sum` is never used by MERLIN-MO, and `exp_gwis_sum` is never
+used by MERLIN-ME.
+
+## Instrument Selection
+
+For this toy example, SNPs are independent and we use $`P < 0.01`$ as
+the instrument-selection threshold. In real applications, genome-wide
+thresholds and LD clumping should be used as described in Part 2.
+
+``` r
+
+p_threshold <- 0.01
+
+# Exposure-GWAS instruments
+pvals_gwas <- 2 * pnorm(
+  -abs(exp_gwas_sum$beta / exp_gwas_sum$se)
+)
+iv_gwas <- which(pvals_gwas < p_threshold)
+
+# Exposure-GWIS instruments
+pvals_gwis <- 2 * pnorm(
+  -abs(exp_gwis_sum$beta / exp_gwis_sum$se)
+)
+iv_gwis <- which(pvals_gwis < p_threshold)
+
+# MERLIN-MO uses the union of exposure-GWAS and exposure-GWIS instruments.
+iv_mo <- union(iv_gwas, iv_gwis)
+R_mo <- diag(length(iv_mo))
+
+# MERLIN-ME cannot use exposure-GWIS information. Its instruments are
+# therefore selected from the exposure GWAS alone.
+iv_me <- iv_gwas
+R_me <- diag(length(iv_me))
+```
+
+## Model Fitting
+
+### MERLIN-MO: Outcome GWIS unavailable
+
+When outcome GWIS summary statistics are unavailable,
+$`\widehat{\Gamma}_3`$ and its standard error are omitted. MERLIN-MO
+first obtains an MR-Egger estimate of the average causal effect
+$`\beta_1`$. This estimate is then held fixed while $`\beta_4`$ is
+estimated using the exposure GWAS, exposure GWIS, and outcome GWAS
+summary statistics. Accordingly, $`\beta_4`$ is the primary estimand of
+this analysis.
+
+``` r
+
+# The MERLIN-MO interaction model subsequently treats this estimate as fixed.
+
+fit_mo <- MERLIN(
+  gammah1 = exp_gwas_sum$beta[iv_mo],
+  gammah3 = exp_gwis_sum$beta[iv_mo],
+  Gammah1 = out_gwas_sum$beta[iv_mo],
+  se1 = exp_gwas_sum$se[iv_mo],
+  se2 = exp_gwis_sum$se[iv_mo],
+  se3 = out_gwas_sum$se[iv_mo],
+  R = R_mo,
+  rho_1 = 0,
+  model = "MO",
+  seed = 2027
+)
+str(fit_mo)
+```
+
+``` text
+List of 18
+ $ Beta1.hat : num 0.0427
+ $ Beta1.se  : num 0
+ $ Beta1.pval: num 0
+ $ Beta4.hat : num 0.313
+ $ Beta4.se  : num 0.0808
+ $ Beta4.pval: num 0.000109
+ $ gamma1    : num [1:93, 1] -0.091 0.0177 0.0688 0.0431 -0.0507 ...
+ $ beta2     : num [1:93, 1] -0.000671 0.004816 0.005734 -0.009044 0.035268 ...
+ $ gamma3    : num [1:93, 1] 0.0317 -0.0556 0.0217 0.0165 -0.0171 ...
+ $ Beta1res  : num [1:1200, 1] 0.0427 0.0427 0.0427 0.0427 0.0427 ...
+ $ Beta4res  : num [1:1200, 1] 0.287 0.259 0.436 0.449 0.307 ...
+ $ Sg12Res   : num [1:1200, 1] 0.00363 0.00478 0.00362 0.00584 0.00484 ...
+ $ Sg22Res   : num [1:1200, 1] 0.000653 0.000528 0.00045 0.00042 0.000468 ...
+ $ Sg32Res   : num [1:1200, 1] 0.000826 0.001186 0.001246 0.000821 0.000899 ...
+ $ S3RS3     : num [1:93, 1] 18931 29961 22617 39567 25225 ...
+ $ se2       : num [1:93, 1] 0.00658 0.00525 0.00595 0.00456 0.00575 ...
+ $ L2        : num [1:93, 1:93] 0.00658 0 0 0 0 ...
+ $ U2        : num [1:93, 1:93] 152 0 0 0 0 ...
+```
+
+### MERLIN-ME: Exposure GWIS unavailable
+
+When exposure GWIS summary statistics are unavailable,
+$`\widehat{\gamma}_3`$ and its standard error are omitted. MERLIN-ME
+estimates $`\beta_1`$ by MR-Egger regression of the outcome-GWAS
+associations on the exposure-GWAS associations. It estimates $`\beta_4`$
+by a second MR-Egger regression of the outcome-GWIS associations on the
+exposure-GWAS associations.
+
+``` r
+
+fit_me <- MERLIN(
+  gammah1 = exp_gwas_sum$beta[iv_me],
+  Gammah1 = out_gwas_sum$beta[iv_me],
+  Gammah3 = out_gwis_sum$beta[iv_me],
+  se1 = exp_gwas_sum$se[iv_me],
+  se3 = out_gwas_sum$se[iv_me],
+  se4 = out_gwis_sum$se[iv_me],
+  R = R_me,
+  model = "ME"
+)
+str(fit_me)
+```
+
+``` text
+List of 6
+ $ Beta1.hat : num 0.122
+ $ Beta1.se  : num 0.079
+ $ Beta1.pval: num 0.125
+ $ Beta4.hat : num 0.291
+ $ Beta4.se  : num 0.0198
+ $ Beta4.pval: num 1.37e-24
+```
+
+Neither `gammah3` nor `se2` is supplied, and the exposure GWIS is not
+used to select `iv_me`.

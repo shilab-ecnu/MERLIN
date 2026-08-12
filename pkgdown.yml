@@ -7,7 +7,8 @@ articles:
   MERLIN.preprocess: MERLIN.preprocess.html
   MERLIN.realdata: MERLIN.realdata.html
   MERLIN.sim: MERLIN.sim.html
-last_built: 2026-08-11T13:42Z
+  MERLIN.single-GWIS.sim: MERLIN.single-GWIS.sim.html
+last_built: 2026-08-12T02:29Z
 urls:
   reference: https://shilab-ecnu.github.io/MERLIN/reference
   article: https://shilab-ecnu.github.io/MERLIN/articles

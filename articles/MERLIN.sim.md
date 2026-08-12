@@ -13,11 +13,13 @@ The underlying data generating mechanism can be defined as:
  X = G\gamma_1 + (G \times E)\gamma_3 + \epsilon_X 
 ```
 ``` math
-Y = (\beta_1 + \beta_4 E)X + \epsilon_Y
+Y = (\beta_1 + \beta_4 E)X + G \beta_2 + \epsilon_Y
 ```
 Where: - $`\gamma_1`$: Main genetic effects on the exposure.
 
 - $`\gamma_3`$: Genetic-environmental interaction effects.
+
+- $`\beta_2`$: Horizontal Pleiotropy.
 
 - $`\beta_1`$: The average (main) causal effect of $`X`$ on $`Y`$.
 
@@ -55,7 +57,7 @@ set.seed(2026)
 
 **Generating Genotypes and Environmental Variables**
 
-We simulate $`m = 1000`$ independent SNPs for a total of 160,000
+We simulate $`m = 100`$ independent SNPs for a total of 160,000
 individuals, split equally into an exposure cohort (`n_exp = 80000`) and
 an outcome cohort (`n_out = 80000`). The environmental variable $`E`$ is
 simulated from a standard normal distribution.
@@ -64,7 +66,7 @@ simulated from a standard normal distribution.
 
 n_exp <- 80000
 n_out <- 80000
-m <- 1000
+m <- 100
 
 # True Causal Parameters
 b1 <- 0      
@@ -77,7 +79,7 @@ G <- matrix(rbinom((n_exp + n_out) * m, 2, rep(maf, each = n_exp + n_out)),
 G <- scale(G, center = TRUE, scale = FALSE)
 
 # Generate Environmental variable E
-E_x <- rnorm(n_exp + n_out)
+E <- rnorm(n_exp + n_out)
 ```
 
 **Simulating Genetic Effects**
@@ -91,11 +93,13 @@ We control their variance using specified heritability parameters
 ``` r
 
 h_g1 <- 0.3    
-h_g3 <- 0.1      
+h_g3 <- 0.1 
+h_b <- 0.05     
 cor_g1g3 <- 0.4  
 
 sigma2g1 <- h_g1 / m
 sigma2g3 <- h_g3 / m
+sigma2b  <- h_b / m
 
 cov_matrix <- matrix(c(sigma2g1, 
                       cor_g1g3 * sqrt(sigma2g1 * sigma2g3),
@@ -105,6 +109,7 @@ cov_matrix <- matrix(c(sigma2g1,
 gamma1_3 <- rmvnorm(m, mean = c(0, 0), sigma = cov_matrix)
 gamma_1x <- gamma1_3[, 1]
 gamma_3x <- gamma1_3[, 2]
+beta_2   <- rnorm(m, 0, sqrt(sigma2b))
 ```
 
 **Generating Exposure and Outcome Phenotypes**
@@ -116,14 +121,14 @@ outcome cohorts to mimic a two-sample Mendelian Randomization design.
 ``` r
 
 # Construct the GxE interaction term
-GE <- G * E_x
+GE <- G * E
 
 # Define the correlation between residual errors
 rhoxy <- 0.6  
 
 # Calculate variances for the noise terms
 var_noise_x <- 1 - h_g1 - h_g3
-var_noise_y <- 1
+var_noise_y <- 1 - b1*b1 - h_b - b4*b4
 
 # Construct the covariance matrix for the bivariate normal distribution
 cov_xy <- rhoxy * sqrt(var_noise_x * var_noise_y)
@@ -139,17 +144,16 @@ noise_y <- noise_xy[, 2]
 X <- G %*% gamma_1x + GE %*% gamma_3x + noise_x
 
 # Generate Outcome (Y) 
-causal_effect <- b1 + b4 * E_x
-Y <- X * causal_effect + noise_y
+Y <- X * b1 + G %*% beta_2 + X * E * b4 + noise_y
 
 # Split into Exposure and Outcome datasets
 exp_gwas <- X[1:n_exp]
 exp_gwis <- X[1:n_exp]
-exp_E    <- E_x[1:n_exp]
+exp_E    <- E[1:n_exp]
 
 out_gwas <- Y[(n_exp + 1):(n_exp + n_out)]
 out_gwis <- Y[(n_exp + 1):(n_exp + n_out)]
-out_E    <- E_x[(n_exp + 1):(n_exp + n_out)]
+out_E    <- E[(n_exp + 1):(n_exp + n_out)]
 ```
 
 ## Obtaining Summary Statistics
@@ -241,9 +245,22 @@ se_Gamma3 <- out_gwis_sum$se[iv_union]
 rho_1 <- 0
 rho_2 <- 0
 
-# Run MERLIN
-res <- MERLIN(gamma_hat, gamma3_hat, Gamma_hat, Gamma3_hat,
-              se_gamma, se_gamma3, se_Gamma, se_Gamma3, R, rho_1, rho_2)
+# Run standard MERLIN
+res <- MERLIN(
+  gammah1 = gamma_hat,
+  gammah3 = gamma3_hat,
+  Gammah1 = Gamma_hat,
+  Gammah3 = Gamma3_hat,
+  se1 = se_gamma,
+  se2 = se_gamma3,
+  se3 = se_Gamma,
+  se4 = se_Gamma3,
+  R = R,
+  rho_1 = rho_1,
+  rho_2 = rho_2,
+  model = "standard",
+  seed = 2026
+)
 
 str(res)
 ```
@@ -255,23 +272,23 @@ Running MERLIN method (Model: standard)...
 
 --------------------------------------------------
 MERLIN Analysis Completed Successfully!
-Total processing time: 408.1 seconds
+Total processing time: 1.7 seconds
 --------------------------------------------------
 List of 14
- $ Beta1.hat : num 0.0199
- $ Beta1.se  : num 0.0131
- $ Beta1.pval: num 0.129
- $ Beta4.hat : num 0.281
- $ Beta4.se  : num 0.0114
- $ Beta4.pval: num 6.91e-133
- $ gamma1    : num [1:571, 1] 0.0312 0.0153 0.0166 -0.0135 -0.0162 ...
- $ beta2     : num [1:571, 1] 0.00056 0.000281 0.000415 0.000604 0.005952 ...
- $ gamma3    : num [1:571, 1] 0.02122 -0.00824 -0.01623 -0.0089 0.00434 ...
- $ Beta1res  : num [1:1200, 1] 0.0147 0.0281 0.0283 0.012 0.0208 ...
- $ Beta4res  : num [1:1200, 1] 0.286 0.284 0.293 0.284 0.283 ...
- $ Sg12Res   : num [1:1200, 1] 0.000465 0.000461 0.000475 0.000451 0.000452 ...
- $ Sg22Res   : num [1:1200, 1] 2.20e-05 2.13e-05 1.97e-05 2.14e-05 2.16e-05 ...
- $ Sg32Res   : num [1:1200, 1] 0.000171 0.000184 0.000195 0.000167 0.000179 ...
+ $ Beta1.hat : num 0.00143
+ $ Beta1.se  : num 0.0175
+ $ Beta1.pval: num 0.935
+ $ Beta4.hat : num 0.295
+ $ Beta4.se  : num 0.0121
+ $ Beta4.pval: num 1.12e-130
+ $ gamma1    : num [1:94, 1] -0.0578 0.0239 -0.141 0.0414 -0.0883 ...
+ $ beta2     : num [1:94, 1] 0.000157 -0.026975 0.026328 -0.019809 0.008118 ...
+ $ gamma3    : num [1:94, 1] -0.0246 -0.0105 0.0693 0.0051 -0.0402 ...
+ $ Beta1res  : num [1:1200, 1] -0.0245 -0.01654 -0.00124 -0.0133 -0.00695 ...
+ $ Beta4res  : num [1:1200, 1] 0.32 0.291 0.291 0.293 0.297 ...
+ $ Sg12Res   : num [1:1200, 1] 0.00268 0.00255 0.00277 0.00339 0.0033 ...
+ $ Sg22Res   : num [1:1200, 1] 0.000533 0.000705 0.000545 0.000511 0.000646 ...
+ $ Sg32Res   : num [1:1200, 1] 0.00126 0.00105 0.00106 0.00153 0.00124 ...
 ```
 
 **Interpreting the Results**
@@ -297,8 +314,8 @@ cat("Estimated Interaction Effect (b4):", round(beta4_hat, 4), "\n")
 ```
 
 ``` text
-Estimated Main Effect (b1): 0.0199 
-Estimated Interaction Effect (b4): 0.281
+Estimated Main Effect (b1): 0.0014 
+Estimated Interaction Effect (b4): 0.2953
 ```
 
 Crucially, recall that we deliberately introduced strong unmeasured

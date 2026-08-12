@@ -73,13 +73,15 @@ to influence both the exposure
 and the outcome
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>.</p>
 <p>The underlying data generating mechanism can be defined as:
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><mi>G</mi><msub><mi>γ</mi><mn>1</mn></msub><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>G</mi><mo>×</mo><mi>E</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>γ</mi><mn>3</mn></msub><mo>+</mo><msub><mi>ϵ</mi><mi>X</mi></msub></mrow><annotation encoding="application/x-tex"> X = G\gamma_1 + (G \times E)\gamma_3 + \epsilon_X </annotation></semantics></math><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>+</mo><msub><mi>β</mi><mn>4</mn></msub><mi>E</mi><mo stretchy="false" form="postfix">)</mo><mi>X</mi><mo>+</mo><msub><mi>ϵ</mi><mi>Y</mi></msub></mrow><annotation encoding="application/x-tex">Y = (\beta_1 + \beta_4 E)X + \epsilon_Y</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><mi>G</mi><msub><mi>γ</mi><mn>1</mn></msub><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>G</mi><mo>×</mo><mi>E</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>γ</mi><mn>3</mn></msub><mo>+</mo><msub><mi>ϵ</mi><mi>X</mi></msub></mrow><annotation encoding="application/x-tex"> X = G\gamma_1 + (G \times E)\gamma_3 + \epsilon_X </annotation></semantics></math><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>+</mo><msub><mi>β</mi><mn>4</mn></msub><mi>E</mi><mo stretchy="false" form="postfix">)</mo><mi>X</mi><mo>+</mo><mi>G</mi><msub><mi>β</mi><mn>2</mn></msub><mo>+</mo><msub><mi>ϵ</mi><mi>Y</mi></msub></mrow><annotation encoding="application/x-tex">Y = (\beta_1 + \beta_4 E)X + G \beta_2 + \epsilon_Y</annotation></semantics></math>
 Where: -
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>γ</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\gamma_1</annotation></semantics></math>:
 Main genetic effects on the exposure.</p>
 <ul>
 <li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>γ</mi><mn>3</mn></msub><annotation encoding="application/x-tex">\gamma_3</annotation></semantics></math>:
 Genetic-environmental interaction effects.</p></li>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mn>2</mn></msub><annotation encoding="application/x-tex">\beta_2</annotation></semantics></math>:
+Horizontal Pleiotropy.</p></li>
 <li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\beta_1</annotation></semantics></math>:
 The average (main) causal effect of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>
@@ -114,7 +116,7 @@ reproducibility.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2026</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Generating Genotypes and Environmental Variables</strong></p>
 <p>We simulate
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>1000</mn></mrow><annotation encoding="application/x-tex">m = 1000</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>100</mn></mrow><annotation encoding="application/x-tex">m = 100</annotation></semantics></math>
 independent SNPs for a total of 160,000 individuals, split equally into
 an exposure cohort (<code>n_exp = 80000</code>) and an outcome cohort
 (<code>n_out = 80000</code>). The environmental variable
@@ -123,7 +125,7 @@ is simulated from a standard normal distribution.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">n_exp</span> <span class="op">&lt;-</span> <span class="fl">80000</span></span>
 <span><span class="va">n_out</span> <span class="op">&lt;-</span> <span class="fl">80000</span></span>
-<span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span>
+<span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fl">100</span></span>
 <span></span>
 <span><span class="co"># True Causal Parameters</span></span>
 <span><span class="va">b1</span> <span class="op">&lt;-</span> <span class="fl">0</span>      </span>
@@ -136,7 +138,7 @@ is simulated from a standard normal distribution.</p>
 <span><span class="va">G</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">G</span>, center <span class="op">=</span> <span class="cn">TRUE</span>, scale <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Generate Environmental variable E</span></span>
-<span><span class="va">E_x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="va">n_out</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">E</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="va">n_out</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Simulating Genetic Effects</strong></p>
 <p>The main genetic effects
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>γ</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\gamma_1</annotation></semantics></math>)
@@ -150,11 +152,13 @@ variance using specified heritability parameters (<code>h_g1</code> and
 <code>h_g3</code>).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">h_g1</span> <span class="op">&lt;-</span> <span class="fl">0.3</span>    </span>
-<span><span class="va">h_g3</span> <span class="op">&lt;-</span> <span class="fl">0.1</span>      </span>
+<span><span class="va">h_g3</span> <span class="op">&lt;-</span> <span class="fl">0.1</span> </span>
+<span><span class="va">h_b</span> <span class="op">&lt;-</span> <span class="fl">0.05</span>     </span>
 <span><span class="va">cor_g1g3</span> <span class="op">&lt;-</span> <span class="fl">0.4</span>  </span>
 <span></span>
 <span><span class="va">sigma2g1</span> <span class="op">&lt;-</span> <span class="va">h_g1</span> <span class="op">/</span> <span class="va">m</span></span>
 <span><span class="va">sigma2g3</span> <span class="op">&lt;-</span> <span class="va">h_g3</span> <span class="op">/</span> <span class="va">m</span></span>
+<span><span class="va">sigma2b</span>  <span class="op">&lt;-</span> <span class="va">h_b</span> <span class="op">/</span> <span class="va">m</span></span>
 <span></span>
 <span><span class="va">cov_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">sigma2g1</span>, </span>
 <span>                      <span class="va">cor_g1g3</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">sigma2g1</span> <span class="op">*</span> <span class="va">sigma2g3</span><span class="op">)</span>,</span>
@@ -163,7 +167,8 @@ variance using specified heritability parameters (<code>h_g1</code> and
 <span>                      </span>
 <span><span class="va">gamma1_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/Mvnorm.html" class="external-link">rmvnorm</a></span><span class="op">(</span><span class="va">m</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, sigma <span class="op">=</span> <span class="va">cov_matrix</span><span class="op">)</span></span>
 <span><span class="va">gamma_1x</span> <span class="op">&lt;-</span> <span class="va">gamma1_3</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span></span>
-<span><span class="va">gamma_3x</span> <span class="op">&lt;-</span> <span class="va">gamma1_3</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span></span></code></pre></div>
+<span><span class="va">gamma_3x</span> <span class="op">&lt;-</span> <span class="va">gamma1_3</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span></span>
+<span><span class="va">beta_2</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">m</span>, <span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">sigma2b</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Generating Exposure and Outcome Phenotypes</strong></p>
 <p>Using the mathematical model defined above, we generate the
 phenotypes
@@ -174,14 +179,14 @@ and then split the data into independent exposure and outcome cohorts to
 mimic a two-sample Mendelian Randomization design.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Construct the GxE interaction term</span></span>
-<span><span class="va">GE</span> <span class="op">&lt;-</span> <span class="va">G</span> <span class="op">*</span> <span class="va">E_x</span></span>
+<span><span class="va">GE</span> <span class="op">&lt;-</span> <span class="va">G</span> <span class="op">*</span> <span class="va">E</span></span>
 <span></span>
 <span><span class="co"># Define the correlation between residual errors</span></span>
 <span><span class="va">rhoxy</span> <span class="op">&lt;-</span> <span class="fl">0.6</span>  </span>
 <span></span>
 <span><span class="co"># Calculate variances for the noise terms</span></span>
 <span><span class="va">var_noise_x</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">h_g1</span> <span class="op">-</span> <span class="va">h_g3</span></span>
-<span><span class="va">var_noise_y</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
+<span><span class="va">var_noise_y</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">b1</span><span class="op">*</span><span class="va">b1</span> <span class="op">-</span> <span class="va">h_b</span> <span class="op">-</span> <span class="va">b4</span><span class="op">*</span><span class="va">b4</span></span>
 <span></span>
 <span><span class="co"># Construct the covariance matrix for the bivariate normal distribution</span></span>
 <span><span class="va">cov_xy</span> <span class="op">&lt;-</span> <span class="va">rhoxy</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">var_noise_x</span> <span class="op">*</span> <span class="va">var_noise_y</span><span class="op">)</span></span>
@@ -197,17 +202,16 @@ mimic a two-sample Mendelian Randomization design.</p>
 <span><span class="va">X</span> <span class="op">&lt;-</span> <span class="va">G</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">gamma_1x</span> <span class="op">+</span> <span class="va">GE</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">gamma_3x</span> <span class="op">+</span> <span class="va">noise_x</span></span>
 <span></span>
 <span><span class="co"># Generate Outcome (Y) </span></span>
-<span><span class="va">causal_effect</span> <span class="op">&lt;-</span> <span class="va">b1</span> <span class="op">+</span> <span class="va">b4</span> <span class="op">*</span> <span class="va">E_x</span></span>
-<span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="va">X</span> <span class="op">*</span> <span class="va">causal_effect</span> <span class="op">+</span> <span class="va">noise_y</span></span>
+<span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="va">X</span> <span class="op">*</span> <span class="va">b1</span> <span class="op">+</span> <span class="va">G</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">beta_2</span> <span class="op">+</span> <span class="va">X</span> <span class="op">*</span> <span class="va">E</span> <span class="op">*</span> <span class="va">b4</span> <span class="op">+</span> <span class="va">noise_y</span></span>
 <span></span>
 <span><span class="co"># Split into Exposure and Outcome datasets</span></span>
 <span><span class="va">exp_gwas</span> <span class="op">&lt;-</span> <span class="va">X</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">n_exp</span><span class="op">]</span></span>
 <span><span class="va">exp_gwis</span> <span class="op">&lt;-</span> <span class="va">X</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">n_exp</span><span class="op">]</span></span>
-<span><span class="va">exp_E</span>    <span class="op">&lt;-</span> <span class="va">E_x</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">n_exp</span><span class="op">]</span></span>
+<span><span class="va">exp_E</span>    <span class="op">&lt;-</span> <span class="va">E</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">n_exp</span><span class="op">]</span></span>
 <span></span>
 <span><span class="va">out_gwas</span> <span class="op">&lt;-</span> <span class="va">Y</span><span class="op">[</span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="va">n_out</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">out_gwis</span> <span class="op">&lt;-</span> <span class="va">Y</span><span class="op">[</span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="va">n_out</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="va">out_E</span>    <span class="op">&lt;-</span> <span class="va">E_x</span><span class="op">[</span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="va">n_out</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
+<span><span class="va">out_E</span>    <span class="op">&lt;-</span> <span class="va">E</span><span class="op">[</span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">:</span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="va">n_out</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="obtaining-summary-statistics">Obtaining Summary Statistics<a class="anchor" aria-label="anchor" href="#obtaining-summary-statistics"></a>
@@ -296,9 +300,22 @@ correlations (rho_1 and rho_2) are explicitly set to
 <span><span class="va">rho_1</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
 <span><span class="va">rho_2</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
 <span></span>
-<span><span class="co"># Run MERLIN</span></span>
-<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MERLIN-package.html">MERLIN</a></span><span class="op">(</span><span class="va">gamma_hat</span>, <span class="va">gamma3_hat</span>, <span class="va">Gamma_hat</span>, <span class="va">Gamma3_hat</span>,</span>
-<span>              <span class="va">se_gamma</span>, <span class="va">se_gamma3</span>, <span class="va">se_Gamma</span>, <span class="va">se_Gamma3</span>, <span class="va">R</span>, <span class="va">rho_1</span>, <span class="va">rho_2</span><span class="op">)</span></span>
+<span><span class="co"># Run standard MERLIN</span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MERLIN-package.html">MERLIN</a></span><span class="op">(</span></span>
+<span>  gammah1 <span class="op">=</span> <span class="va">gamma_hat</span>,</span>
+<span>  gammah3 <span class="op">=</span> <span class="va">gamma3_hat</span>,</span>
+<span>  Gammah1 <span class="op">=</span> <span class="va">Gamma_hat</span>,</span>
+<span>  Gammah3 <span class="op">=</span> <span class="va">Gamma3_hat</span>,</span>
+<span>  se1 <span class="op">=</span> <span class="va">se_gamma</span>,</span>
+<span>  se2 <span class="op">=</span> <span class="va">se_gamma3</span>,</span>
+<span>  se3 <span class="op">=</span> <span class="va">se_Gamma</span>,</span>
+<span>  se4 <span class="op">=</span> <span class="va">se_Gamma3</span>,</span>
+<span>  R <span class="op">=</span> <span class="va">R</span>,</span>
+<span>  rho_1 <span class="op">=</span> <span class="va">rho_1</span>,</span>
+<span>  rho_2 <span class="op">=</span> <span class="va">rho_2</span>,</span>
+<span>  model <span class="op">=</span> <span class="st">"standard"</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">2026</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
 <p>The console output below shows the progress and results of
@@ -307,23 +324,23 @@ MERLIN.</p>
 
 --------------------------------------------------
 MERLIN Analysis Completed Successfully!
-Total processing time: 408.1 seconds
+Total processing time: 1.7 seconds
 --------------------------------------------------
 List of 14
- $ Beta1.hat : num 0.0199
- $ Beta1.se  : num 0.0131
- $ Beta1.pval: num 0.129
- $ Beta4.hat : num 0.281
- $ Beta4.se  : num 0.0114
- $ Beta4.pval: num 6.91e-133
- $ gamma1    : num [1:571, 1] 0.0312 0.0153 0.0166 -0.0135 -0.0162 ...
- $ beta2     : num [1:571, 1] 0.00056 0.000281 0.000415 0.000604 0.005952 ...
- $ gamma3    : num [1:571, 1] 0.02122 -0.00824 -0.01623 -0.0089 0.00434 ...
- $ Beta1res  : num [1:1200, 1] 0.0147 0.0281 0.0283 0.012 0.0208 ...
- $ Beta4res  : num [1:1200, 1] 0.286 0.284 0.293 0.284 0.283 ...
- $ Sg12Res   : num [1:1200, 1] 0.000465 0.000461 0.000475 0.000451 0.000452 ...
- $ Sg22Res   : num [1:1200, 1] 2.20e-05 2.13e-05 1.97e-05 2.14e-05 2.16e-05 ...
- $ Sg32Res   : num [1:1200, 1] 0.000171 0.000184 0.000195 0.000167 0.000179 ...</code></pre>
+ $ Beta1.hat : num 0.00143
+ $ Beta1.se  : num 0.0175
+ $ Beta1.pval: num 0.935
+ $ Beta4.hat : num 0.295
+ $ Beta4.se  : num 0.0121
+ $ Beta4.pval: num 1.12e-130
+ $ gamma1    : num [1:94, 1] -0.0578 0.0239 -0.141 0.0414 -0.0883 ...
+ $ beta2     : num [1:94, 1] 0.000157 -0.026975 0.026328 -0.019809 0.008118 ...
+ $ gamma3    : num [1:94, 1] -0.0246 -0.0105 0.0693 0.0051 -0.0402 ...
+ $ Beta1res  : num [1:1200, 1] -0.0245 -0.01654 -0.00124 -0.0133 -0.00695 ...
+ $ Beta4res  : num [1:1200, 1] 0.32 0.291 0.291 0.293 0.297 ...
+ $ Sg12Res   : num [1:1200, 1] 0.00268 0.00255 0.00277 0.00339 0.0033 ...
+ $ Sg22Res   : num [1:1200, 1] 0.000533 0.000705 0.000545 0.000511 0.000646 ...
+ $ Sg32Res   : num [1:1200, 1] 0.00126 0.00105 0.00106 0.00153 0.00124 ...</code></pre>
 <p><strong>Interpreting the Results</strong></p>
 <p>The output <code>res</code> is a list containing the estimated
 parameters. We can extract the main causal effect
@@ -343,8 +360,8 @@ and the heterogeneity causal effect
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Estimated Main Effect (b1):"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">beta1_hat</span>, <span class="fl">4</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Estimated Interaction Effect (b4):"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">beta4_hat</span>, <span class="fl">4</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span></code></pre></div>
-<pre class="text"><code>Estimated Main Effect (b1): 0.0199 
-Estimated Interaction Effect (b4): 0.281</code></pre>
+<pre class="text"><code>Estimated Main Effect (b1): 0.0014 
+Estimated Interaction Effect (b4): 0.2953</code></pre>
 <p>Crucially, recall that we deliberately introduced strong unmeasured
 confounding into our simulation by correlating the residual error terms
 of the exposure and outcome

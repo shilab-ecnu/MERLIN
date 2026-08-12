@@ -1,4 +1,4 @@
-# Part 4: Real Data Analysis and Convergence Diagnostics
+# Part 5: Real Data Analysis and Convergence Diagnostics
 
 ## Case Study: Testosterone on Bipolar Disorder
 
