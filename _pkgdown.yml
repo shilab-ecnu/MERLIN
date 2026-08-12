@@ -40,4 +40,5 @@ articles:
   - title: "Analysis and simulation"
     contents:
       - MERLIN.sim
+      - MERLIN.single-GWIS.sim
       - MERLIN.realdata
