@@ -29,9 +29,8 @@ struct ObjGibbs_Gamseo_fixb1{
 };
 
 ObjGibbs_Gamseo_fixb1 MRGibbs_Gamseo_fixb1(arma::vec &gammah1,arma::vec &gammah3, arma::vec &Gammah1, 
-                                           arma::vec &se1, arma::vec &se2, arma::vec &se3, 
-                                           arma::mat &R, double &rho, double &b1,
-                                           int maxIter, int burnin, int thin);
+                                           arma::mat &S1, arma::mat &S2, arma::mat &S3, arma::mat &L2, arma::mat &U2,  
+                                           arma::mat &R, double &rho, double &b1);
 
 
 
