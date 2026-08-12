@@ -37,6 +37,9 @@ navbar:
     functions:
       text: "Functions"
       href: articles/MERLIN.functions.html
+    github:
+      icon: fa-github
+      href: https://github.com/shilab-ecnu/MERLIN
 
 articles:
   - title: "MERLIN Functions"
