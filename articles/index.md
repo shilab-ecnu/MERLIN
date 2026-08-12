@@ -1,6 +1,6 @@
 # Articles
 
-### MERLIN Functions
+### Functions
 
 - [MERLIN
   Functions](https://shilab-ecnu.github.io/MERLIN/articles/MERLIN.functions.md):
