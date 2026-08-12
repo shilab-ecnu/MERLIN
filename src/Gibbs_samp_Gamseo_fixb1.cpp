@@ -27,14 +27,12 @@ double Updatesig2(arma::vec &gamk, double ak,double bk, int &p ){
 
 ObjGibbs_Gamseo_fixb1 MRGibbs_Gamseo_fixb1(arma::vec &gammah1, arma::vec &gammah3, arma::vec&Gammah1, 
                           arma::mat &S1, arma::mat &S2, arma::mat &S3,
-                          arma::mat &L2, arma::mat &U2, arma::mat &R, double &rho, double &b1)
+                          arma::mat &L2, arma::mat &U2, arma::mat &R, double &rho, double &b1,int maxIter, int burnin, int thin)
 {
 
   // ----------------------------------------------------------------------
   // check number of input arguments
-  int maxIter = 12000;
-    int thin = 10;
-    int burnin = 5000;
+
   //  int n = 20000;
   //  int N = 20000;
 
@@ -205,7 +203,7 @@ ObjGibbs_Gamseo_fixb1 obj;
 
 
 //[[Rcpp::export]]
-List MRGEI_Gamseo_fixb1(arma::vec &gammah1,arma::vec &gammah3, arma::vec &Gammah1, arma::vec &se1, arma::vec &se2, arma::vec &se3, arma::mat &R, double &rho, double &b1)
+List MRGEI_Gamseo_fixb1(arma::vec &gammah1,arma::vec &gammah3, arma::vec &Gammah1, arma::vec &se1, arma::vec &se2, arma::vec &se3, arma::mat &R, double &rho, double &b1,int maxIter, int burnin, int thin)
 {
     //mat R_sh = cal_blockcor(R) ;
     
@@ -215,7 +213,7 @@ List MRGEI_Gamseo_fixb1(arma::vec &gammah1,arma::vec &gammah3, arma::vec &Gammah
 
     mat L2 = chol( S2 * R * S2, "lower");
     mat U2 = inv(L2) * S2 * R * inv(S2);
-    ObjGibbs_Gamseo_fixb1 obj = MRGibbs_Gamseo_fixb1( gammah1, gammah3, Gammah1, S1, S2, S3, L2, U2, R, rho, b1);
+    ObjGibbs_Gamseo_fixb1 obj = MRGibbs_Gamseo_fixb1( gammah1, gammah3, Gammah1, S1, S2, S3, L2, U2, R, rho, b1, maxIter, burnin, thin);
 
     double bhat1 = b1;
     double b1se1 = 0;
