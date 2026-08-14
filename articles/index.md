@@ -1,10 +1,5 @@
 # Articles
 
-### Functions
-
-- [MERLIN
-  Functions](https://shilab-ecnu.github.io/MERLIN/articles/MERLIN.functions.md):
-
 ### Getting started
 
 - [Part 1: Introduction and Data
