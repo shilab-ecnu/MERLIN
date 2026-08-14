@@ -56,3 +56,6 @@ articles:
       - MERLIN.single-GWIS.sim
       - MERLIN.realdata
 
+  - title: internal
+    contents:
+      - MERLIN.functions
