@@ -11,9 +11,10 @@ navbar:
   structure:
     left:
       - home
-      - reference
-      - functions
       - articles
+      - functions
+      - changelog
+      
     right:
       - search
       - github
@@ -34,12 +35,16 @@ navbar:
           href: articles/MERLIN.single-GWIS.sim.html
         - text: "Part 5: Real Data Analysis and Convergence Diagnostics"
           href: articles/MERLIN.realdata.html
+    changelog:
+      text: "Changelog"
+      href: news/index.html
     functions:
       text: "Functions"
       href: articles/MERLIN.functions.html
     github:
       icon: fa-github
       href: https://github.com/shilab-ecnu/MERLIN
+      aria-label: View source code on GitHub
 
 articles:
   - title: "Getting started"
@@ -55,7 +60,7 @@ articles:
       - MERLIN.sim
       - MERLIN.single-GWIS.sim
       - MERLIN.realdata
-
   - title: internal
     contents:
       - MERLIN.functions
+
