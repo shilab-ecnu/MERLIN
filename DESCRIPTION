@@ -10,18 +10,16 @@ Description: MERLIN (Causal Heterogeneity using Summary Statistics) is a unified
     Bayesian framework that jointly estimates average and heterogeneity 
     effects using summary data from genome-wide association studies (GWAS) and 
     Genome-Wide Interaction Studies (GWIS).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-        license
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 LinkingTo: Rcpp,RcppArmadillo,BH,bigmemory,RcppDist
-Imports: data.table,readr,Rcpp
+Imports: data.table,readr,Rcpp,TwoSampleMR
 Suggests: knitr, rmarkdown, mvtnorm
 VignetteBuilder: knitr
 NeedsCompilation: yes
 Packaged: 2026-07-22 12:38:41 UTC; 36433
-Author: First Last [aut, cre] (YOUR-ORCID-ID)
-Maintainer: First Last <first.last@example.com>
+Maintainer: Jie He <10225000415@stu.ecnu.edu.cn>
 URL: https://shilab-ecnu.github.io/MERLIN/
-
+BugReports: https://github.com/shilab-ecnu/MERLIN/issues/
