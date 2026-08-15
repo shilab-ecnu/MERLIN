@@ -17,6 +17,7 @@ RoxygenNote: 7.2.3
 LinkingTo: Rcpp,RcppArmadillo,BH,bigmemory,RcppDist
 Imports: data.table,readr,Rcpp
 Suggests: knitr, rmarkdown, mvtnorm
+Remotes: MRCIEU/TwoSampleMR
 VignetteBuilder: knitr
 NeedsCompilation: yes
 Packaged: 2026-07-22 12:38:41 UTC; 36433
