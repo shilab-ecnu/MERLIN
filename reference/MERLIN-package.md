@@ -16,9 +16,11 @@ package, including the most important functions.
 
 ## Author
 
-First Last \[aut, cre\] (YOUR-ORCID-ID)
+Yadong Yang \[aut\], Xingjie Shi \[aut\] (ORCID:
+\<https://orcid.org/0000-0002-9866-8599\>), Minxi Bai \[aut\], Jie He
+\[aut, cre\]
 
-Maintainer: First Last \<first.last@example.com\>
+Maintainer: Jie He \<10225000415@stu.ecnu.edu.cn\>
 
 ## References
 
