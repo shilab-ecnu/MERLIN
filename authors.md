@@ -15,18 +15,6 @@
 Source:
 [`inst/CITATION`](https://github.com/shilab-ecnu/MERLIN/blob/main/inst/CITATION)
 
-Yang Y, Shi X, Bai M, He J (2026). “MERLIN: MERLIN for causal
-heterogeneity using summary statistics.” R package version 1.1.2,
-<https://shilab-ecnu.github.io/MERLIN/>.
-
-    @Misc{,
-      title = {MERLIN: MERLIN for causal heterogeneity using summary statistics},
-      author = {Yadong Yang and Xingjie Shi and Minxi Bai and Jie He},
-      year = {2026},
-      note = {R package version 1.1.2},
-      url = {https://shilab-ecnu.github.io/MERLIN/},
-    }
-
 Yang Y, Shi X, Bai M, He J (2026). “Causal effect heterogeneity
 estimation using summary statistics.” *Nature Communication*.
 
