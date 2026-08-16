@@ -1,11 +1,17 @@
 url: https://shilab-ecnu.github.io/MERLIN/
 template:
   bootstrap: 5
-  mathjax: true
-  light-switch: true
   bslib:
     bootswatch: united
-    pkgdown-navbar-bg: "#e95420"
+    bg: "#FFFFFF"
+    fg: "#1A1A2E" 
+    primary: "#154360"   
+    link-color: '#1171C0'
+    input-bg: "#FFFFFF"
+    dropdown-bg: "#FFFFFF"
+    dropdown-link-color: "#1A1A2E" 
+    dropdown-link-hover-bg: "#B3B6B7"
+    dropdown-border-color: '#dfdcd9'
 
 navbar:
   structure:
