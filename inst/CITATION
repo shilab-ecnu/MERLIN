@@ -1,16 +1,4 @@
 
-bibentry(bibtype = "Misc",
-         title = "MERLIN: MERLIN for causal heterogeneity using summary statistics",
-         author = c(person("Yadong", "Yang"),
-                    person("Xingjie", "Shi"),
-                    person("Minxi", "Bai"),
-                    person("Jie", "He")),
-         year = "2026",
-         note = "R package version 1.1.2",
-         url = "https://shilab-ecnu.github.io/MERLIN/",
-         header = "To cite the MERLIN R package:")
-
-
 bibentry(bibtype = "Article",
          title = "Causal effect heterogeneity estimation using summary statistics",
          author = c(person("Yadong", "Yang"),
