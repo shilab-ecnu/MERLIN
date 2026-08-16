@@ -2,9 +2,13 @@
 bibentry(bibtype = "Article",
          title = "Causal effect heterogeneity estimation using summary statistics",
          author = c(person("Yadong", "Yang"),
-                    person("Xingjie", "Shi"),
-                    person("Minxi", "Bai"),
-                    person("Jie", "He")),
-journal = "Nature Communication",
+                  person("Minxi", "Bai"),
+person("Jiacheng", "Miao"),
+person("Stephen", "Dorn"),person("Jonathan", "Haugstad"),
+ person("Jie", "He"),person("Jin", "Liu"),person("Qiongshi", "Lu"),
+                    person("Xingjie", "Shi")
+                    
+                   ),
+journal = "bioRxiv",
          year = "2026",
          header = "To cite the MERLIN paper:")
