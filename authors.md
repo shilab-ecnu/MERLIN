@@ -15,12 +15,13 @@
 Source:
 [`inst/CITATION`](https://github.com/shilab-ecnu/MERLIN/blob/main/inst/CITATION)
 
-Yang Y, Shi X, Bai M, He J (2026). “Causal effect heterogeneity
-estimation using summary statistics.” *Nature Communication*.
+Yang Y, Bai M, Miao J, Dorn S, Haugstad J, He J, Liu J, Lu Q, Shi X
+(2026). “Causal effect heterogeneity estimation using summary
+statistics.” *bioRxiv*.
 
     @Article{,
       title = {Causal effect heterogeneity estimation using summary statistics},
-      author = {Yadong Yang and Xingjie Shi and Minxi Bai and Jie He},
-      journal = {Nature Communication},
+      author = {Yadong Yang and Minxi Bai and Jiacheng Miao and Stephen Dorn and Jonathan Haugstad and Jie He and Jin Liu and Qiongshi Lu and Xingjie Shi},
+      journal = {bioRxiv},
       year = {2026},
     }
