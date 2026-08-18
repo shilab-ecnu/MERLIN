@@ -7,13 +7,13 @@ the outcome. MERLIN therefore provides two reduced-data extensions:
 
 - **MERLIN-MO** is used when the **outcome GWIS is missing**. In the R
   package, this model is selected using `model = "MO"`, where
-  $`\widehat{\Gamma}_3`$ denotes the outcome GWIS association.
+  \\\widehat{\Gamma}\_3\\ denotes the outcome GWIS association.
 
 - **MERLIN-ME** is used when the **exposure GWIS is missing**. In the R
   package, this model is selected using `model = "ME"`, where
-  $`\widehat{\gamma}_3`$ denotes the exposure GWIS association.
+  \\\widehat{\gamma}\_3\\ denotes the exposure GWIS association.
 
-The distinction between uppercase $`\Gamma`$ and lowercase $`\gamma`$ is
+The distinction between uppercase \\\Gamma\\ and lowercase \\\gamma\\ is
 important: uppercase quantities refer to the outcome, whereas lowercase
 quantities refer to the exposure.
 
@@ -40,9 +40,9 @@ set.seed(2027)
 
 **Generating Genotypes and the Modifier**
 
-As in Part 3, we simulate $`m = 100`$ independent SNPs for 160,000
+As in Part 3, we simulate \\m = 100\\ independent SNPs for 160,000
 individuals and divide them equally into an exposure cohort and an
-outcome cohort. The modifier $`E`$ is generated from a standard normal
+outcome cohort. The modifier \\E\\ is generated from a standard normal
 distribution.
 
 ``` r
@@ -71,8 +71,8 @@ E <- rnorm(n_exp + n_out)
 
 **Simulating Genetic Effects**
 
-The main genetic effects ($`\gamma_1`$) and SNP-by-modifier interaction
-effects ($`\gamma_3`$) are simulated from a bivariate normal
+The main genetic effects (\\\gamma_1\\) and SNP-by-modifier interaction
+effects (\\\gamma_3\\) are simulated from a bivariate normal
 distribution. Their variances are controlled by `h_g1` and `h_g3`, and
 `cor_g1g3` determines the correlation between the two sets of genetic
 effects.
@@ -105,7 +105,7 @@ beta_2   <- rnorm(m, 0, sqrt(sigma2b))
 **Generating Exposure and Outcome Phenotypes**
 
 We use the same two-sample design as in Part 3. The residual errors for
-$`X`$ and $`Y`$ are correlated to represent unmeasured confounding,
+\\X\\ and \\Y\\ are correlated to represent unmeasured confounding,
 while the exposure and outcome summary statistics are calculated in
 non-overlapping cohorts.
 
@@ -154,7 +154,7 @@ out_E <- E[idx_out]
 
 We use the same helper function as in Part 3 to obtain marginal GWAS and
 GWIS associations. For a GWIS, the coefficient and standard error of the
-$`G_j \times E`$ term are extracted from a single-variant interaction
+\\G_j \times E\\ term are extracted from a single-variant interaction
 model.
 
 ``` r
@@ -221,7 +221,7 @@ used by MERLIN-ME.
 
 ## Instrument Selection
 
-For this toy example, SNPs are independent and we use $`P < 0.01`$ as
+For this toy example, SNPs are independent and we use \\P \< 0.01\\ as
 the instrument-selection threshold. In real applications, genome-wide
 thresholds and LD clumping should be used as described in Part 2.
 
@@ -256,11 +256,11 @@ R_me <- diag(length(iv_me))
 ### MERLIN-MO: Outcome GWIS unavailable
 
 When outcome GWIS summary statistics are unavailable,
-$`\widehat{\Gamma}_3`$ and its standard error are omitted. MERLIN-MO
+\\\widehat{\Gamma}\_3\\ and its standard error are omitted. MERLIN-MO
 first obtains an MR-Egger estimate of the average causal effect
-$`\beta_1`$. This estimate is then held fixed while $`\beta_4`$ is
+\\\beta_1\\. This estimate is then held fixed while \\\beta_4\\ is
 estimated using the exposure GWAS, exposure GWIS, and outcome GWAS
-summary statistics. Accordingly, $`\beta_4`$ is the primary estimand of
+summary statistics. Accordingly, \\\beta_4\\ is the primary estimand of
 this analysis.
 
 ``` r
@@ -307,9 +307,9 @@ List of 18
 ### MERLIN-ME: Exposure GWIS unavailable
 
 When exposure GWIS summary statistics are unavailable,
-$`\widehat{\gamma}_3`$ and its standard error are omitted. MERLIN-ME
-estimates $`\beta_1`$ by MR-Egger regression of the outcome-GWAS
-associations on the exposure-GWAS associations. It estimates $`\beta_4`$
+\\\widehat{\gamma}\_3\\ and its standard error are omitted. MERLIN-ME
+estimates \\\beta_1\\ by MR-Egger regression of the outcome-GWAS
+associations on the exposure-GWAS associations. It estimates \\\beta_4\\
 by a second MR-Egger regression of the outcome-GWIS associations on the
 exposure-GWAS associations.
 

@@ -6,7 +6,7 @@ In this final section, we demonstrate the practical application of
 MERLIN using a real-world dataset. We will investigate the causal
 relationship between Testosterone (Exposure) and Bipolar Disorder (BD)
 (Outcome), specifically examining whether this causal effect is modified
-by Sex (Environmental factor $`E`$).
+by Sex (Environmental factor \\E\\).
 
 **Data Availability**
 
@@ -63,7 +63,7 @@ distinct modes:
 - “`binary`”: A specialized version of the standard model for binary
   environmental variables (e.g., Sex). This requires the additional
   parameter `p1`, which represents the proportion/probability of the
-  environmental factor taking the value 1 (i.e., $`P(E=1)`$).
+  environmental factor taking the value 1 (i.e., \\P(E=1)\\).
 
 - “`MO`”: Designed for practical scenarios where outcome GWIS summary
   statistics are unavailable. This model drops the requirement for
@@ -209,8 +209,8 @@ properly converged to their stationary distributions. Poor convergence
 indicates that the effect estimates may not be reliable.
 
 We can visually inspect the mixing and convergence of the sampling
-chains for both the main causal effect ($`\beta_1`$) and the interaction
-causal effect ($`\beta_4`$) using the `traceplot` function.
+chains for both the main causal effect (\\\beta_1\\) and the interaction
+causal effect (\\\beta_4\\) using the `traceplot` function.
 
 ``` r
 
@@ -303,5 +303,5 @@ By evaluating these parameters, you can determine: Whether Testosterone
 has a significant overall causal effect on Bipolar Disorder across the
 entire population (based on `MERLINpvalue1`). Whether the causal effect
 of Testosterone on Bipolar Disorder differs significantly between males
-and females (based on `MERLINpvalue4`). A significant $`\beta_4`$
+and females (based on `MERLINpvalue4`). A significant \\\beta_4\\
 implies a strong environment-dependent (sex-specific) causal pathway.
