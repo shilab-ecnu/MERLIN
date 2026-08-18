@@ -13,7 +13,7 @@ The underlying data generating mechanism can be defined as:
  X = G\gamma_1 + (G \times E)\gamma_3 + \epsilon_X 
 ```
 ``` math
-Y = (\beta_1 + \beta_4 E)X + G \beta_2 + \epsilon_Y
+ Y = (\beta_1 + \beta_4 E)X + G \beta_2 + \epsilon_Y 
 ```
 Where: - $`\gamma_1`$: Main genetic effects on the exposure.
 
