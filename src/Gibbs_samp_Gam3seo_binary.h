@@ -24,7 +24,6 @@ struct ObjGibbs_Gam3seo_binary{
   vec Sg12Res;
   vec Sg22Res;
   vec Sg32Res;
-  vec s3rs3_temp;
 };
 
 ObjGibbs_Gam3seo_binary MRGibbs_Gam3seo_binary(arma::vec &gammah1,arma::vec &gammah3, arma::vec &Gammah1, arma::vec &Gammah3, 
