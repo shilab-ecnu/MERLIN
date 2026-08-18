@@ -141,10 +141,10 @@ noise_x <- noise_xy[, 1]
 noise_y <- noise_xy[, 2]
 
 # Generate Exposure (X)
-X <- G %*% gamma_1x + GE %*% gamma_3x + noise_x
+X <- G %*% gamma_1x + GE %*% gamma_3x + 0.1 * E + noise_x
 
 # Generate Outcome (Y) 
-Y <- X * b1 + G %*% beta_2 + X * E * b4 + noise_y
+Y <- X * b1 + G %*% beta_2 + X * E * b4 + 0.1 * E + noise_y
 
 # Split into Exposure and Outcome datasets
 exp_gwas <- X[1:n_exp]
@@ -275,19 +275,19 @@ MERLIN Analysis Completed Successfully!
 Total processing time: 1.7 seconds
 --------------------------------------------------
 List of 14
- $ Beta1.hat : num 0.00143
+ $ Beta1.hat : num 0.00278
  $ Beta1.se  : num 0.0175
- $ Beta1.pval: num 0.935
- $ Beta4.hat : num 0.295
- $ Beta4.se  : num 0.0121
- $ Beta4.pval: num 1.12e-130
- $ gamma1    : num [1:94, 1] -0.0578 0.0239 -0.141 0.0414 -0.0883 ...
- $ beta2     : num [1:94, 1] 0.000157 -0.026975 0.026328 -0.019809 0.008118 ...
- $ gamma3    : num [1:94, 1] -0.0246 -0.0105 0.0693 0.0051 -0.0402 ...
- $ Beta1res  : num [1:1200, 1] -0.0245 -0.01654 -0.00124 -0.0133 -0.00695 ...
- $ Beta4res  : num [1:1200, 1] 0.32 0.291 0.291 0.293 0.297 ...
- $ Sg12Res   : num [1:1200, 1] 0.00268 0.00255 0.00277 0.00339 0.0033 ...
- $ Sg22Res   : num [1:1200, 1] 0.000533 0.000705 0.000545 0.000511 0.000646 ...
+ $ Beta1.pval: num 0.874
+ $ Beta4.hat : num 0.294
+ $ Beta4.se  : num 0.0122
+ $ Beta4.pval: num 3.41e-129
+ $ gamma1    : num [1:94, 1] -0.0578 0.0241 -0.1407 0.0409 -0.0885 ...
+ $ beta2     : num [1:94, 1] 5.84e-05 -2.74e-02 2.73e-02 -2.02e-02 7.49e-03 ...
+ $ gamma3    : num [1:94, 1] -0.02459 -0.01051 0.06934 0.00511 -0.04021 ...
+ $ Beta1res  : num [1:1200, 1] -2.32e-02 -1.52e-02 -1.71e-05 -1.19e-02 -5.70e-03 ...
+ $ Beta4res  : num [1:1200, 1] 0.319 0.290 0.290 0.292 0.296 ...
+ $ Sg12Res   : num [1:1200, 1] 0.00268 0.00254 0.00276 0.00338 0.00329 ...
+ $ Sg22Res   : num [1:1200, 1] 0.000528 0.000699 0.000542 0.000506 0.000642 ...
  $ Sg32Res   : num [1:1200, 1] 0.00126 0.00105 0.00106 0.00153 0.00124 ...
 ```
 
@@ -314,8 +314,8 @@ cat("Estimated Interaction Effect (b4):", round(beta4_hat, 4), "\n")
 ```
 
 ``` text
-Estimated Main Effect (b1): 0.0014 
-Estimated Interaction Effect (b4): 0.2953
+Estimated Main Effect (b1): 0.00278
+Estimated Interaction Effect (b4): 0.294
 ```
 
 Crucially, recall that we deliberately introduced strong unmeasured
