@@ -1,6 +1,7 @@
 url: https://shilab-ecnu.github.io/MERLIN/
 template:
   bootstrap: 5
+  mathjax: true
   bslib:
     bootswatch: united
     bg: "#FFFFFF"
