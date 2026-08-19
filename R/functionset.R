@@ -283,8 +283,9 @@ ivselect <- function(expgwas_dir, expgwis_dir = NULL,
 MERLIN <- function(gammah1, gammah3 = NULL, Gammah1, Gammah3 = NULL,
                    se1 = NULL, se2 = NULL, se3 = NULL, se4 = NULL, 
                    R, rho_1 = NULL, rho_2 = NULL,
-                   model = c("standard", "continuous_E", "binary", "MO", "ME"),
-                   p1 = NULL, maxIter = 12000, burnin = 5000, thin = 10, seed = NULL) {
+                   model = c("standard", "continuous_E", "discrete_E", "discrete_E_adj", "MO", "ME"),
+                   p_common = NULL, p_exp = NULL, p_out = NULL,                   
+                   maxIter = 12000, burnin = 5000, thin = 10, seed = 20262027) {
   
   # Match the model argument, defaulting to "standard"
   model <- match.arg(model)
@@ -340,10 +341,18 @@ MERLIN <- function(gammah1, gammah3 = NULL, Gammah1, Gammah3 = NULL,
     if (length(vec) != p) stop(sprintf("Error: The length of '%s' must match the dimension of matrix R.", name))
     if (anyNA(vec) || any(is.infinite(vec))) stop(sprintf("Error: '%s' cannot contain NA, NaN, or Inf values.", name))
   }
+  check_probability <- function(value, name) {
+  if (is.null(value) || !is.numeric(value) || length(value) != 1 ||
+      !is.finite(value) || value <= 0 || value >= 1) {
+    stop(sprintf(
+      "Error: '%s' must be a single numeric value strictly between 0 and 1, representing P(E = 1).",
+      name
+    ))
+  }}
   
   # C++ Dispatch and Model-Specific Validation
   
-  if (model %in% c("standard", "continuous_E", "binary")) {
+  if (model %in% c("standard", "continuous_E", "discrete_E", "discrete_E_adj")) {
     
     check_required_vec(gammah3, "gammah3")
     check_required_vec(Gammah3, "Gammah3")
@@ -362,16 +371,182 @@ MERLIN <- function(gammah1, gammah3 = NULL, Gammah1, Gammah3 = NULL,
     
     if (model == "standard") {
       result <- MRGEI_Gam3seo(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, maxIter, burnin, thin)
+      res_final <- list(
+        Beta1.hat  = result$Beta1.hat,
+        Beta1.se   = result$Beta1.se,
+        Beta1.pval = result$Beta1.pval,
+        Beta4.hat  = result$Beta4.hat,
+        Beta4.se   = result$Beta4.se,
+        Beta4.pval = result$Beta4.pval)
     } else if (model == "continuous_E") {
       result <- MRGEI_Gam3seo_addE2(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, maxIter, burnin, thin)
-    } else if (model == "binary") {
-      if (is.null(p1) || !is.numeric(p1) || length(p1) != 1 || p1 <= 0 || p1 >= 1) {
-        stop("Error: For the 'binary' model, 'p1' must be a single numeric value strictly between 0 and 1.")
+      res_final <- list(
+        Beta1.hat  = result$Beta1.hat,
+        Beta1.se   = result$Beta1.se,
+        Beta1.pval = result$Beta1.pval,
+        Beta4.hat  = result$Beta4.hat,
+        Beta4.se   = result$Beta4.se,
+        Beta4.pval = result$Beta4.pval)
+    } else if (model == "discrete_E") {
+      # discrete_E means that exposure and outcome have the same
+      # P(E = 1). It does not necessarily mean p_common = 0.5.
+      check_probability(p_common, "p_common")
+
+      if (!is.null(p_exp) || !is.null(p_out)) {
+        stop(
+          "Error: For model = 'discrete_E', provide only 'p_common'. ",
+          "Do not provide 'p_exp' or 'p_out'."
+        )
       }
-      result <- MRGEI_Gam3seo_binary(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, as.numeric(p1), maxIter, burnin, thin)
-    }
-    
-  } else if (model == "MO") { 
+
+      p_target <- as.numeric(p_common)
+      mu_target <- 2 * p_target - 1
+      sd_target <- 2 * sqrt(p_target * (1 - p_target))
+
+      message(sprintf(
+        paste0(
+          "\nBinary input scale check:\n",
+          "  Model: discrete_E\n",
+          "  Raw E coding: -1/+1\n",
+          "  p_common = P(E=1) = %.4f\n",
+          "  mean(E) = %.4f; SD(E) = %.4f\n",
+          "  Exposure and outcome are assumed to have the same E proportion.\n",
+          "  Input GWIS effects will be standardized automatically.\n",
+          "  Returned beta estimates will be on the original E=-1/+1 scale."
+        ),
+        p_target, mu_target, sd_target
+      ))
+
+      # Marginal GWAS effects are already defined at the common mean of E.
+      # Only GWIS BETA and SE need to be rescaled.
+      gammah3_std <- sd_target * gammah3
+      Gammah3_std <- sd_target * Gammah3
+      se2_std <- sd_target * se2
+      se4_std <- sd_target * se4
+
+      result <- MRGEI_Gam3seo_binary(
+        gammah1, gammah3_std,
+        Gammah1, Gammah3_std,
+        se1, se2_std, se3, se4_std,
+        R, rho_1, rho_2, p_target,
+        maxIter, burnin, thin
+      )
+
+      # Back-transform paired MCMC draws to the original E=-1/+1 scale.
+      beta1_std_draw <- as.numeric(result$Beta1res)
+      beta4_std_draw <- as.numeric(result$Beta4res)
+
+      beta4_raw_draw <- beta4_std_draw / sd_target
+      beta1_raw_draw <- beta1_std_draw - (mu_target / sd_target) * beta4_std_draw
+
+      beta1_hat <- mean(beta1_raw_draw)
+      beta1_se <- sd(beta1_raw_draw)
+      beta4_hat <- mean(beta4_raw_draw)
+      beta4_se <- sd(beta4_raw_draw)
+
+      res_final <- list(
+        Beta1.hat  = beta1_hat,
+        Beta1.se   = beta1_se,
+        Beta1.pval = 2 * pnorm(abs(beta1_hat / beta1_se), lower.tail = FALSE),
+        Beta4.hat  = beta4_hat,
+        Beta4.se   = beta4_se,
+        Beta4.pval = 2 * pnorm(abs(beta4_hat / beta4_se), lower.tail = FALSE)
+      )
+     } else if (model == "discrete_E_adj") {
+       check_probability(p_exp, "p_exp")
+       check_probability(p_out, "p_out")
+
+       if (!is.null(p_common)) {
+         stop(
+           "Error: For model = 'discrete_E_adj', provide 'p_exp' and ",
+           "'p_out'. Do not provide 'p_common'."
+         )
+       }
+
+       p_exp <- as.numeric(p_exp)
+       p_out <- as.numeric(p_out)
+
+       if (isTRUE(all.equal(p_exp, p_out))) {
+         warning(
+           "'p_exp' and 'p_out' are equal. Consider using ",
+           "model = 'discrete_E' with p_common = p_exp."
+         )
+       }
+      mu_exp <- 2 * p_exp - 1
+      mu_out <- 2 * p_out - 1
+      sd_out <- 2 * sqrt(p_out * (1 - p_out))
+      a_exp_to_out <- mu_out - mu_exp
+
+      message(sprintf(
+        paste0(
+          "\nBinary input scale check:\n",
+          "  Model: discrete_E_adj\n",
+          "  Raw E coding: -1/+1\n",
+          "  p_exp = P(E=1 in exposure) = %.4f\n",
+          "  p_out = P(E=1 in outcome)  = %.4f\n",
+          "  mean(E_exp) = %.4f; mean(E_out) = %.4f\n",
+          "  Target analysis scale: outcome standardized E scale\n",
+          "  Exposure GWAS will be projected to the outcome E proportion.\n",
+          "  Exposure and outcome GWIS effects will be standardized using p_out.\n",
+          "  Returned beta estimates will be on the original E=-1/+1 scale."
+        ),
+        p_exp, p_out, mu_exp, mu_out
+      ))
+
+      # Exposure marginal GWAS is moved from the exposure E mean
+      # to the outcome E mean.
+      gammah1_out <- gammah1 + a_exp_to_out * gammah3
+
+      var_gammah1_out <- se1^2 + a_exp_to_out^2 * se2^2
+
+      if (any(!is.finite(var_gammah1_out)) ||
+          any(var_gammah1_out <= 0)) {
+        stop(
+          "Error: The transformed exposure GWAS variance is ",
+          "non-positive. Check p_exp, p_out."
+        )
+      }
+
+      se1_out <- sqrt(var_gammah1_out)
+
+      # Convert both GWIS inputs to the outcome standardized E scale.
+      gammah3_out <- sd_out * gammah3
+      Gammah3_out <- sd_out * Gammah3
+      se2_out <- sd_out * se2
+      se4_out <- sd_out * se4
+
+      # Outcome marginal GWAS is already at the outcome E mean.
+      result <- MRGEI_Gam3seo_binary(
+        gammah1_out, gammah3_out,
+        Gammah1, Gammah3_out,
+        se1_out, se2_out, se3, se4_out,
+        R, rho_1, rho_2, p_out,
+        maxIter, burnin, thin
+      )
+
+      # Back-transform paired MCMC draws from the outcome standardized
+      # E scale to the original E=-1/+1 scale.
+      beta1_std_draw <- as.numeric(result$Beta1res)
+      beta4_std_draw <- as.numeric(result$Beta4res)
+
+      beta4_raw_draw <- beta4_std_draw / sd_out
+      beta1_raw_draw <- beta1_std_draw - (mu_out / sd_out) * beta4_std_draw
+
+      beta1_hat <- mean(beta1_raw_draw)
+      beta1_se <- sd(beta1_raw_draw)
+      beta4_hat <- mean(beta4_raw_draw)
+      beta4_se <- sd(beta4_raw_draw)
+
+      res_final <- list(
+        Beta1.hat  = beta1_hat,
+        Beta1.se   = beta1_se,
+        Beta1.pval = 2 * pnorm(abs(beta1_hat / beta1_se), lower.tail = FALSE),
+        Beta4.hat  = beta4_hat,
+        Beta4.se   = beta4_se,
+        Beta4.pval = 2 * pnorm(abs(beta4_hat / beta4_se), lower.tail = FALSE)
+      )    
+      }
+    } else if (model == "MO") { 
     
     # The new MRGEI_Gamseo function acts as the MO model. 
     # It requires gammah3, se1, se2, se3, and rho_1 (passed as rho).
@@ -389,12 +564,15 @@ MERLIN <- function(gammah1, gammah3 = NULL, Gammah1, Gammah3 = NULL,
     if (abs(rho_1) >= 1) {
       stop("Error: 'rho_1' must be strictly between -1 and 1.")
     }
-    
-    res.beta1 <- TwoSampleMR::mr_egger_regression(gammah1, Gammah1, se1, se3)
-    b1 <- res.beta1$b
-    result <- MRGEI_Gamseo_fixb1(gammah1, gammah3, Gammah1, se1, se2, se3, R, rho_1, b1, maxIter, burnin, thin)
-    
-  } else if (model == "ME") { 
+    result <- MRGEI_Gamseo(gammah1, gammah3, Gammah1, se1, se2, se3, R, rho_1, maxIter, burnin, thin)
+    res_final <- list(
+      Beta1.hat  = result$Beta1.hat,
+      Beta1.se   = result$Beta1.se,
+      Beta1.pval = result$Beta1.pval,
+      Beta4.hat  = result$Beta4.hat,
+      Beta4.se   = result$Beta4.se,
+      Beta4.pval = result$Beta4.pval)
+    } else if (model == "ME") { 
     
     check_required_vec(Gammah3, "Gammah3")
     check_required_vec(se1, "se1")
@@ -408,7 +586,7 @@ MERLIN <- function(gammah1, gammah3 = NULL, Gammah1, Gammah3 = NULL,
     res.beta1 <- TwoSampleMR::mr_egger_regression(gammah1, Gammah1, se1, se3)
     res.beta4 <- TwoSampleMR::mr_egger_regression(gammah1, Gammah3, se1, se4)
     
-    result <- list(
+    res_final <- list(
       Beta1.hat  = res.beta1$b,
       Beta1.se   = res.beta1$se,
       Beta1.pval = res.beta1$pval,
@@ -427,7 +605,7 @@ MERLIN <- function(gammah1, gammah3 = NULL, Gammah1, Gammah3 = NULL,
   message("Total processing time: ", duration, " seconds")
   message(rep("-", 50))
   
-  return(result)
+  return(res_final)
 }
 
 
@@ -674,6 +852,5 @@ EstRhofun <- function(fileexposure, fileoutcome, stringname3,
   return(list(rhohat = rhohat, pvalue = pvalue, pres = pres, Rhores = Rhores))
 
 }
-
 
 
