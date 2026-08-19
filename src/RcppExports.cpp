@@ -496,7 +496,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_MERLIN_MRGEI_Gam3seo", (DL_FUNC) &_MERLIN_MRGEI_Gam3seo, 14},
     {"_MERLIN_MRGEI_Gam3seo_addE2", (DL_FUNC) &_MERLIN_MRGEI_Gam3seo_addE2, 14},
     {"_MERLIN_MRGEI_Gam3seo_binary", (DL_FUNC) &_MERLIN_MRGEI_Gam3seo_binary, 15},
-    {"_MERLIN_MRGEI_Gamseo", (DL_FUNC) &_MERLIN_MRGEI_Gamseo_fixb1, 11},
+    {"_MERLIN_MRGEI_Gamseo", (DL_FUNC) &_MERLIN_MRGEI_Gamseo, 11},
     {"_MERLIN_getLineNum", (DL_FUNC) &_MERLIN_getLineNum, 1},
     {"_MERLIN_ReadSNPinfo", (DL_FUNC) &_MERLIN_ReadSNPinfo, 8},
     {"_MERLIN_Read_summarystat", (DL_FUNC) &_MERLIN_Read_summarystat, 10},
