@@ -65,8 +65,8 @@ MRGEI_Gam3seo_binary <- function(gammah1, gammah3, Gammah1, Gammah3, se1, se2, s
     .Call(`_MERLIN_MRGEI_Gam3seo_binary`, gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, p1, maxIter, burnin, thin)
 }
 
-MRGEI_Gamseo_fixb1 <- function(gammah1, gammah3, Gammah1, se1, se2, se3, R, rho, b1, maxIter, burnin, thin) {
-    .Call(`_MERLIN_MRGEI_Gamseo_fixb1`, gammah1, gammah3, Gammah1, se1, se2, se3, R, rho, b1, maxIter, burnin, thin)
+MRGEI_Gamseo <- function(gammah1, gammah3, Gammah1, se1, se2, se3, R, rho, maxIter, burnin, thin) {
+    .Call(`_MERLIN_MRGEI_Gamseo`, gammah1, gammah3, Gammah1, se1, se2, se3, R, rho, maxIter, burnin, thin)
 }
 
 getLineNum <- function(filename) {
