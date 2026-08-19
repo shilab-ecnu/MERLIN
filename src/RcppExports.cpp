@@ -270,7 +270,7 @@ END_RCPP
 }
 // MRGEI_Gamseo
 List MRGEI_Gamseo(arma::vec& gammah1, arma::vec& gammah3, arma::vec& Gammah1, arma::vec& se1, arma::vec& se2, arma::vec& se3, arma::mat& R, double& rho, int maxIter, int burnin, int thin);
-RcppExport SEXP _MERLIN_MRGEI_Gamseo(SEXP gammah1SEXP, SEXP gammah3SEXP, SEXP Gammah1SEXP, SEXP se1SEXP, SEXP se2SEXP, SEXP se3SEXP, SEXP RSEXP, SEXP rhoSEXP, SEXP b1SEXP, SEXP maxIterSEXP, SEXP burninSEXP, SEXP thinSEXP) {
+RcppExport SEXP _MERLIN_MRGEI_Gamseo(SEXP gammah1SEXP, SEXP gammah3SEXP, SEXP Gammah1SEXP, SEXP se1SEXP, SEXP se2SEXP, SEXP se3SEXP, SEXP RSEXP, SEXP rhoSEXP, SEXP maxIterSEXP, SEXP burninSEXP, SEXP thinSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
