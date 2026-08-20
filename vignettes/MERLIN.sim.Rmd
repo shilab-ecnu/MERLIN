@@ -26,18 +26,23 @@ options(encoding = "UTF-8")
 Before applying MERLIN to real-world summary statistics, it is highly instructive to understand its behavior using simulated data. In this section, we will simulate a scenario where an environmental factor $E$ interacts with genetic variants $G$ to influence both the exposure $X$ and the outcome $Y$.
 
 The underlying data generating mechanism can be defined as:
-$$ X = G\gamma_1 + (G \times E)\gamma_3 + \epsilon_X $$
-$$ Y = (\beta_1 + \beta_4 E)X + G \beta_2 + \epsilon_Y $$
+$$
+X=G\gamma_1+(G\times E)\gamma_3+0.1E+\epsilon_X,
+$$
+
+$$
+Y=(\beta_1+\beta_4E)X+G\beta_2+0.1E+\epsilon_Y.
+$$
 Where:
-- $\gamma_1$: Main genetic effects on the exposure.
+- $\beta_1$: The average causal effect of $X$ on $Y$, corresponding to $\beta^{(A)}$ in the manuscript.
 
-- $\gamma_3$: Genetic-environmental interaction effects.
+- $\beta_4$: The causal interaction effect quantifying the extent to which the causal effect of $X$ on $Y$ is modified by $E$, corresponding to $\beta^{(I)}$ in the manuscript.
 
-- $\beta_2$: Horizontal Pleiotropy.
+- $\gamma_1$: The main genetic effects on the exposure, corresponding to $\boldsymbol{\gamma}^{(G)}$ in the manuscript.
 
-- $\beta_1$: The average (main) causal effect of $X$ on $Y$.
+- $\gamma_3$: The genetic-by-environment interaction effects on the exposure, corresponding to $\boldsymbol{\gamma}^{(GI)}$ in the manuscript.
 
-- $\beta_4$: The heterogeneity causal effect (the extent to which the causal effect is modified by the environment).
+- $\beta_2$: The direct genetic effects on the outcome, representing horizontal pleiotropy and corresponding to $\boldsymbol{\beta}^{(G)}$ in the manuscript.
 
 - $\epsilon_X$, $\epsilon_Y$: The residual error terms for the exposure and outcome, respectively. These capture the cumulative errors, crucially including the effects of unmeasured confounders, independent environmental noise, and measurement errors.
 
@@ -54,7 +59,7 @@ set.seed(2026)
 
 **Generating Genotypes and Environmental Variables**
 
-We simulate $m = 100$ independent SNPs for a total of 160,000 individuals, split equally into an exposure cohort (`n_exp = 80000`) and an outcome cohort (`n_out = 80000`). The environmental variable $E$ is simulated from a standard normal distribution.
+We simulate $m = 100$ independent SNPs for a total of 160,000 individuals, split equally into an exposure cohort (`n_exp = 80000`) and an outcome cohort (`n_out = 80000`). The environmental variable \(E\) is simulated as a balanced binary modifier coded as \(-1\) and \(1\), with equal proportions in both the exposure and outcome samples.
 
 ```{r,eval=FALSE}
 n_exp <- 80000
@@ -72,7 +77,9 @@ G <- matrix(rbinom((n_exp + n_out) * m, 2, rep(maf, each = n_exp + n_out)),
 G <- scale(G, center = TRUE, scale = FALSE)
 
 # Generate Environmental variable E
-E <- rnorm(n_exp + n_out)
+E_exp <- sample(rep(c(-1, 1), each = n_exp / 2))
+E_out <- sample(rep(c(-1, 1), each = n_out / 2))
+E <- c(E_exp, E_out)
 ```
 
 **Simulating Genetic Effects**
@@ -183,10 +190,10 @@ out_gwis_sum <- get_sumstats(G[(n_exp + 1):(n_exp + n_out), ], out_gwis,
 
 **Selecting Instrumental Variables**
 
-We select valid genetic instruments using a significance threshold (e.g., $P < 0.01$ for this toy example). SNPs that pass the threshold in either the exposure GWAS or GWIS analysis are included in the union set of instruments. Since SNPs are simulated independently here, the LD correlation matrix $R$ is simply an identity matrix.
+We select valid genetic instruments using a significance threshold (e.g., $P < 5e-8$ for this toy example). SNPs that pass the threshold in either the exposure GWAS or GWIS analysis are included in the union set of instruments. Since SNPs are simulated independently here, the LD correlation matrix $R$ is simply an identity matrix.
 
 ```{r,eval=FALSE}
-p_threshold <- 0.01
+p_threshold <- 5e-8
 
 # Filter GWAS signals
 pvals_gwas <- 2 * pnorm(-abs(exp_gwas_sum$beta / exp_gwas_sum$se))
@@ -247,29 +254,20 @@ Running MERLIN method (Model: standard)...
 
 --------------------------------------------------
 MERLIN Analysis Completed Successfully!
-Total processing time: 1.7 seconds
+Total processing time: 0.9 seconds
 --------------------------------------------------
-List of 14
- $ Beta1.hat : num 0.00278
- $ Beta1.se  : num 0.0175
- $ Beta1.pval: num 0.874
- $ Beta4.hat : num 0.294
- $ Beta4.se  : num 0.0122
- $ Beta4.pval: num 3.41e-129
- $ gamma1    : num [1:94, 1] -0.0578 0.0241 -0.1407 0.0409 -0.0885 ...
- $ beta2     : num [1:94, 1] 5.84e-05 -2.74e-02 2.73e-02 -2.02e-02 7.49e-03 ...
- $ gamma3    : num [1:94, 1] -0.02459 -0.01051 0.06934 0.00511 -0.04021 ...
- $ Beta1res  : num [1:1200, 1] -2.32e-02 -1.52e-02 -1.71e-05 -1.19e-02 -5.70e-03 ...
- $ Beta4res  : num [1:1200, 1] 0.319 0.290 0.290 0.292 0.296 ...
- $ Sg12Res   : num [1:1200, 1] 0.00268 0.00254 0.00276 0.00338 0.00329 ...
- $ Sg22Res   : num [1:1200, 1] 0.000528 0.000699 0.000542 0.000506 0.000642 ...
- $ Sg32Res   : num [1:1200, 1] 0.00126 0.00105 0.00106 0.00153 0.00124 ...
+List of 6
+ $ Beta1.hat : num -0.00454
+ $ Beta1.se  : num 0.0189
+ $ Beta1.pval: num 0.81
+ $ Beta4.hat : num 0.314
+ $ Beta4.se  : num 0.0107
+ $ Beta4.pval: num 3.93e-190
  ```
 
 **Interpreting the Results**
 
-The output `res` is a list containing the estimated parameters. We can extract the main causal effect ($\hat{\beta}_1$) and the heterogeneity causal effect ($\hat{\beta}_4$).
-
+The output `res` is a list containing the estimated parameters. We can extract the average causal effect ($\widehat{\beta}_1$) and the heterogeneity causal effect ($\widehat{\beta}_4$).
 
 ```{r,eval=FALSE}
 # Main causal effect estimates
@@ -277,7 +275,7 @@ beta1_hat <- res$Beta1.hat
 se1_hat   <- res$Beta1.se
 pval1     <- res$Beta1.pval
 
-# Heterogeneity (Interaction) causal effect estimates
+# Heterogeneity (interaction) causal effect estimates
 beta4_hat <- res$Beta4.hat
 se4_hat   <- res$Beta4.se
 pval4     <- res$Beta4.pval
@@ -285,8 +283,10 @@ pval4     <- res$Beta4.pval
 cat("Estimated Main Effect (b1):", round(beta1_hat, 4), "\n")
 cat("Estimated Interaction Effect (b4):", round(beta4_hat, 4), "\n")
 ```
+
 ```text
-Estimated Main Effect (b1): 0.00278
-Estimated Interaction Effect (b4): 0.294
+Estimated Main Effect (b1): -0.0045
+Estimated Interaction Effect (b4): 0.3137
 ```
-Crucially, recall that we deliberately introduced strong unmeasured confounding into our simulation by correlating the residual error terms of the exposure and outcome ($\rho = 0.6$). Despite this severe confounding, you should observe that `beta1_hat` correctly remains statistically non-significant (close to the true `b1 = 0`), while `beta4_hat` is highly significant and accurately recovers the true underlying interaction effect size of approximately 0.3. This demonstrates MERLIN's robust capability to estimate unbiased environment-dependent causal effects even in the presence of strong unmeasured confounders.
+
+Crucially, recall that we deliberately introduced strong unmeasured confounding into the simulation by correlating the residual error terms of the exposure and outcome ($\rho=0.6$). Despite this confounding, the estimated average causal effect was close to its true value of zero ($\widehat{\beta}_1=-0.0045$, $P=0.810$), whereas the estimated interaction effect closely recovered its true value of 0.3 ($\widehat{\beta}_4=0.3137$, $P=3.93\times10^{-190}$). These results illustrate that MERLIN can recover both the average and modifier-dependent causal effects in this simulated setting with a balanced binary modifier.
