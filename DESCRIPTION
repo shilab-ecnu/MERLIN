@@ -5,7 +5,7 @@ Authors@R: c(
      person(given ="Yadong", family ="Yang", role = "aut"),
      person(given ="Xingjie", family ="Shi",role = "aut", comment = c(ORCID = "0000-0002-9866-8599")),
      person(given ="Minxi", family ="Bai", role = "aut"),
-     person(given ="Jie", family ="He", email = "10225000415@stu.ecnu.edu.cn",role = c("aut","cre")))
+     person(given ="Jie", family ="He", role = c("aut","cre")))
 Description: MERLIN (Causal Heterogeneity using Summary Statistics) is a unified 
     Bayesian framework that jointly estimates average and heterogeneity 
     effects using summary data from genome-wide association studies (GWAS) and 
@@ -13,13 +13,19 @@ Description: MERLIN (Causal Heterogeneity using Summary Statistics) is a unified
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
 LinkingTo: Rcpp,RcppArmadillo,BH,bigmemory,RcppDist
-Imports: data.table,readr,Rcpp
+Imports: 
+    data.table,
+    readr,
+    Rcpp,
+    TwoSampleMR (>= 0.7.9)
 Suggests: knitr, rmarkdown, mvtnorm
-Remotes: MRCIEU/TwoSampleMR
 VignetteBuilder: knitr
 NeedsCompilation: yes
 Packaged: 2026-07-22 12:38:41 UTC; 36433
+Maintainer: Jie He <10225000415@stu.ecnu.edu.cn>
 URL: https://shilab-ecnu.github.io/MERLIN/
 BugReports: https://github.com/shilab-ecnu/MERLIN/issues/
+Config/roxygen2/version: 8.1.0
+Remotes:  
+    MRCIEU/TwoSampleMR
