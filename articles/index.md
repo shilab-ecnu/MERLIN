@@ -16,5 +16,8 @@
   Data](https://shilab-ecnu.github.io/MERLIN/articles/MERLIN.sim.md):
 - [Part 4: Model Fitting with a Single Available GWIS (MERLIN-MO and
   MERLIN-ME)](https://shilab-ecnu.github.io/MERLIN/articles/MERLIN.single-GWIS.sim.md):
-- [Part 5: Real Data Analysis and Convergence
+- [Part 5: Model Fitting with a Discrete Binary Modifier (\`discrete_E\`
+  and
+  \`discrete_E_adj\`)](https://shilab-ecnu.github.io/MERLIN/articles/MERLIN.binary-E.sim.md):
+- [Part 6: Real Data Analysis and Convergence
   Diagnostics](https://shilab-ecnu.github.io/MERLIN/articles/MERLIN.realdata.md):

@@ -43,7 +43,8 @@
     <li><a class="dropdown-item" href="../articles/MERLIN.preprocess.html">Part 2: Data Preprocessing and Instrumental Variable Selection</a></li>
     <li><a class="dropdown-item" href="../articles/MERLIN.sim.html">Part 3: Model Fitting Using Simulated Data</a></li>
     <li><a class="dropdown-item" href="../articles/MERLIN.single-GWIS.sim.html">Part 4: Model Fitting with a Single Available GWIS (MERLIN-MO and MERLIN-ME)</a></li>
-    <li><a class="dropdown-item" href="../articles/MERLIN.realdata.html">Part 5: Real Data Analysis and Convergence Diagnostics</a></li>
+    <li><a class="dropdown-item" href="../articles/MERLIN.binary-E.sim.html">Part 5: Model Fitting with a Discrete Binary Modifier (`discrete_E` and `discrete_E_adj`)</a></li>
+    <li><a class="dropdown-item" href="../articles/MERLIN.realdata.html">Part 6: Real Data Analysis and Convergence Diagnostics</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../articles/MERLIN.functions.html">Functions</a></li>
@@ -82,20 +83,28 @@
 <p>Before applying MERLIN to real-world summary statistics, it is highly
 instructive to understand its behavior using simulated data. In this
 section, we will simulate a scenario where an environmental factor <span class="math inline">\(E\)</span> interacts with genetic variants <span class="math inline">\(G\)</span> to influence both the exposure <span class="math inline">\(X\)</span> and the outcome <span class="math inline">\(Y\)</span>.</p>
-<p>The underlying data generating mechanism can be defined as: <span class="math display">\[ X = G\gamma_1 + (G \times E)\gamma_3 +
-\epsilon_X \]</span> <span class="math display">\[ Y = (\beta_1 +
-\beta_4 E)X + G \beta_2 + \epsilon_Y \]</span> Where: - <span class="math inline">\(\gamma_1\)</span>: Main genetic effects on the
-exposure.</p>
+<p>The underlying data generating mechanism can be defined as: <span class="math display">\[
+X=G\gamma_1+(G\times E)\gamma_3+0.1E+\epsilon_X,
+\]</span></p>
+<p><span class="math display">\[
+Y=(\beta_1+\beta_4E)X+G\beta_2+0.1E+\epsilon_Y.
+\]</span> Where: - <span class="math inline">\(\beta_1\)</span>: The
+average causal effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span>, corresponding to <span class="math inline">\(\beta^{(A)}\)</span> in the manuscript.</p>
 <ul>
-<li><p><span class="math inline">\(\gamma_3\)</span>:
-Genetic-environmental interaction effects.</p></li>
-<li><p><span class="math inline">\(\beta_2\)</span>: Horizontal
-Pleiotropy.</p></li>
-<li><p><span class="math inline">\(\beta_1\)</span>: The average (main)
-causal effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span>.</p></li>
-<li><p><span class="math inline">\(\beta_4\)</span>: The heterogeneity
-causal effect (the extent to which the causal effect is modified by the
-environment).</p></li>
+<li><p><span class="math inline">\(\beta_4\)</span>: The causal
+interaction effect quantifying the extent to which the causal effect of
+<span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span> is modified by <span class="math inline">\(E\)</span>, corresponding to <span class="math inline">\(\beta^{(I)}\)</span> in the manuscript.</p></li>
+<li><p><span class="math inline">\(\gamma_1\)</span>: The main genetic
+effects on the exposure, corresponding to <span class="math inline">\(\boldsymbol{\gamma}^{(G)}\)</span> in the
+manuscript.</p></li>
+<li><p><span class="math inline">\(\gamma_3\)</span>: The
+genetic-by-environment interaction effects on the exposure,
+corresponding to <span class="math inline">\(\boldsymbol{\gamma}^{(GI)}\)</span> in the
+manuscript.</p></li>
+<li><p><span class="math inline">\(\beta_2\)</span>: The direct genetic
+effects on the outcome, representing horizontal pleiotropy and
+corresponding to <span class="math inline">\(\boldsymbol{\beta}^{(G)}\)</span> in the
+manuscript.</p></li>
 <li><p><span class="math inline">\(\epsilon_X\)</span>, <span class="math inline">\(\epsilon_Y\)</span>: The residual error terms for
 the exposure and outcome, respectively. These capture the cumulative
 errors, crucially including the effects of unmeasured confounders,
@@ -122,8 +131,9 @@ reproducibility.</p>
 <p>We simulate <span class="math inline">\(m = 100\)</span> independent
 SNPs for a total of 160,000 individuals, split equally into an exposure
 cohort (<code>n_exp = 80000</code>) and an outcome cohort
-(<code>n_out = 80000</code>). The environmental variable <span class="math inline">\(E\)</span> is simulated from a standard normal
-distribution.</p>
+(<code>n_out = 80000</code>). The environmental variable <span class="math inline">\(E\)</span> is simulated as a balanced binary
+modifier coded as <span class="math inline">\(-1\)</span> and <span class="math inline">\(1\)</span>, with equal proportions in both the
+exposure and outcome samples.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">n_exp</span> <span class="op">&lt;-</span> <span class="fl">80000</span></span>
 <span><span class="va">n_out</span> <span class="op">&lt;-</span> <span class="fl">80000</span></span>
@@ -140,7 +150,9 @@ distribution.</p>
 <span><span class="va">G</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">G</span>, center <span class="op">=</span> <span class="cn">TRUE</span>, scale <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Generate Environmental variable E</span></span>
-<span><span class="va">E</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="va">n_out</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">E_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, each <span class="op">=</span> <span class="va">n_exp</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">E_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, each <span class="op">=</span> <span class="va">n_out</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">E</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">E_exp</span>, <span class="va">E_out</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Simulating Genetic Effects</strong></p>
 <p>The main genetic effects (<span class="math inline">\(\gamma_1\)</span>) and <span class="math inline">\(G \times E\)</span> interaction effects (<span class="math inline">\(\gamma_3\)</span>) are generated from a bivariate
 normal distribution to allow for correlation
@@ -248,12 +260,12 @@ single-variant linear regressions and extract the effect sizes (<span class="mat
 </h2>
 <p><strong>Selecting Instrumental Variables</strong></p>
 <p>We select valid genetic instruments using a significance threshold
-(e.g., <span class="math inline">\(P &lt; 0.01\)</span> for this toy
+(e.g., <span class="math inline">\(P &lt; 5e-8\)</span> for this toy
 example). SNPs that pass the threshold in either the exposure GWAS or
 GWIS analysis are included in the union set of instruments. Since SNPs
 are simulated independently here, the LD correlation matrix <span class="math inline">\(R\)</span> is simply an identity matrix.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p_threshold</span> <span class="op">&lt;-</span> <span class="fl">0.01</span></span>
+<code class="sourceCode R"><span><span class="va">p_threshold</span> <span class="op">&lt;-</span> <span class="fl">5e-8</span></span>
 <span></span>
 <span><span class="co"># Filter GWAS signals</span></span>
 <span><span class="va">pvals_gwas</span> <span class="op">&lt;-</span> <span class="fl">2</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">exp_gwas_sum</span><span class="op">$</span><span class="va">beta</span> <span class="op">/</span> <span class="va">exp_gwas_sum</span><span class="op">$</span><span class="va">se</span><span class="op">)</span><span class="op">)</span></span>
@@ -310,52 +322,43 @@ MERLIN.</p>
 
 --------------------------------------------------
 MERLIN Analysis Completed Successfully!
-Total processing time: 1.7 seconds
+Total processing time: 0.9 seconds
 --------------------------------------------------
-List of 14
- $ Beta1.hat : num 0.00278
- $ Beta1.se  : num 0.0175
- $ Beta1.pval: num 0.874
- $ Beta4.hat : num 0.294
- $ Beta4.se  : num 0.0122
- $ Beta4.pval: num 3.41e-129
- $ gamma1    : num [1:94, 1] -0.0578 0.0241 -0.1407 0.0409 -0.0885 ...
- $ beta2     : num [1:94, 1] 5.84e-05 -2.74e-02 2.73e-02 -2.02e-02 7.49e-03 ...
- $ gamma3    : num [1:94, 1] -0.02459 -0.01051 0.06934 0.00511 -0.04021 ...
- $ Beta1res  : num [1:1200, 1] -2.32e-02 -1.52e-02 -1.71e-05 -1.19e-02 -5.70e-03 ...
- $ Beta4res  : num [1:1200, 1] 0.319 0.290 0.290 0.292 0.296 ...
- $ Sg12Res   : num [1:1200, 1] 0.00268 0.00254 0.00276 0.00338 0.00329 ...
- $ Sg22Res   : num [1:1200, 1] 0.000528 0.000699 0.000542 0.000506 0.000642 ...
- $ Sg32Res   : num [1:1200, 1] 0.00126 0.00105 0.00106 0.00153 0.00124 ...</code></pre>
+List of 6
+ $ Beta1.hat : num -0.00454
+ $ Beta1.se  : num 0.0189
+ $ Beta1.pval: num 0.81
+ $ Beta4.hat : num 0.314
+ $ Beta4.se  : num 0.0107
+ $ Beta4.pval: num 3.93e-190</code></pre>
 <p><strong>Interpreting the Results</strong></p>
 <p>The output <code>res</code> is a list containing the estimated
-parameters. We can extract the main causal effect (<span class="math inline">\(\hat{\beta}_1\)</span>) and the heterogeneity
-causal effect (<span class="math inline">\(\hat{\beta}_4\)</span>).</p>
+parameters. We can extract the average causal effect (<span class="math inline">\(\widehat{\beta}_1\)</span>) and the heterogeneity
+causal effect (<span class="math inline">\(\widehat{\beta}_4\)</span>).</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Main causal effect estimates</span></span>
 <span><span class="va">beta1_hat</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">Beta1.hat</span></span>
 <span><span class="va">se1_hat</span>   <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">Beta1.se</span></span>
 <span><span class="va">pval1</span>     <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">Beta1.pval</span></span>
 <span></span>
-<span><span class="co"># Heterogeneity (Interaction) causal effect estimates</span></span>
+<span><span class="co"># Heterogeneity (interaction) causal effect estimates</span></span>
 <span><span class="va">beta4_hat</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">Beta4.hat</span></span>
 <span><span class="va">se4_hat</span>   <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">Beta4.se</span></span>
 <span><span class="va">pval4</span>     <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">Beta4.pval</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Estimated Main Effect (b1):"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">beta1_hat</span>, <span class="fl">4</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Estimated Interaction Effect (b4):"</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">beta4_hat</span>, <span class="fl">4</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span></code></pre></div>
-<pre class="text"><code>Estimated Main Effect (b1): 0.00278
-Estimated Interaction Effect (b4): 0.294</code></pre>
+<pre class="text"><code>Estimated Main Effect (b1): -0.0045
+Estimated Interaction Effect (b4): 0.3137</code></pre>
 <p>Crucially, recall that we deliberately introduced strong unmeasured
-confounding into our simulation by correlating the residual error terms
-of the exposure and outcome (<span class="math inline">\(\rho =
-0.6\)</span>). Despite this severe confounding, you should observe that
-<code>beta1_hat</code> correctly remains statistically non-significant
-(close to the true <code>b1 = 0</code>), while <code>beta4_hat</code> is
-highly significant and accurately recovers the true underlying
-interaction effect size of approximately 0.3. This demonstrates MERLIN’s
-robust capability to estimate unbiased environment-dependent causal
-effects even in the presence of strong unmeasured confounders.</p>
+confounding into the simulation by correlating the residual error terms
+of the exposure and outcome (<span class="math inline">\(\rho=0.6\)</span>). Despite this confounding, the
+estimated average causal effect was close to its true value of zero
+(<span class="math inline">\(\widehat{\beta}_1=-0.0045\)</span>, <span class="math inline">\(P=0.810\)</span>), whereas the estimated
+interaction effect closely recovered its true value of 0.3 (<span class="math inline">\(\widehat{\beta}_4=0.3137\)</span>, <span class="math inline">\(P=3.93\times10^{-190}\)</span>). These results
+illustrate that MERLIN can recover both the average and
+modifier-dependent causal effects in this simulated setting with a
+balanced binary modifier.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

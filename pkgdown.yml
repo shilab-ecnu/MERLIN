@@ -2,13 +2,14 @@ pandoc: 3.8.3
 pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
+  MERLIN.binary-E.sim: MERLIN.binary-E.sim.html
   MERLIN.functions: MERLIN.functions.html
   MERLIN.intro: MERLIN.intro.html
   MERLIN.preprocess: MERLIN.preprocess.html
   MERLIN.realdata: MERLIN.realdata.html
   MERLIN.sim: MERLIN.sim.html
   MERLIN.single-GWIS.sim: MERLIN.single-GWIS.sim.html
-last_built: 2026-08-19T11:24Z
+last_built: 2026-08-20T11:11Z
 urls:
   reference: https://shilab-ecnu.github.io/MERLIN/reference
   article: https://shilab-ecnu.github.io/MERLIN/articles

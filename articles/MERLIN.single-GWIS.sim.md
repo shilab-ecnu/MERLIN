@@ -66,7 +66,9 @@ G <- matrix(
 G <- scale(G, center = TRUE, scale = FALSE)
 
 # Generate modifier E
-E <- rnorm(n_exp + n_out)
+E_exp <- sample(rep(c(-1, 1), each = n_exp / 2))
+E_out <- sample(rep(c(-1, 1), each = n_out / 2))
+E <- c(E_exp, E_out)
 ```
 
 **Simulating Genetic Effects**
@@ -88,13 +90,10 @@ sigma2g1 <- h_g1 / m
 sigma2g3 <- h_g3 / m
 sigma2b  <- h_b / m
 
-cov_matrix <- matrix(
-  c(sigma2g1,
-    cor_g1g3 * sqrt(sigma2g1 * sigma2g3),
-    cor_g1g3 * sqrt(sigma2g1 * sigma2g3),
-    sigma2g3),
-  ncol = 2
-)
+cov_matrix <- matrix(c(sigma2g1, 
+                      cor_g1g3 * sqrt(sigma2g1 * sigma2g3),
+                      cor_g1g3 * sqrt(sigma2g1 * sigma2g3),
+                      sigma2g3), ncol = 2)
 
 gamma1_3 <- rmvnorm(m, mean = c(0, 0), sigma = cov_matrix)
 gamma_1x <- gamma1_3[, 1]
@@ -119,19 +118,14 @@ rhoxy <- 0.6
 
 var_noise_x <- 1 - h_g1 - h_g3
 var_noise_y <- 1 - b1*b1 - h_b - b4*b4
+
+# Construct the covariance matrix for the bivariate normal distribution
 cov_xy <- rhoxy * sqrt(var_noise_x * var_noise_y)
+sigma_noise <- matrix(c(var_noise_x, cov_xy,
+                        cov_xy, var_noise_y), ncol = 2)
 
-sigma_noise <- matrix(
-  c(var_noise_x, cov_xy,
-    cov_xy, var_noise_y),
-  ncol = 2
-)
-
-noise_xy <- rmvnorm(
-  n_exp + n_out,
-  mean = c(0, 0),
-  sigma = sigma_noise
-)
+# Generate correlated noise for X and Y
+noise_xy <- rmvnorm(n_exp + n_out, mean = c(0, 0), sigma = sigma_noise)
 noise_x <- noise_xy[, 1]
 noise_y <- noise_xy[, 2]
 
@@ -221,24 +215,20 @@ used by MERLIN-ME.
 
 ## Instrument Selection
 
-For this toy example, SNPs are independent and we use \\P \< 0.01\\ as
+For this toy example, SNPs are independent and we use \\P \< 5e-8\\ as
 the instrument-selection threshold. In real applications, genome-wide
 thresholds and LD clumping should be used as described in Part 2.
 
 ``` r
 
-p_threshold <- 0.01
+p_threshold <- 5e-8
 
 # Exposure-GWAS instruments
-pvals_gwas <- 2 * pnorm(
-  -abs(exp_gwas_sum$beta / exp_gwas_sum$se)
-)
+pvals_gwas <- 2 * pnorm(-abs(exp_gwas_sum$beta / exp_gwas_sum$se))
 iv_gwas <- which(pvals_gwas < p_threshold)
 
 # Exposure-GWIS instruments
-pvals_gwis <- 2 * pnorm(
-  -abs(exp_gwis_sum$beta / exp_gwis_sum$se)
-)
+pvals_gwis <- 2 * pnorm(-abs(exp_gwis_sum$beta / exp_gwis_sum$se))
 iv_gwis <- which(pvals_gwis < p_threshold)
 
 # MERLIN-MO uses the union of exposure-GWAS and exposure-GWIS instruments.
@@ -257,15 +247,15 @@ R_me <- diag(length(iv_me))
 
 When outcome GWIS summary statistics are unavailable,
 \\\widehat{\Gamma}\_3\\ and its standard error are omitted. MERLIN-MO
-first obtains an MR-Egger estimate of the average causal effect
-\\\beta_1\\. This estimate is then held fixed while \\\beta_4\\ is
-estimated using the exposure GWAS, exposure GWIS, and outcome GWAS
-summary statistics. Accordingly, \\\beta_4\\ is the primary estimand of
-this analysis.
+uses the exposure GWAS, exposure GWIS, and outcome GWAS summary
+statistics to jointly estimate the average causal effect \\\beta_1\\ and
+the interaction effect \\\beta_4\\ within the reduced-data model.
+Although the outcome GWIS is unavailable, uncertainty in both causal
+parameters is retained during model fitting.
 
 ``` r
 
-# The MERLIN-MO interaction model subsequently treats this estimate as fixed.
+# Fit MERLIN-MO using the exposure GWAS, exposure GWIS, and outcome GWAS.
 
 fit_mo <- MERLIN(
   gammah1 = exp_gwas_sum$beta[iv_mo],
@@ -283,25 +273,13 @@ str(fit_mo)
 ```
 
 ``` text
-List of 18
- $ Beta1.hat : num 0.0427
- $ Beta1.se  : num 0
- $ Beta1.pval: num 0
- $ Beta4.hat : num 0.313
- $ Beta4.se  : num 0.0808
- $ Beta4.pval: num 0.000109
- $ gamma1    : num [1:93, 1] -0.091 0.0177 0.0688 0.0431 -0.0507 ...
- $ beta2     : num [1:93, 1] -0.000671 0.004816 0.005734 -0.009044 0.035268 ...
- $ gamma3    : num [1:93, 1] 0.0317 -0.0556 0.0217 0.0165 -0.0171 ...
- $ Beta1res  : num [1:1200, 1] 0.0427 0.0427 0.0427 0.0427 0.0427 ...
- $ Beta4res  : num [1:1200, 1] 0.287 0.259 0.436 0.449 0.307 ...
- $ Sg12Res   : num [1:1200, 1] 0.00363 0.00478 0.00362 0.00584 0.00484 ...
- $ Sg22Res   : num [1:1200, 1] 0.000653 0.000528 0.00045 0.00042 0.000468 ...
- $ Sg32Res   : num [1:1200, 1] 0.000826 0.001186 0.001246 0.000821 0.000899 ...
- $ S3RS3     : num [1:93, 1] 18931 29961 22617 39567 25225 ...
- $ se2       : num [1:93, 1] 0.00658 0.00525 0.00595 0.00456 0.00575 ...
- $ L2        : num [1:93, 1:93] 0.00658 0 0 0 0 ...
- $ U2        : num [1:93, 1:93] 152 0 0 0 0 ...
+List of 6
+ $ Beta1.hat : num -0.021
+ $ Beta1.se  : num 0.0453
+ $ Beta1.pval: num 0.643
+ $ Beta4.hat : num 0.291
+ $ Beta4.se  : num 0.0702
+ $ Beta4.pval: num 3.46e-05
 ```
 
 ### MERLIN-ME: Exposure GWIS unavailable

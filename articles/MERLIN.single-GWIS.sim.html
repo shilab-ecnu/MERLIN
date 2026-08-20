@@ -43,7 +43,8 @@
     <li><a class="dropdown-item" href="../articles/MERLIN.preprocess.html">Part 2: Data Preprocessing and Instrumental Variable Selection</a></li>
     <li><a class="dropdown-item" href="../articles/MERLIN.sim.html">Part 3: Model Fitting Using Simulated Data</a></li>
     <li><a class="dropdown-item" href="../articles/MERLIN.single-GWIS.sim.html">Part 4: Model Fitting with a Single Available GWIS (MERLIN-MO and MERLIN-ME)</a></li>
-    <li><a class="dropdown-item" href="../articles/MERLIN.realdata.html">Part 5: Real Data Analysis and Convergence Diagnostics</a></li>
+    <li><a class="dropdown-item" href="../articles/MERLIN.binary-E.sim.html">Part 5: Model Fitting with a Discrete Binary Modifier (`discrete_E` and `discrete_E_adj`)</a></li>
+    <li><a class="dropdown-item" href="../articles/MERLIN.realdata.html">Part 6: Real Data Analysis and Convergence Diagnostics</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../articles/MERLIN.functions.html">Functions</a></li>
@@ -169,7 +170,9 @@ normal distribution.</p>
 <span><span class="va">G</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">G</span>, center <span class="op">=</span> <span class="cn">TRUE</span>, scale <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Generate modifier E</span></span>
-<span><span class="va">E</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="va">n_out</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">E_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, each <span class="op">=</span> <span class="va">n_exp</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">E_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, each <span class="op">=</span> <span class="va">n_out</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">E</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">E_exp</span>, <span class="va">E_out</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Simulating Genetic Effects</strong></p>
 <p>The main genetic effects (<span class="math inline">\(\gamma_1\)</span>) and SNP-by-modifier interaction
 effects (<span class="math inline">\(\gamma_3\)</span>) are simulated
@@ -186,13 +189,10 @@ determines the correlation between the two sets of genetic effects.</p>
 <span><span class="va">sigma2g3</span> <span class="op">&lt;-</span> <span class="va">h_g3</span> <span class="op">/</span> <span class="va">m</span></span>
 <span><span class="va">sigma2b</span>  <span class="op">&lt;-</span> <span class="va">h_b</span> <span class="op">/</span> <span class="va">m</span></span>
 <span></span>
-<span><span class="va">cov_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">sigma2g1</span>,</span>
-<span>    <span class="va">cor_g1g3</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">sigma2g1</span> <span class="op">*</span> <span class="va">sigma2g3</span><span class="op">)</span>,</span>
-<span>    <span class="va">cor_g1g3</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">sigma2g1</span> <span class="op">*</span> <span class="va">sigma2g3</span><span class="op">)</span>,</span>
-<span>    <span class="va">sigma2g3</span><span class="op">)</span>,</span>
-<span>  ncol <span class="op">=</span> <span class="fl">2</span></span>
-<span><span class="op">)</span></span>
+<span><span class="va">cov_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">sigma2g1</span>, </span>
+<span>                      <span class="va">cor_g1g3</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">sigma2g1</span> <span class="op">*</span> <span class="va">sigma2g3</span><span class="op">)</span>,</span>
+<span>                      <span class="va">cor_g1g3</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">sigma2g1</span> <span class="op">*</span> <span class="va">sigma2g3</span><span class="op">)</span>,</span>
+<span>                      <span class="va">sigma2g3</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">gamma1_3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/Mvnorm.html" class="external-link">rmvnorm</a></span><span class="op">(</span><span class="va">m</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, sigma <span class="op">=</span> <span class="va">cov_matrix</span><span class="op">)</span></span>
 <span><span class="va">gamma_1x</span> <span class="op">&lt;-</span> <span class="va">gamma1_3</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span></span>
@@ -212,19 +212,14 @@ calculated in non-overlapping cohorts.</p>
 <span></span>
 <span><span class="va">var_noise_x</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">h_g1</span> <span class="op">-</span> <span class="va">h_g3</span></span>
 <span><span class="va">var_noise_y</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">b1</span><span class="op">*</span><span class="va">b1</span> <span class="op">-</span> <span class="va">h_b</span> <span class="op">-</span> <span class="va">b4</span><span class="op">*</span><span class="va">b4</span></span>
+<span></span>
+<span><span class="co"># Construct the covariance matrix for the bivariate normal distribution</span></span>
 <span><span class="va">cov_xy</span> <span class="op">&lt;-</span> <span class="va">rhoxy</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">var_noise_x</span> <span class="op">*</span> <span class="va">var_noise_y</span><span class="op">)</span></span>
+<span><span class="va">sigma_noise</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">var_noise_x</span>, <span class="va">cov_xy</span>,</span>
+<span>                        <span class="va">cov_xy</span>, <span class="va">var_noise_y</span><span class="op">)</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">sigma_noise</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">var_noise_x</span>, <span class="va">cov_xy</span>,</span>
-<span>    <span class="va">cov_xy</span>, <span class="va">var_noise_y</span><span class="op">)</span>,</span>
-<span>  ncol <span class="op">=</span> <span class="fl">2</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">noise_xy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/Mvnorm.html" class="external-link">rmvnorm</a></span><span class="op">(</span></span>
-<span>  <span class="va">n_exp</span> <span class="op">+</span> <span class="va">n_out</span>,</span>
-<span>  mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,</span>
-<span>  sigma <span class="op">=</span> <span class="va">sigma_noise</span></span>
-<span><span class="op">)</span></span>
+<span><span class="co"># Generate correlated noise for X and Y</span></span>
+<span><span class="va">noise_xy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mvtnorm/man/Mvnorm.html" class="external-link">rmvnorm</a></span><span class="op">(</span><span class="va">n_exp</span> <span class="op">+</span> <span class="va">n_out</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, sigma <span class="op">=</span> <span class="va">sigma_noise</span><span class="op">)</span></span>
 <span><span class="va">noise_x</span> <span class="op">&lt;-</span> <span class="va">noise_xy</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span></span>
 <span><span class="va">noise_y</span> <span class="op">&lt;-</span> <span class="va">noise_xy</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span></span>
 <span></span>
@@ -301,22 +296,18 @@ for this analysis.</p>
 <div class="section level2">
 <h2 id="instrument-selection">Instrument Selection<a class="anchor" aria-label="anchor" href="#instrument-selection"></a>
 </h2>
-<p>For this toy example, SNPs are independent and we use <span class="math inline">\(P &lt; 0.01\)</span> as the instrument-selection
+<p>For this toy example, SNPs are independent and we use <span class="math inline">\(P &lt; 5e-8\)</span> as the instrument-selection
 threshold. In real applications, genome-wide thresholds and LD clumping
 should be used as described in Part 2.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p_threshold</span> <span class="op">&lt;-</span> <span class="fl">0.01</span></span>
+<code class="sourceCode R"><span><span class="va">p_threshold</span> <span class="op">&lt;-</span> <span class="fl">5e-8</span></span>
 <span></span>
 <span><span class="co"># Exposure-GWAS instruments</span></span>
-<span><span class="va">pvals_gwas</span> <span class="op">&lt;-</span> <span class="fl">2</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span></span>
-<span>  <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">exp_gwas_sum</span><span class="op">$</span><span class="va">beta</span> <span class="op">/</span> <span class="va">exp_gwas_sum</span><span class="op">$</span><span class="va">se</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="va">pvals_gwas</span> <span class="op">&lt;-</span> <span class="fl">2</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">exp_gwas_sum</span><span class="op">$</span><span class="va">beta</span> <span class="op">/</span> <span class="va">exp_gwas_sum</span><span class="op">$</span><span class="va">se</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">iv_gwas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">pvals_gwas</span> <span class="op">&lt;</span> <span class="va">p_threshold</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Exposure-GWIS instruments</span></span>
-<span><span class="va">pvals_gwis</span> <span class="op">&lt;-</span> <span class="fl">2</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span></span>
-<span>  <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">exp_gwis_sum</span><span class="op">$</span><span class="va">beta</span> <span class="op">/</span> <span class="va">exp_gwis_sum</span><span class="op">$</span><span class="va">se</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
+<span><span class="va">pvals_gwis</span> <span class="op">&lt;-</span> <span class="fl">2</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">exp_gwis_sum</span><span class="op">$</span><span class="va">beta</span> <span class="op">/</span> <span class="va">exp_gwis_sum</span><span class="op">$</span><span class="va">se</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">iv_gwis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">pvals_gwis</span> <span class="op">&lt;</span> <span class="va">p_threshold</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># MERLIN-MO uses the union of exposure-GWAS and exposure-GWIS instruments.</span></span>
@@ -335,14 +326,15 @@ should be used as described in Part 2.</p>
 <h3 id="merlin-mo-outcome-gwis-unavailable">MERLIN-MO: Outcome GWIS unavailable<a class="anchor" aria-label="anchor" href="#merlin-mo-outcome-gwis-unavailable"></a>
 </h3>
 <p>When outcome GWIS summary statistics are unavailable, <span class="math inline">\(\widehat{\Gamma}_3\)</span> and its standard error
-are omitted. MERLIN-MO first obtains an MR-Egger estimate of the average
-causal effect <span class="math inline">\(\beta_1\)</span>. This
-estimate is then held fixed while <span class="math inline">\(\beta_4\)</span> is estimated using the exposure
-GWAS, exposure GWIS, and outcome GWAS summary statistics. Accordingly,
-<span class="math inline">\(\beta_4\)</span> is the primary estimand of
-this analysis.</p>
+are omitted. MERLIN-MO uses the exposure GWAS, exposure GWIS, and
+outcome GWAS summary statistics to jointly estimate the average causal
+effect <span class="math inline">\(\beta_1\)</span> and the interaction
+effect <span class="math inline">\(\beta_4\)</span> within the
+reduced-data model. Although the outcome GWIS is unavailable,
+uncertainty in both causal parameters is retained during model
+fitting.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># The MERLIN-MO interaction model subsequently treats this estimate as fixed.</span></span>
+<code class="sourceCode R"><span><span class="co"># Fit MERLIN-MO using the exposure GWAS, exposure GWIS, and outcome GWAS.</span></span>
 <span></span>
 <span><span class="va">fit_mo</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MERLIN-package.html">MERLIN</a></span><span class="op">(</span></span>
 <span>  gammah1 <span class="op">=</span> <span class="va">exp_gwas_sum</span><span class="op">$</span><span class="va">beta</span><span class="op">[</span><span class="va">iv_mo</span><span class="op">]</span>,</span>
@@ -357,25 +349,13 @@ this analysis.</p>
 <span>  seed <span class="op">=</span> <span class="fl">2027</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">fit_mo</span><span class="op">)</span></span></code></pre></div>
-<pre class="text"><code>List of 18
- $ Beta1.hat : num 0.0427
- $ Beta1.se  : num 0
- $ Beta1.pval: num 0
- $ Beta4.hat : num 0.313
- $ Beta4.se  : num 0.0808
- $ Beta4.pval: num 0.000109
- $ gamma1    : num [1:93, 1] -0.091 0.0177 0.0688 0.0431 -0.0507 ...
- $ beta2     : num [1:93, 1] -0.000671 0.004816 0.005734 -0.009044 0.035268 ...
- $ gamma3    : num [1:93, 1] 0.0317 -0.0556 0.0217 0.0165 -0.0171 ...
- $ Beta1res  : num [1:1200, 1] 0.0427 0.0427 0.0427 0.0427 0.0427 ...
- $ Beta4res  : num [1:1200, 1] 0.287 0.259 0.436 0.449 0.307 ...
- $ Sg12Res   : num [1:1200, 1] 0.00363 0.00478 0.00362 0.00584 0.00484 ...
- $ Sg22Res   : num [1:1200, 1] 0.000653 0.000528 0.00045 0.00042 0.000468 ...
- $ Sg32Res   : num [1:1200, 1] 0.000826 0.001186 0.001246 0.000821 0.000899 ...
- $ S3RS3     : num [1:93, 1] 18931 29961 22617 39567 25225 ...
- $ se2       : num [1:93, 1] 0.00658 0.00525 0.00595 0.00456 0.00575 ...
- $ L2        : num [1:93, 1:93] 0.00658 0 0 0 0 ...
- $ U2        : num [1:93, 1:93] 152 0 0 0 0 ...</code></pre>
+<pre class="text"><code>List of 6
+ $ Beta1.hat : num -0.021
+ $ Beta1.se  : num 0.0453
+ $ Beta1.pval: num 0.643
+ $ Beta4.hat : num 0.291
+ $ Beta4.se  : num 0.0702
+ $ Beta4.pval: num 3.46e-05</code></pre>
 </div>
 <div class="section level3">
 <h3 id="merlin-me-exposure-gwis-unavailable">MERLIN-ME: Exposure GWIS unavailable<a class="anchor" aria-label="anchor" href="#merlin-me-exposure-gwis-unavailable"></a>

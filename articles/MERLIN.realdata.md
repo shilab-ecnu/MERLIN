@@ -1,4 +1,4 @@
-# Part 5: Real Data Analysis and Convergence Diagnostics
+# Part 6: Real Data Analysis and Convergence Diagnostics
 
 ## Case Study: Testosterone on Bipolar Disorder
 
@@ -60,10 +60,21 @@ distinct modes:
 - “`continuous_E`”: A specialized version of the standard model
   optimized for a continuous environmental variable.
 
-- “`binary`”: A specialized version of the standard model for binary
-  environmental variables (e.g., Sex). This requires the additional
-  parameter `p1`, which represents the proportion/probability of the
-  environmental factor taking the value 1 (i.e., \\P(E=1)\\).
+- `"discrete_E"`: A specialized version of the standard model for
+  discrete binary environmental variables (e.g., sex) when the exposure
+  and outcome samples share the same environmental distribution. This
+  model requires the additional parameter `p_common`, which represents
+  the common proportion/probability of the environmental factor taking
+  the value 1 in both samples (i.e., \\P(E=1)\\).
+
+- `"discrete_E_adj"`: An adjusted version of the discrete environmental
+  model for situations where the proportion of the binary environmental
+  variable differs between the exposure and outcome samples (e.g., when
+  the sex distributions differ between the two samples). This model
+  requires `p_exp` and `p_out`, representing \\P(E=1)\\ in the exposure
+  and outcome samples, respectively. Before model fitting, the exposure
+  GWAS and GWIS estimates are adjusted to represent the same proportion
+  of \\E=1\\ as in the outcome sample.
 
 - “`MO`”: Designed for practical scenarios where outcome GWIS summary
   statistics are unavailable. This model drops the requirement for
@@ -92,7 +103,7 @@ posterior samples (default: `10`).
 
 For our Testosterone-BD case study, the environmental factor (Sex) is
 technically a **binary** variable. While MERLIN provides a specialized
-`"binary"` model, statistical evaluations have demonstrated that when
+`"discrete"` model, statistical evaluations have demonstrated that when
 the sample size ratio between the two environmental categories is
 relatively balanced (i.e., the proportion is close to 1:1), the default
 `"standard"` model is highly robust and yields almost identical causal
@@ -143,14 +154,6 @@ List of 14
  $ Beta4.hat : num 0.263
  $ Beta4.se  : num 0.0926
  $ Beta4.pval: num 0.00445
- $ gamma1    : num [1:342, 1] -0.015375 -0.000416 0.010435 -0.004966 -0.001452 ...
- $ beta2     : num [1:342, 1] -0.00985 0.01249 -0.00905 -0.01255 -0.01173 ...
- $ gamma3    : num [1:342, 1] -0.00931 -0.0068 0.01285 -0.00937 -0.00731 ...
- $ Beta1res  : num [1:1200, 1] 0.124 0.3 0.173 0.136 0.313 ...
- $ Beta4res  : num [1:1200, 1] 0.176 0.328 0.422 0.425 0.179 ...
- $ Sg12Res   : num [1:1200, 1] 0.000164 0.000167 0.000159 0.00021 0.000154 ...
- $ Sg22Res   : num [1:1200, 1] 0.00022 0.000169 0.000141 0.000162 0.000169 ...
- $ Sg32Res   : num [1:1200, 1] 6.23e-05 6.20e-05 5.59e-05 7.06e-05 5.72e-05 ...
 ```
 
 MERLIN can still be applied when either the exposure GWIS or the outcome
