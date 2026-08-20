@@ -41,7 +41,9 @@ navbar:
           href: articles/MERLIN.sim.html
         - text: "Part 4: Model Fitting with a Single Available GWIS (MERLIN-MO and MERLIN-ME)"
           href: articles/MERLIN.single-GWIS.sim.html
-        - text: "Part 5: Real Data Analysis and Convergence Diagnostics"
+        - text: "Part 5: Model Fitting with a Discrete Binary Modifier (`discrete_E` and `discrete_E_adj`)"
+          href: articles/MERLIN.binary-E.sim.html
+        - text: "Part 6: Real Data Analysis and Convergence Diagnostics"
           href: articles/MERLIN.realdata.html
     changelog:
       text: "Changelog"
@@ -67,6 +69,7 @@ articles:
     contents:
       - MERLIN.sim
       - MERLIN.single-GWIS.sim
+      - MERLIN.binary-E.sim
       - MERLIN.realdata
   - title: internal
     contents:
