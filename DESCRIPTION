@@ -13,13 +13,21 @@ Description: MERLIN (Causal Heterogeneity using Summary Statistics) is a unified
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-LinkingTo: Rcpp,RcppArmadillo,BH,bigmemory,RcppDist
+LinkingTo: 
+    Rcpp,
+    RcppArmadillo,
+    BH,
+    bigmemory,
+    RcppDist
 Imports: 
     data.table,
     readr,
     Rcpp,
     TwoSampleMR (>= 0.7.9)
-Suggests: knitr, rmarkdown, mvtnorm
+Suggests: 
+    knitr,
+    rmarkdown,
+    mvtnorm
 VignetteBuilder: knitr
 NeedsCompilation: yes
 Packaged: 2026-07-22 12:38:41 UTC; 36433
