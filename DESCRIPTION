@@ -2,9 +2,9 @@ Package: MERLIN
 Title: MERLIN for causal heterogeneity using summary statistics
 Version: 1.1.2
 Authors@R: c(
-     person(given ="Yadong", family ="Yang", role = "aut"),
-     person(given ="Xingjie", family ="Shi",role = "aut", comment = c(ORCID = "0000-0002-9866-8599")),
-     person(given ="Minxi", family ="Bai", role = "aut"),
+     person(given ="Yadong", family ="Yang", email="52294404009@stu.ecnu.edu.cn", role = "aut"),
+     person(given ="Xingjie", family ="Shi", email="xjshi@fem.ecnu.edu.cn", role = "aut", comment = c(ORCID = "0000-0002-9866-8599")),
+     person(given ="Minxi", family ="Bai", email="mxbai0417@sjtu.edu.cn", role = "aut"),
      person(given ="Jie", family ="He", email = "10225000415@stu.ecnu.edu.cn",role = c("aut","cre")))
 Description: MERLIN (Causal Heterogeneity using Summary Statistics) is a unified 
     Bayesian framework that jointly estimates average and heterogeneity 
