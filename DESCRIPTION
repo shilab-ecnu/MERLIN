@@ -32,7 +32,8 @@ VignetteBuilder: knitr
 NeedsCompilation: yes
 Packaged: 2026-07-22 12:38:41 UTC; 36433
 Maintainer: Jie He <10225000415@stu.ecnu.edu.cn>
-URL: https://shilab-ecnu.github.io/MERLIN/
+URL: https://github.com/shilab-ecnu/MERLIN,
+     https://shilab-ecnu.github.io/MERLIN/
 BugReports: https://github.com/shilab-ecnu/MERLIN/issues/
 Config/roxygen2/version: 8.1.0
 Remotes:  
