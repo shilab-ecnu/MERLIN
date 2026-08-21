@@ -436,13 +436,7 @@ loaded via a namespace (and not attached):
 [22] rlang_1.1.7         vroom_1.7.0
 ```
 
-# Package index
-
-## All functions
-
-- [`MERLIN-package`](https://shilab-ecnu.github.io/MERLIN/reference/MERLIN-package.md)
-  [`MERLIN`](https://shilab-ecnu.github.io/MERLIN/reference/MERLIN-package.md)
-  : MERLIN for causal heterogeneity using summary statistics
+# 
 
 # Articles
 
