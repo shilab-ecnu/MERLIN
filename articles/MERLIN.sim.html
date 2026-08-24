@@ -6,13 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Part 3: Model Fitting Using Simulated Data • MERLIN</title>
-<!-- mathjax math --><script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script><script>
-  window.MathJax = {
-    chtml: {
-      fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
-    }
-  };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
@@ -82,33 +76,61 @@
 </h2>
 <p>Before applying MERLIN to real-world summary statistics, it is highly
 instructive to understand its behavior using simulated data. In this
-section, we will simulate a scenario where an environmental factor <span class="math inline">\(E\)</span> interacts with genetic variants <span class="math inline">\(G\)</span> to influence both the exposure <span class="math inline">\(X\)</span> and the outcome <span class="math inline">\(Y\)</span>.</p>
-<p>The underlying data generating mechanism can be defined as: <span class="math display">\[
+section, we will simulate a scenario where an environmental factor
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>E</mi><annotation encoding="application/x-tex">E</annotation></semantics></math>
+interacts with genetic variants
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math>
+to influence both the exposure
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>
+and the outcome
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>.</p>
+<p>The underlying data generating mechanism can be defined as:
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><mi>G</mi><msub><mi>γ</mi><mn>1</mn></msub><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>G</mi><mo>×</mo><mi>E</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>γ</mi><mn>3</mn></msub><mo>+</mo><mn>0.1</mn><mi>E</mi><mo>+</mo><msub><mi>ϵ</mi><mi>X</mi></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">
 X=G\gamma_1+(G\times E)\gamma_3+0.1E+\epsilon_X,
-\]</span></p>
-<p><span class="math display">\[
+</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>+</mo><msub><mi>β</mi><mn>4</mn></msub><mi>E</mi><mo stretchy="false" form="postfix">)</mo><mi>X</mi><mo>+</mo><mi>G</mi><msub><mi>β</mi><mn>2</mn></msub><mo>+</mo><mn>0.1</mn><mi>E</mi><mo>+</mo><msub><mi>ϵ</mi><mi>Y</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">
 Y=(\beta_1+\beta_4E)X+G\beta_2+0.1E+\epsilon_Y.
-\]</span> Where: - <span class="math inline">\(\beta_1\)</span>: The
-average causal effect of <span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span>, corresponding to <span class="math inline">\(\beta^{(A)}\)</span> in the manuscript.</p>
+</annotation></semantics></math> Where: -
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\beta_1</annotation></semantics></math>:
+The average causal effect of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>
+on
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>,
+corresponding to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>β</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo></mrow></msup><annotation encoding="application/x-tex">\beta^{(A)}</annotation></semantics></math>
+in the manuscript.</p>
 <ul>
-<li><p><span class="math inline">\(\beta_4\)</span>: The causal
-interaction effect quantifying the extent to which the causal effect of
-<span class="math inline">\(X\)</span> on <span class="math inline">\(Y\)</span> is modified by <span class="math inline">\(E\)</span>, corresponding to <span class="math inline">\(\beta^{(I)}\)</span> in the manuscript.</p></li>
-<li><p><span class="math inline">\(\gamma_1\)</span>: The main genetic
-effects on the exposure, corresponding to <span class="math inline">\(\boldsymbol{\gamma}^{(G)}\)</span> in the
-manuscript.</p></li>
-<li><p><span class="math inline">\(\gamma_3\)</span>: The
-genetic-by-environment interaction effects on the exposure,
-corresponding to <span class="math inline">\(\boldsymbol{\gamma}^{(GI)}\)</span> in the
-manuscript.</p></li>
-<li><p><span class="math inline">\(\beta_2\)</span>: The direct genetic
-effects on the outcome, representing horizontal pleiotropy and
-corresponding to <span class="math inline">\({\boldsymbol{\beta}}^{(G)}\)</span> in the
-manuscript.</p></li>
-<li><p><span class="math inline">\(\epsilon_X\)</span>, <span class="math inline">\(\epsilon_Y\)</span>: The residual error terms for
-the exposure and outcome, respectively. These capture the cumulative
-errors, crucially including the effects of unmeasured confounders,
-independent environmental noise, and measurement errors.</p></li>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mn>4</mn></msub><annotation encoding="application/x-tex">\beta_4</annotation></semantics></math>:
+The causal interaction effect quantifying the extent to which the causal
+effect of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>
+on
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
+is modified by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>E</mi><annotation encoding="application/x-tex">E</annotation></semantics></math>,
+corresponding to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>β</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>I</mi><mo stretchy="false" form="postfix">)</mo></mrow></msup><annotation encoding="application/x-tex">\beta^{(I)}</annotation></semantics></math>
+in the manuscript.</p></li>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>γ</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\gamma_1</annotation></semantics></math>:
+The main genetic effects on the exposure, corresponding to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>𝛄</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>G</mi><mo stretchy="false" form="postfix">)</mo></mrow></msup><annotation encoding="application/x-tex">\boldsymbol{\gamma}^{(G)}</annotation></semantics></math>
+in the manuscript.</p></li>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>γ</mi><mn>3</mn></msub><annotation encoding="application/x-tex">\gamma_3</annotation></semantics></math>:
+The genetic-by-environment interaction effects on the exposure,
+corresponding to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>𝛄</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>G</mi><mi>I</mi><mo stretchy="false" form="postfix">)</mo></mrow></msup><annotation encoding="application/x-tex">\boldsymbol{\gamma}^{(GI)}</annotation></semantics></math>
+in the manuscript.</p></li>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mn>2</mn></msub><annotation encoding="application/x-tex">\beta_2</annotation></semantics></math>:
+The direct genetic effects on the outcome, representing horizontal
+pleiotropy and corresponding to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>𝛃</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>G</mi><mo stretchy="false" form="postfix">)</mo></mrow></msup><annotation encoding="application/x-tex">{\boldsymbol{\beta}}^{(G)}</annotation></semantics></math>
+in the manuscript.</p></li>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ϵ</mi><mi>X</mi></msub><annotation encoding="application/x-tex">\epsilon_X</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ϵ</mi><mi>Y</mi></msub><annotation encoding="application/x-tex">\epsilon_Y</annotation></semantics></math>:
+The residual error terms for the exposure and outcome, respectively.
+These capture the cumulative errors, crucially including the effects of
+unmeasured confounders, independent environmental noise, and measurement
+errors.</p></li>
 </ul>
 </div>
 <div class="section level2">
@@ -128,12 +150,17 @@ reproducibility.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2026</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Generating Genotypes and Environmental Variables</strong></p>
-<p>We simulate <span class="math inline">\(m = 100\)</span> independent
-SNPs for a total of 160,000 individuals, split equally into an exposure
-cohort (<code>n_exp = 80000</code>) and an outcome cohort
-(<code>n_out = 80000</code>). The environmental variable <span class="math inline">\(E\)</span> is simulated as a balanced binary
-modifier coded as <span class="math inline">\(-1\)</span> and <span class="math inline">\(1\)</span>, with equal proportions in both the
-exposure and outcome samples.</p>
+<p>We simulate
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>100</mn></mrow><annotation encoding="application/x-tex">m = 100</annotation></semantics></math>
+independent SNPs for a total of 160,000 individuals, split equally into
+an exposure cohort (<code>n_exp = 80000</code>) and an outcome cohort
+(<code>n_out = 80000</code>). The environmental variable
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>E</mi><annotation encoding="application/x-tex">E</annotation></semantics></math>
+is simulated as a balanced binary modifier coded as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>,
+with equal proportions in both the exposure and outcome samples.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">n_exp</span> <span class="op">&lt;-</span> <span class="fl">80000</span></span>
 <span><span class="va">n_out</span> <span class="op">&lt;-</span> <span class="fl">80000</span></span>
@@ -154,10 +181,15 @@ exposure and outcome samples.</p>
 <span><span class="va">E_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, each <span class="op">=</span> <span class="va">n_out</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">E</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">E_exp</span>, <span class="va">E_out</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Simulating Genetic Effects</strong></p>
-<p>The main genetic effects (<span class="math inline">\(\gamma_1\)</span>) and <span class="math inline">\(G \times E\)</span> interaction effects (<span class="math inline">\(\gamma_3\)</span>) are generated from a bivariate
-normal distribution to allow for correlation
-(<code>cor_g1g3 = 0.4</code>) between them. We control their variance
-using specified heritability parameters (<code>h_g1</code> and
+<p>The main genetic effects
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>γ</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\gamma_1</annotation></semantics></math>)
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>×</mo><mi>E</mi></mrow><annotation encoding="application/x-tex">G \times E</annotation></semantics></math>
+interaction effects
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>γ</mi><mn>3</mn></msub><annotation encoding="application/x-tex">\gamma_3</annotation></semantics></math>)
+are generated from a bivariate normal distribution to allow for
+correlation (<code>cor_g1g3 = 0.4</code>) between them. We control their
+variance using specified heritability parameters (<code>h_g1</code> and
 <code>h_g3</code>).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">h_g1</span> <span class="op">&lt;-</span> <span class="fl">0.3</span>    </span>
@@ -180,9 +212,12 @@ using specified heritability parameters (<code>h_g1</code> and
 <span><span class="va">beta_2</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">m</span>, <span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">sigma2b</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Generating Exposure and Outcome Phenotypes</strong></p>
 <p>Using the mathematical model defined above, we generate the
-phenotypes <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, and then split the data into
-independent exposure and outcome cohorts to mimic a two-sample Mendelian
-Randomization design.</p>
+phenotypes
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>,
+and then split the data into independent exposure and outcome cohorts to
+mimic a two-sample Mendelian Randomization design.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Construct the GxE interaction term</span></span>
 <span><span class="va">GE</span> <span class="op">&lt;-</span> <span class="va">G</span> <span class="op">*</span> <span class="va">E</span></span>
@@ -224,7 +259,10 @@ Randomization design.</p>
 </h2>
 <p>In practice, researchers usually only have access to summary
 statistics. We define a helper function <code>get_sumstats</code> to run
-single-variant linear regressions and extract the effect sizes (<span class="math inline">\(\hat{\beta}\)</span>) and standard errors (<span class="math inline">\(SE\)</span>).</p>
+single-variant linear regressions and extract the effect sizes
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>β</mi><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\hat{\beta}</annotation></semantics></math>)
+and standard errors
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>E</mi></mrow><annotation encoding="application/x-tex">SE</annotation></semantics></math>).</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">get_sumstats</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">G</span>, <span class="va">pheno</span>, <span class="va">interaction</span> <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">E</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">betas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">G</span><span class="op">)</span><span class="op">)</span></span>
@@ -260,10 +298,14 @@ single-variant linear regressions and extract the effect sizes (<span class="mat
 </h2>
 <p><strong>Selecting Instrumental Variables</strong></p>
 <p>We select valid genetic instruments using a significance threshold
-(e.g., <span class="math inline">\(P &lt; 5e-8\)</span> for this toy
-example). SNPs that pass the threshold in either the exposure GWAS or
-GWIS analysis are included in the union set of instruments. Since SNPs
-are simulated independently here, the LD correlation matrix <span class="math inline">\(R\)</span> is simply an identity matrix.</p>
+(e.g.,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>&lt;</mo><mn>5</mn><mi>e</mi><mo>−</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">P &lt; 5e-8</annotation></semantics></math>
+for this toy example). SNPs that pass the threshold in either the
+exposure GWAS or GWIS analysis are included in the union set of
+instruments. Since SNPs are simulated independently here, the LD
+correlation matrix
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>
+is simply an identity matrix.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_threshold</span> <span class="op">&lt;-</span> <span class="fl">5e-8</span></span>
 <span></span>
@@ -281,7 +323,8 @@ are simulated independently here, the LD correlation matrix <span class="math in
 <p><strong>Applying the MERLIN Method</strong></p>
 <p>Finally, we format the inputs and execute the MERLIN function. Since
 we simulated independent non-overlapping samples, the sample overlap
-correlations (rho_1 and rho_2) are explicitly set to <span class="math inline">\(0\)</span>.</p>
+correlations (rho_1 and rho_2) are explicitly set to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Extract values for the selected instruments</span></span>
 <span><span class="va">gamma_hat</span>  <span class="op">&lt;-</span> <span class="va">exp_gwas_sum</span><span class="op">$</span><span class="va">beta</span><span class="op">[</span><span class="va">iv_union</span><span class="op">]</span></span>
@@ -333,8 +376,10 @@ List of 6
  $ Beta4.pval: num 3.93e-190</code></pre>
 <p><strong>Interpreting the Results</strong></p>
 <p>The output <code>res</code> is a list containing the estimated
-parameters. We can extract the average causal effect (<span class="math inline">\(\widehat{\beta}_1\)</span>) and the heterogeneity
-causal effect (<span class="math inline">\(\widehat{\beta}_4\)</span>).</p>
+parameters. We can extract the average causal effect
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>β</mi><mo accent="true">̂</mo></mover><mn>1</mn></msub><annotation encoding="application/x-tex">\widehat{\beta}_1</annotation></semantics></math>)
+and the heterogeneity causal effect
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>β</mi><mo accent="true">̂</mo></mover><mn>4</mn></msub><annotation encoding="application/x-tex">\widehat{\beta}_4</annotation></semantics></math>).</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Main causal effect estimates</span></span>
 <span><span class="va">beta1_hat</span> <span class="op">&lt;-</span> <span class="va">res</span><span class="op">$</span><span class="va">Beta1.hat</span></span>
@@ -352,11 +397,17 @@ causal effect (<span class="math inline">\(\widehat{\beta}_4\)</span>).</p>
 Estimated Interaction Effect (b4): 0.3137</code></pre>
 <p>Crucially, recall that we deliberately introduced strong unmeasured
 confounding into the simulation by correlating the residual error terms
-of the exposure and outcome (<span class="math inline">\(\rho=0.6\)</span>). Despite this confounding, the
-estimated average causal effect was close to its true value of zero
-(<span class="math inline">\(\widehat{\beta}_1=-0.0045\)</span>, <span class="math inline">\(P=0.810\)</span>), whereas the estimated
-interaction effect closely recovered its true value of 0.3 (<span class="math inline">\(\widehat{\beta}_4=0.3137\)</span>, <span class="math inline">\(P=3.93\times10^{-190}\)</span>). These results
-illustrate that MERLIN can recover both the average and
+of the exposure and outcome
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ρ</mi><mo>=</mo><mn>0.6</mn></mrow><annotation encoding="application/x-tex">\rho=0.6</annotation></semantics></math>).
+Despite this confounding, the estimated average causal effect was close
+to its true value of zero
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>β</mi><mo accent="true">̂</mo></mover><mn>1</mn></msub><mo>=</mo><mi>−</mi><mn>0.0045</mn></mrow><annotation encoding="application/x-tex">\widehat{\beta}_1=-0.0045</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mn>0.810</mn></mrow><annotation encoding="application/x-tex">P=0.810</annotation></semantics></math>),
+whereas the estimated interaction effect closely recovered its true
+value of 0.3
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>β</mi><mo accent="true">̂</mo></mover><mn>4</mn></msub><mo>=</mo><mn>0.3137</mn></mrow><annotation encoding="application/x-tex">\widehat{\beta}_4=0.3137</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mn>3.93</mn><mo>×</mo><msup><mn>10</mn><mrow><mi>−</mi><mn>190</mn></mrow></msup></mrow><annotation encoding="application/x-tex">P=3.93\times10^{-190}</annotation></semantics></math>).
+These results illustrate that MERLIN can recover both the average and
 modifier-dependent causal effects in this simulated setting with a
 balanced binary modifier.</p>
 </div>

@@ -6,13 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Part 5: Model Fitting with a Discrete Binary Modifier (`discrete_E` and `discrete_E_adj`) • MERLIN</title>
-<!-- mathjax math --><script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script><script>
-  window.MathJax = {
-    chtml: {
-      fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
-    }
-  };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
@@ -80,19 +74,28 @@
 <div class="section level2">
 <h2 id="introduction-to-the-binary-modifier-models">Introduction to the Binary-Modifier Models<a class="anchor" aria-label="anchor" href="#introduction-to-the-binary-modifier-models"></a>
 </h2>
-<p>When the modifier <span class="math inline">\(E\)</span> is binary,
-its mean and variance depend on the proportion of individuals in the two
-groups. Consequently, GWAS and GWIS summary statistics obtained from two
-cohorts may not be directly comparable if the distribution of <span class="math inline">\(E\)</span> differs between them. MERLIN provides
-two model options for binary modifiers coded as <span class="math inline">\(E=-1\)</span> and <span class="math inline">\(E=1\)</span>:</p>
+<p>When the modifier
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>E</mi><annotation encoding="application/x-tex">E</annotation></semantics></math>
+is binary, its mean and variance depend on the proportion of individuals
+in the two groups. Consequently, GWAS and GWIS summary statistics
+obtained from two cohorts may not be directly comparable if the
+distribution of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>E</mi><annotation encoding="application/x-tex">E</annotation></semantics></math>
+differs between them. MERLIN provides two model options for binary
+modifiers coded as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">E=-1</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">E=1</annotation></semantics></math>:</p>
 <ul>
 <li><p><strong><code>discrete_E</code></strong> is used when the
-exposure and outcome cohorts have the same value of <span class="math inline">\(P(E=1)\)</span>. The common proportion does not
-need to be 0.5.</p></li>
-<li><p><strong><code>discrete_E_adj</code></strong> is used when <span class="math inline">\(P(E=1)\)</span> differs between the exposure and
-outcome cohorts. This model harmonizes the exposure summary statistics
-to the modifier distribution in the outcome cohort before model
-fitting.</p></li>
+exposure and outcome cohorts have the same value of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>E</mi><mo>=</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P(E=1)</annotation></semantics></math>.
+The common proportion does not need to be 0.5.</p></li>
+<li><p><strong><code>discrete_E_adj</code></strong> is used when
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>E</mi><mo>=</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P(E=1)</annotation></semantics></math>
+differs between the exposure and outcome cohorts. This model harmonizes
+the exposure summary statistics to the modifier distribution in the
+outcome cohort before model fitting.</p></li>
 </ul>
 <p>Both models require exposure GWAS, exposure GWIS, outcome GWAS, and
 outcome GWIS summary statistics.</p>
@@ -110,13 +113,12 @@ outcome GWIS summary statistics.</p>
 <tbody>
 <tr class="odd">
 <td align="left"><code>"discrete_E"</code></td>
-<td align="left"><span class="math inline">\(p_{exp}=p_{out}\)</span></td>
+<td align="left"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mrow><mi>e</mi><mi>x</mi><mi>p</mi></mrow></msub><mo>=</mo><msub><mi>p</mi><mrow><mi>o</mi><mi>u</mi><mi>t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">p_{exp}=p_{out}</annotation></semantics></math></td>
 <td align="left"><code>p_common</code></td>
 </tr>
 <tr class="even">
 <td align="left"><code>"discrete_E_adj"</code></td>
-<td align="left"><span class="math inline">\(p_{exp}\ne
-p_{out}\)</span></td>
+<td align="left"><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mrow><mi>e</mi><mi>x</mi><mi>p</mi></mrow></msub><mo>≠</mo><msub><mi>p</mi><mrow><mi>o</mi><mi>u</mi><mi>t</mi></mrow></msub></mrow><annotation encoding="application/x-tex">p_{exp}\ne p_{out}</annotation></semantics></math></td>
 <td align="left">
 <code>p_exp</code>, <code>p_out</code>
 </td>
@@ -124,14 +126,21 @@ p_{out}\)</span></td>
 </tbody>
 </table>
 <p>Here, <code>p_common</code>, <code>p_exp</code>, and
-<code>p_out</code> always denote <span class="math inline">\(P(E=1)\)</span> under the <span class="math inline">\(-1/+1\)</span> coding. For example, if males are
-coded as 1, these quantities are the proportions of males in the
-corresponding cohorts.</p>
+<code>p_out</code> always denote
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>E</mi><mo>=</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P(E=1)</annotation></semantics></math>
+under the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1</mn><mi>/</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">-1/+1</annotation></semantics></math>
+coding. For example, if males are coded as 1, these quantities are the
+proportions of males in the corresponding cohorts.</p>
 <p>In this tutorial, a single simulated dataset with a balanced binary
-modifier is used to generate <span class="math inline">\(G\)</span>,
-<span class="math inline">\(X\)</span>, and <span class="math inline">\(Y\)</span>. The two scenarios differ only in the
-indices used to construct the final exposure and outcome samples for the
-marginal GWAS and GWIS regressions.</p>
+modifier is used to generate
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>,
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>.
+The two scenarios differ only in the indices used to construct the final
+exposure and outcome samples for the marginal GWAS and GWIS
+regressions.</p>
 </div>
 <div class="section level2">
 <h2 id="common-data-generation">Common Data Generation<a class="anchor" aria-label="anchor" href="#common-data-generation"></a>
@@ -178,9 +187,15 @@ samples.</p>
 <div class="section level3">
 <h3 id="genotypes-modifier-and-genetic-effects">Genotypes, Modifier, and Genetic Effects<a class="anchor" aria-label="anchor" href="#genotypes-modifier-and-genetic-effects"></a>
 </h3>
-<p>The modifier is balanced, with half of the individuals coded as <span class="math inline">\(E=1\)</span> and half as <span class="math inline">\(E=-1\)</span>. The modifier is generated before
-<span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> and is used in both phenotype
-models.</p>
+<p>The modifier is balanced, with half of the individuals coded as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">E=1</annotation></semantics></math>
+and half as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">E=-1</annotation></semantics></math>.
+The modifier is generated before
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
+and is used in both phenotype models.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Generate the complete genotype data</span></span>
 <span><span class="va">maf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="va">m</span>, <span class="fl">0.05</span>, <span class="fl">0.5</span><span class="op">)</span></span>
@@ -221,7 +236,12 @@ models.</p>
 <h3 id="generating-the-exposure-and-outcome">Generating the Exposure and Outcome<a class="anchor" aria-label="anchor" href="#generating-the-exposure-and-outcome"></a>
 </h3>
 <p>The exposure and outcome are generated once for the entire source
-population. Both subsequent analyses use these same values of <span class="math inline">\(G\)</span>, <span class="math inline">\(E\)</span>, <span class="math inline">\(X\)</span>, and <span class="math inline">\(Y\)</span>.</p>
+population. Both subsequent analyses use these same values of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>E</mi><annotation encoding="application/x-tex">E</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>,
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">GE</span> <span class="op">&lt;-</span> <span class="va">G</span> <span class="op">*</span> <span class="va">E</span></span>
 <span></span>
@@ -253,8 +273,12 @@ population. Both subsequent analyses use these same values of <span class="math 
 <h3 id="function-for-obtaining-summary-statistics">Function for Obtaining Summary Statistics<a class="anchor" aria-label="anchor" href="#function-for-obtaining-summary-statistics"></a>
 </h3>
 <p>For a GWAS, the phenotype is regressed on each SNP. For a GWIS, the
-coefficient and standard error of the <span class="math inline">\(G_j\times E\)</span> term are extracted from a
-model that also contains the main effects of <span class="math inline">\(G_j\)</span> and <span class="math inline">\(E\)</span>.</p>
+coefficient and standard error of the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>G</mi><mi>j</mi></msub><mo>×</mo><mi>E</mi></mrow><annotation encoding="application/x-tex">G_j\times E</annotation></semantics></math>
+term are extracted from a model that also contains the main effects of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>G</mi><mi>j</mi></msub><annotation encoding="application/x-tex">G_j</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>E</mi><annotation encoding="application/x-tex">E</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">get_sumstats</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">G</span>, <span class="va">pheno</span>, <span class="va">interaction</span> <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">E</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">betas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">G</span><span class="op">)</span><span class="op">)</span></span>
@@ -280,8 +304,13 @@ model that also contains the main effects of <span class="math inline">\(G_j\)</
 <h2 id="scenario-1-matched-proportions-discrete_e">Scenario 1: Matched Proportions (<code>discrete_E</code>)<a class="anchor" aria-label="anchor" href="#scenario-1-matched-proportions-discrete_e"></a>
 </h2>
 <p>For <code>discrete_E</code>, both final cohorts contain 32,000
-individuals with <span class="math inline">\(E=1\)</span> and 48,000
-with <span class="math inline">\(E=-1\)</span>, giving <span class="math inline">\(P(E=1)=0.4\)</span> in both cohorts.</p>
+individuals with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">E=1</annotation></semantics></math>
+and 48,000 with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">E=-1</annotation></semantics></math>,
+giving
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>E</mi><mo>=</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0.4</mn></mrow><annotation encoding="application/x-tex">P(E=1)=0.4</annotation></semantics></math>
+in both cohorts.</p>
 <div class="section level3">
 <h3 id="selecting-the-exposure-and-outcome-samples">Selecting the Exposure and Outcome Samples<a class="anchor" aria-label="anchor" href="#selecting-the-exposure-and-outcome-samples"></a>
 </h3>
@@ -325,8 +354,13 @@ from the complete data and are non-overlapping within this analysis.</p>
 <h3 id="obtaining-summary-statistics">Obtaining Summary Statistics<a class="anchor" aria-label="anchor" href="#obtaining-summary-statistics"></a>
 </h3>
 <p>The marginal regressions use the selected 80,000 exposure and 80,000
-outcome individuals. The underlying <span class="math inline">\(G\)</span>, <span class="math inline">\(E\)</span>, <span class="math inline">\(X\)</span>, and <span class="math inline">\(Y\)</span> were generated in the common section
-above.</p>
+outcome individuals. The underlying
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>E</mi><annotation encoding="application/x-tex">E</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>,
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
+were generated in the common section above.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">exp_gwas_common</span> <span class="op">&lt;-</span> <span class="fu">get_sumstats</span><span class="op">(</span></span>
 <span>  <span class="va">G</span><span class="op">[</span><span class="va">idx_exp_common</span>, <span class="op">]</span>, <span class="va">X</span><span class="op">[</span><span class="va">idx_exp_common</span><span class="op">]</span></span>
@@ -348,7 +382,8 @@ above.</p>
 </h3>
 <p>The SNPs are independent in this example. Instruments are selected
 from the union of variants associated with the exposure in either the
-GWAS or GWIS at <span class="math inline">\(P&lt;5\times10^{-8}\)</span>.</p>
+GWAS or GWIS at
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>&lt;</mo><mn>5</mn><mo>×</mo><msup><mn>10</mn><mrow><mi>−</mi><mn>8</mn></mrow></msup></mrow><annotation encoding="application/x-tex">P&lt;5\times10^{-8}</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pvals_gwas_common</span> <span class="op">&lt;-</span> <span class="fl">2</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">pnorm</a></span><span class="op">(</span></span>
 <span>  <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">exp_gwas_common</span><span class="op">$</span><span class="va">beta</span> <span class="op">/</span> <span class="va">exp_gwas_common</span><span class="op">$</span><span class="va">se</span><span class="op">)</span></span>
@@ -389,15 +424,26 @@ GWAS or GWIS at <span class="math inline">\(P&lt;5\times10^{-8}\)</span>.</p>
  $ Beta4.pval: num 1.53e-203</code></pre>
 <p>The model automatically adjust the inputs using
 <code>p_common</code>. The returned estimates are then transformed back
-to the original <span class="math inline">\(E=-1/+1\)</span> scale.</p>
+to the original
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mi>−</mi><mn>1</mn><mi>/</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">E=-1/+1</annotation></semantics></math>
+scale.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="scenario-2-different-proportions-discrete_e_adj">Scenario 2: Different Proportions (<code>discrete_E_adj</code>)<a class="anchor" aria-label="anchor" href="#scenario-2-different-proportions-discrete_e_adj"></a>
 </h2>
-<p>The exposure sample again contains 32,000 individuals with <span class="math inline">\(E=1\)</span> and 48,000 with <span class="math inline">\(E=-1\)</span>, whereas the outcome sample contains
-48,000 individuals with <span class="math inline">\(E=1\)</span> and
-32,000 with <span class="math inline">\(E=-1\)</span>. Thus, <span class="math inline">\(p_{exp}=0.4\)</span> and <span class="math inline">\(p_{out}=0.6\)</span>.</p>
+<p>The exposure sample again contains 32,000 individuals with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">E=1</annotation></semantics></math>
+and 48,000 with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">E=-1</annotation></semantics></math>,
+whereas the outcome sample contains 48,000 individuals with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">E=1</annotation></semantics></math>
+and 32,000 with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">E=-1</annotation></semantics></math>.
+Thus,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mrow><mi>e</mi><mi>x</mi><mi>p</mi></mrow></msub><mo>=</mo><mn>0.4</mn></mrow><annotation encoding="application/x-tex">p_{exp}=0.4</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mrow><mi>o</mi><mi>u</mi><mi>t</mi></mrow></msub><mo>=</mo><mn>0.6</mn></mrow><annotation encoding="application/x-tex">p_{out}=0.6</annotation></semantics></math>.</p>
 <div class="section level3">
 <h3 id="selecting-the-exposure-and-outcome-samples-1">Selecting the Exposure and Outcome Samples<a class="anchor" aria-label="anchor" href="#selecting-the-exposure-and-outcome-samples-1"></a>
 </h3>
@@ -455,10 +501,11 @@ scenario only because different individual indices are used.</p>
 <span>  <span class="va">G</span><span class="op">[</span><span class="va">idx_out_adj</span>, <span class="op">]</span>, <span class="va">Y</span><span class="op">[</span><span class="va">idx_out_adj</span><span class="op">]</span>,</span>
 <span>  interaction <span class="op">=</span> <span class="cn">TRUE</span>, E <span class="op">=</span> <span class="va">E</span><span class="op">[</span><span class="va">idx_out_adj</span><span class="op">]</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>The GWAS and GWIS coefficients remain on the original <span class="math inline">\(E=-1/+1\)</span> scale. The high-level
-<code><a href="../reference/MERLIN-package.html">MERLIN()</a></code> function performs the required standardization and
-between-cohort harmonization. The inputs should not be manually
-transformed before model fitting.</p>
+<p>The GWAS and GWIS coefficients remain on the original
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mi>−</mi><mn>1</mn><mi>/</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">E=-1/+1</annotation></semantics></math>
+scale. The high-level <code><a href="../reference/MERLIN-package.html">MERLIN()</a></code> function performs the
+required standardization and between-cohort harmonization. The inputs
+should not be manually transformed before model fitting.</p>
 </div>
 <div class="section level3">
 <h3 id="instrument-selection-and-model-fitting-1">Instrument Selection and Model Fitting<a class="anchor" aria-label="anchor" href="#instrument-selection-and-model-fitting-1"></a>
@@ -502,17 +549,17 @@ transformed before model fitting.</p>
 from the exposure modifier mean to the outcome modifier mean. It then
 expresses both GWIS inputs on the standardized modifier scale defined by
 <code>p_out</code>. The final estimates are returned on the original
-<span class="math inline">\(E=-1/+1\)</span> scale. These operations are
-implemented inside <code><a href="../reference/MERLIN-package.html">MERLIN()</a></code> already and should not be
-repeated by the user.</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mi>−</mi><mn>1</mn><mi>/</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">E=-1/+1</annotation></semantics></math>
+scale. These operations are implemented inside <code><a href="../reference/MERLIN-package.html">MERLIN()</a></code>
+already and should not be repeated by the user.</p>
 <p>The current implementation uses</p>
-<p><span class="math display">\[
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Var</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mover><mi>γ</mi><mo accent="true">̂</mo></mover><mrow><mn>1</mn><mo>,</mo><mrow><mi mathvariant="normal">o</mi><mi mathvariant="normal">u</mi><mi mathvariant="normal">t</mi></mrow></mrow></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">SE</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mover><mi>γ</mi><mo accent="true">̂</mo></mover><mn>1</mn></msub><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>μ</mi><mrow><mi>o</mi><mi>u</mi><mi>t</mi></mrow></msub><mo>−</mo><msub><mi>μ</mi><mrow><mi>e</mi><mi>x</mi><mi>p</mi></mrow></msub><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mrow><mi mathvariant="normal">SE</mi><mo>⁡</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mover><mi>γ</mi><mo accent="true">̂</mo></mover><mn>3</mn></msub><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">
 \operatorname{Var}(\widehat{\gamma}_{1,\mathrm{out}})
 =
 \operatorname{SE}(\widehat{\gamma}_1)^2
 +(\mu_{out}-\mu_{exp})^2
 \operatorname{SE}(\widehat{\gamma}_3)^2,
-\]</span></p>
+</annotation></semantics></math></p>
 <p>which treats the covariance between the exposure GWAS and exposure
 GWIS association estimates as zero.</p>
 </div>
@@ -522,18 +569,23 @@ GWIS association estimates as zero.</p>
 </h2>
 <p>For both model options, the returned estimates correspond to the
 causal effect model</p>
-<p><span class="math display">\[
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><mo>+</mo><msub><mi>β</mi><mn>4</mn></msub><mi>E</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">
 \beta_1 + \beta_4 E,
-\]</span></p>
-<p>with <span class="math inline">\(E\)</span> coded as <span class="math inline">\(-1\)</span> or <span class="math inline">\(1\)</span>. The group-specific causal effects are
-therefore</p>
-<p><span class="math display">\[
+</annotation></semantics></math></p>
+<p>with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>E</mi><annotation encoding="application/x-tex">E</annotation></semantics></math>
+coded as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math>
+or
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>.
+The group-specific causal effects are therefore</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mtext mathvariant="normal">Causal effect for </mtext><mspace width="0.333em"></mspace></mrow><mi>E</mi><mo>=</mo><mi>−</mi><mn>1</mn><mo>=</mo><msub><mi>β</mi><mn>1</mn></msub><mo>−</mo><msub><mi>β</mi><mn>4</mn></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">
 \text{Causal effect for }E=-1=\beta_1-\beta_4,
-\]</span></p>
+</annotation></semantics></math></p>
 <p>and</p>
-<p><span class="math display">\[
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mtext mathvariant="normal">Causal effect for </mtext><mspace width="0.333em"></mspace></mrow><mi>E</mi><mo>=</mo><mn>1</mn><mo>=</mo><msub><mi>β</mi><mn>1</mn></msub><mo>+</mo><msub><mi>β</mi><mn>4</mn></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">
 \text{Causal effect for }E=1=\beta_1+\beta_4.
-\]</span></p>
+</annotation></semantics></math></p>
 <p>If <code>p_exp</code> and <code>p_out</code> are equal,
 <code>discrete_E</code> should be used with <code>p_common</code>
 instead of <code>discrete_E_adj</code>.</p>
