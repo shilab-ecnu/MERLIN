@@ -2,7 +2,7 @@ url: https://shilab-ecnu.github.io/MERLIN/
 template:
   bootstrap: 5
   mathjax: true
-  math-rendering: mathjax
+ 
   bslib:
     bootswatch: united
     bg: "#FFFFFF"
