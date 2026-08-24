@@ -6,7 +6,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Part 2: Data Preprocessing and Instrumental Variable Selection • MERLIN</title>
-<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- mathjax math --><script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script><script>
+  window.MathJax = {
+    chtml: {
+      fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
+    }
+  };
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
@@ -175,18 +181,16 @@ appropriate version for your OS.</p></li>
 <li><p><code>pval_cutoff_gwas / pval_cutoff_gwis</code>: Significance
 thresholds for extracting potential IVs from GWAS and GWIS
 respectively.</p></li>
-<li><p><code>r2_cutoff</code>: The
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>r</mi><mn>2</mn></msup><annotation encoding="application/x-tex">r^2</annotation></semantics></math>
-threshold for LD clumping. SNPs with correlations higher than this value
-within the specified physical distance will be clumped.</p></li>
+<li><p><code>r2_cutoff</code>: The <span class="math inline">\(r^2\)</span> threshold for LD clumping. SNPs with
+correlations higher than this value within the specified physical
+distance will be clumped.</p></li>
 <li><p><code>kb_cutoff</code>: The physical distance window (in
 kilobases) used for LD clumping.</p></li>
 <li><p><code>maf_cutoff</code>: Minor Allele Frequency threshold for
 quality control.</p></li>
-<li><p><code>lam</code>: Shrinkage turning parameter
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math>)
-used for regularizing the estimated LD correlation matrix to guarantee
-positive definiteness.</p></li>
+<li><p><code>lam</code>: Shrinkage turning parameter (<span class="math inline">\(\lambda\)</span>) used for regularizing the
+estimated LD correlation matrix to guarantee positive
+definiteness.</p></li>
 <li><p><code>coreNum</code>: Number of CPU cores allocated for parallel
 processing to speed up calculation over genomic blocks.</p></li>
 <li><p><code>intersect_mode</code>: Logical flag. If <code>TRUE</code>,
@@ -302,17 +306,13 @@ by the MERLIN estimation algorithm:</p>
 <li><p><code>snp.causal</code>: Vector of RS IDs for the selected
 independent instrumental variables.</p></li>
 <li><p><code>gammah1</code> / <code>gammah3</code>: Vector of estimated
-genetic main effects
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>γ</mi><mo accent="true">̂</mo></mover><mn>1</mn></msub><annotation encoding="application/x-tex">\hat{\gamma}_1</annotation></semantics></math>)
-and interaction effects
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>γ</mi><mo accent="true">̂</mo></mover><mn>3</mn></msub><annotation encoding="application/x-tex">\hat{\gamma}_3</annotation></semantics></math>)
-on the exposure.</p></li>
+genetic main effects (<span class="math inline">\(\hat{\gamma}_1\)</span>) and interaction effects
+(<span class="math inline">\(\hat{\gamma}_3\)</span>) on the
+exposure.</p></li>
 <li><p><code>Gammah1</code> / <code>Gammah3</code>: Vector of estimated
-genetic main effects
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi mathvariant="normal">Γ</mi><mo accent="true">̂</mo></mover><mn>1</mn></msub><annotation encoding="application/x-tex">\hat{\Gamma}_1</annotation></semantics></math>)
-and interaction effects
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi mathvariant="normal">Γ</mi><mo accent="true">̂</mo></mover><mn>3</mn></msub><annotation encoding="application/x-tex">\hat{\Gamma}_3</annotation></semantics></math>)
-on the outcome.</p></li>
+genetic main effects (<span class="math inline">\(\hat{\Gamma}_1\)</span>) and interaction effects
+(<span class="math inline">\(\hat{\Gamma}_3\)</span>) on the
+outcome.</p></li>
 <li><p><code>se1</code> / <code>se2</code> / <code>se3</code> /
 <code>se4</code>: Respective standard errors for <code>gammah1</code>,
 <code>gammah3</code>, <code>Gammah1</code>, and
@@ -342,18 +342,14 @@ both parameters directly to zero:</li>
 <ul>
 <li>
 <strong>One-Sample / Overlapping MR</strong>: If the cohorts
-overlap,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ρ</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\rho_1</annotation></semantics></math>
-and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ρ</mi><mn>2</mn></msub><annotation encoding="application/x-tex">\rho_2</annotation></semantics></math>
-must be estimated from independent null variants across the genome using
-the <code>EstRhofun</code> function.</li>
+overlap, <span class="math inline">\(\rho_1\)</span> and <span class="math inline">\(\rho_2\)</span> must be estimated from independent
+null variants across the genome using the <code>EstRhofun</code>
+function.</li>
 </ul>
 <p><strong>Parameter Specifications for
 <code>EstRhofun</code></strong>:</p>
 <ul>
-<li><p>ld_r2_thresh: Strict
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>r</mi><mn>2</mn></msup><annotation encoding="application/x-tex">r^2</annotation></semantics></math>
+<li><p>ld_r2_thresh: Strict <span class="math inline">\(r^2\)</span>
 threshold to filter completely independent SNPs across the
 genome.</p></li>
 <li><p>lambad: Shrinkage tuning parameter for the LD estimator matrix

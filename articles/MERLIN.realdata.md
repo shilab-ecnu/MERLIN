@@ -6,7 +6,7 @@ In this final section, we demonstrate the practical application of
 MERLIN using a real-world dataset. We will investigate the causal
 relationship between Testosterone (Exposure) and Bipolar Disorder (BD)
 (Outcome), specifically examining whether this causal effect is modified
-by Sex (Environmental factor $`E`$).
+by Sex (Environmental factor \\E\\).
 
 **Data Availability**
 
@@ -65,16 +65,16 @@ distinct modes:
   and outcome samples share the same environmental distribution. This
   model requires the additional parameter `p_common`, which represents
   the common proportion/probability of the environmental factor taking
-  the value 1 in both samples (i.e., $`P(E=1)`$).
+  the value 1 in both samples (i.e., \\P(E=1)\\).
 
 - `"discrete_E_adj"`: An adjusted version of the discrete environmental
   model for situations where the proportion of the binary environmental
   variable differs between the exposure and outcome samples (e.g., when
   the sex distributions differ between the two samples). This model
-  requires `p_exp` and `p_out`, representing $`P(E=1)`$ in the exposure
+  requires `p_exp` and `p_out`, representing \\P(E=1)\\ in the exposure
   and outcome samples, respectively. Before model fitting, the exposure
   GWAS and GWIS estimates are adjusted to represent the same proportion
-  of $`E=1`$ as in the outcome sample.
+  of \\E=1\\ as in the outcome sample.
 
 - “`MO`”: Designed for practical scenarios where outcome GWIS summary
   statistics are unavailable. This model drops the requirement for
@@ -212,8 +212,8 @@ properly converged to their stationary distributions. Poor convergence
 indicates that the effect estimates may not be reliable.
 
 We can visually inspect the mixing and convergence of the sampling
-chains for both the main causal effect ($`\beta_1`$) and the interaction
-causal effect ($`\beta_4`$) using the `traceplot` function.
+chains for both the main causal effect (\\\beta_1\\) and the interaction
+causal effect (\\\beta_4\\) using the `traceplot` function.
 
 ``` r
 
@@ -306,5 +306,5 @@ By evaluating these parameters, you can determine: Whether Testosterone
 has a significant overall causal effect on Bipolar Disorder across the
 entire population (based on `MERLINpvalue1`). Whether the causal effect
 of Testosterone on Bipolar Disorder differs significantly between males
-and females (based on `MERLINpvalue4`). A significant $`\beta_4`$
+and females (based on `MERLINpvalue4`). A significant \\\beta_4\\
 implies a strong environment-dependent (sex-specific) causal pathway.

@@ -2,18 +2,18 @@
 
 ## Introduction to the Binary-Modifier Models
 
-When the modifier $`E`$ is binary, its mean and variance depend on the
+When the modifier \\E\\ is binary, its mean and variance depend on the
 proportion of individuals in the two groups. Consequently, GWAS and GWIS
 summary statistics obtained from two cohorts may not be directly
-comparable if the distribution of $`E`$ differs between them. MERLIN
-provides two model options for binary modifiers coded as $`E=-1`$ and
-$`E=1`$:
+comparable if the distribution of \\E\\ differs between them. MERLIN
+provides two model options for binary modifiers coded as \\E=-1\\ and
+\\E=1\\:
 
 - **`discrete_E`** is used when the exposure and outcome cohorts have
-  the same value of $`P(E=1)`$. The common proportion does not need to
+  the same value of \\P(E=1)\\. The common proportion does not need to
   be 0.5.
 
-- **`discrete_E_adj`** is used when $`P(E=1)`$ differs between the
+- **`discrete_E_adj`** is used when \\P(E=1)\\ differs between the
   exposure and outcome cohorts. This model harmonizes the exposure
   summary statistics to the modifier distribution in the outcome cohort
   before model fitting.
@@ -23,15 +23,15 @@ outcome GWIS summary statistics.
 
 | Model option       | Exposure and outcome proportions | Additional arguments |
 |:-------------------|:---------------------------------|:---------------------|
-| `"discrete_E"`     | $`p_{exp}=p_{out}`$              | `p_common`           |
-| `"discrete_E_adj"` | $`p_{exp}\ne p_{out}`$           | `p_exp`, `p_out`     |
+| `"discrete_E"`     | \\p\_{exp}=p\_{out}\\            | `p_common`           |
+| `"discrete_E_adj"` | \\p\_{exp}\ne p\_{out}\\         | `p_exp`, `p_out`     |
 
-Here, `p_common`, `p_exp`, and `p_out` always denote $`P(E=1)`$ under
-the $`-1/+1`$ coding. For example, if males are coded as 1, these
+Here, `p_common`, `p_exp`, and `p_out` always denote \\P(E=1)\\ under
+the \\-1/+1\\ coding. For example, if males are coded as 1, these
 quantities are the proportions of males in the corresponding cohorts.
 
 In this tutorial, a single simulated dataset with a balanced binary
-modifier is used to generate $`G`$, $`X`$, and $`Y`$. The two scenarios
+modifier is used to generate \\G\\, \\X\\, and \\Y\\. The two scenarios
 differ only in the indices used to construct the final exposure and
 outcome samples for the marginal GWAS and GWIS regressions.
 
@@ -83,8 +83,8 @@ rho_2 <- 0
 
 ### Genotypes, Modifier, and Genetic Effects
 
-The modifier is balanced, with half of the individuals coded as $`E=1`$
-and half as $`E=-1`$. The modifier is generated before $`X`$ and $`Y`$
+The modifier is balanced, with half of the individuals coded as \\E=1\\
+and half as \\E=-1\\. The modifier is generated before \\X\\ and \\Y\\
 and is used in both phenotype models.
 
 ``` r
@@ -128,8 +128,8 @@ beta_2 <- rnorm(m, 0, sqrt(sigma2b))
 ### Generating the Exposure and Outcome
 
 The exposure and outcome are generated once for the entire source
-population. Both subsequent analyses use these same values of $`G`$,
-$`E`$, $`X`$, and $`Y`$.
+population. Both subsequent analyses use these same values of \\G\\,
+\\E\\, \\X\\, and \\Y\\.
 
 ``` r
 
@@ -163,8 +163,8 @@ idx_Em1 <- which(E == -1)
 ### Function for Obtaining Summary Statistics
 
 For a GWAS, the phenotype is regressed on each SNP. For a GWIS, the
-coefficient and standard error of the $`G_j\times E`$ term are extracted
-from a model that also contains the main effects of $`G_j`$ and $`E`$.
+coefficient and standard error of the \\G_j\times E\\ term are extracted
+from a model that also contains the main effects of \\G_j\\ and \\E\\.
 
 ``` r
 
@@ -191,7 +191,7 @@ get_sumstats <- function(G, pheno, interaction = FALSE, E = NULL) {
 ## Scenario 1: Matched Proportions (`discrete_E`)
 
 For `discrete_E`, both final cohorts contain 32,000 individuals with
-$`E=1`$ and 48,000 with $`E=-1`$, giving $`P(E=1)=0.4`$ in both cohorts.
+\\E=1\\ and 48,000 with \\E=-1\\, giving \\P(E=1)=0.4\\ in both cohorts.
 
 ### Selecting the Exposure and Outcome Samples
 
@@ -240,7 +240,7 @@ exposure_n  outcome_n exposure_p  outcome_p
 ### Obtaining Summary Statistics
 
 The marginal regressions use the selected 80,000 exposure and 80,000
-outcome individuals. The underlying $`G`$, $`E`$, $`X`$, and $`Y`$ were
+outcome individuals. The underlying \\G\\, \\E\\, \\X\\, and \\Y\\ were
 generated in the common section above.
 
 ``` r
@@ -265,7 +265,7 @@ out_gwis_common <- get_sumstats(
 
 The SNPs are independent in this example. Instruments are selected from
 the union of variants associated with the exposure in either the GWAS or
-GWIS at $`P<5\times10^{-8}`$.
+GWIS at \\P\<5\times10^{-8}\\.
 
 ``` r
 
@@ -312,14 +312,14 @@ List of 6
 ```
 
 The model automatically adjust the inputs using `p_common`. The returned
-estimates are then transformed back to the original $`E=-1/+1`$ scale.
+estimates are then transformed back to the original \\E=-1/+1\\ scale.
 
 ## Scenario 2: Different Proportions (`discrete_E_adj`)
 
-The exposure sample again contains 32,000 individuals with $`E=1`$ and
-48,000 with $`E=-1`$, whereas the outcome sample contains 48,000
-individuals with $`E=1`$ and 32,000 with $`E=-1`$. Thus, $`p_{exp}=0.4`$
-and $`p_{out}=0.6`$.
+The exposure sample again contains 32,000 individuals with \\E=1\\ and
+48,000 with \\E=-1\\, whereas the outcome sample contains 48,000
+individuals with \\E=1\\ and 32,000 with \\E=-1\\. Thus,
+\\p\_{exp}=0.4\\ and \\p\_{out}=0.6\\.
 
 ### Selecting the Exposure and Outcome Samples
 
@@ -385,7 +385,7 @@ out_gwis_adj <- get_sumstats(
 )
 ```
 
-The GWAS and GWIS coefficients remain on the original $`E=-1/+1`$ scale.
+The GWAS and GWIS coefficients remain on the original \\E=-1/+1\\ scale.
 The high-level
 [`MERLIN()`](https://shilab-ecnu.github.io/MERLIN/reference/MERLIN-package.md)
 function performs the required standardization and between-cohort
@@ -438,20 +438,16 @@ List of 6
 For this model, MERLIN first projects the exposure GWAS associations
 from the exposure modifier mean to the outcome modifier mean. It then
 expresses both GWIS inputs on the standardized modifier scale defined by
-`p_out`. The final estimates are returned on the original $`E=-1/+1`$
+`p_out`. The final estimates are returned on the original \\E=-1/+1\\
 scale. These operations are implemented inside
 [`MERLIN()`](https://shilab-ecnu.github.io/MERLIN/reference/MERLIN-package.md)
 already and should not be repeated by the user.
 
 The current implementation uses
 
-``` math
-\operatorname{Var}(\widehat{\gamma}_{1,\mathrm{out}})
-=
-\operatorname{SE}(\widehat{\gamma}_1)^2
-+(\mu_{out}-\mu_{exp})^2
-\operatorname{SE}(\widehat{\gamma}_3)^2,
-```
+\\ \operatorname{Var}(\widehat{\gamma}\_{1,\mathrm{out}}) =
+\operatorname{SE}(\widehat{\gamma}\_1)^2 +(\mu\_{out}-\mu\_{exp})^2
+\operatorname{SE}(\widehat{\gamma}\_3)^2, \\
 
 which treats the covariance between the exposure GWAS and exposure GWIS
 association estimates as zero.
@@ -461,22 +457,16 @@ association estimates as zero.
 For both model options, the returned estimates correspond to the causal
 effect model
 
-``` math
-\beta_1 + \beta_4 E,
-```
+\\ \beta_1 + \beta_4 E, \\
 
-with $`E`$ coded as $`-1`$ or $`1`$. The group-specific causal effects
+with \\E\\ coded as \\-1\\ or \\1\\. The group-specific causal effects
 are therefore
 
-``` math
-\text{Causal effect for }E=-1=\beta_1-\beta_4,
-```
+\\ \text{Causal effect for }E=-1=\beta_1-\beta_4, \\
 
 and
 
-``` math
-\text{Causal effect for }E=1=\beta_1+\beta_4.
-```
+\\ \text{Causal effect for }E=1=\beta_1+\beta_4. \\
 
 If `p_exp` and `p_out` are equal, `discrete_E` should be used with
 `p_common` instead of `discrete_E_adj`.

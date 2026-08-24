@@ -873,7 +873,7 @@ MRGEI_Gamseo_fixb1(gammah1, gammah3, Gammah1, se1, se2, se3, R, rho, b1, maxIter
 | `se1`, `se2`, `se3` | Corresponding standard errors. |
 | `R` | LD correlation matrix. |
 | `rho` | Correlation parameter. |
-| `b1` | The main effect estimate ($`\beta_1`$), which can be either manually specified or obtained from an alternative MR method. When the “`MO`” mode is selected, the Egger method is used to estimate $`\beta_1`$. |
+| `b1` | The main effect estimate (\\\beta_1\\), which can be either manually specified or obtained from an alternative MR method. When the “`MO`” mode is selected, the Egger method is used to estimate \\\beta_1\\. |
 | `maxIter`, `burnin`, `thin` | MCMC control parameters. |
 
 ##### Value
