@@ -9,28 +9,28 @@
     - [Fit MERLIN using real data](#fit-merlin-using-real-data)
     - [Session information](#session-information)
 
-# Overview 
+## Overview 
 
 `MERLIN` (Causal Heterogeneity using Summary Statistics) is a unified
 Bayesian framework that jointly estimates average and heterogeneity
 effects using summary data from genome-wide association studies (GWAS)
 and Genome-Wide Interaction Studies (GWIS).
 
-# Documenation
+## Documenation
 
 Full documentation available here:
 <https://shilab-ecnu.github.io/MERLIN/>
 
-# System Requirements 
+## System Requirements 
 
-## Hardware requirements
+### Hardware requirements
 
 `MERLIN` package requires only a standard computer with enough RAM to
 support the in-memory operations.
 
-## Software requirements
+### Software requirements
 
-### OS Requirements
+#### OS Requirements
 
 This package is supported for *macOS*, *Windows* and *Linux*. The
 package has been tested on the following systems:
@@ -41,7 +41,7 @@ package has been tested on the following systems:
 
 -   Linux: Red Hat 9.5
 
-### Dependencies
+#### Dependencies
 
 ```         
 data.table
@@ -50,7 +50,7 @@ Rcpp
 TwoSampleMR (>= 0.7.9)
 ```
 
-# Installation
+## Installation
 
 Install the development version of *MERLIN* by use of the 'remotes'
 package. Note that *MERLIN* depends on the 'Rcpp' and 'RcppArmadillo'
@@ -69,13 +69,13 @@ remotes::install_github("shilab-ecnu/MERLIN")
 To update the package just run the
 `remotes::install_github("shilab-ecnu/MERLIN")` command again.
 
-# Demo
+## Demo
 
 This tutorial provides an introduction to the *MERLIN* package. R
 package *MERLIN* implements MERLIN for causal heterogeneity using
 summary statistics.
 
-## Fit MERLIN using simulated data 
+### Fit MERLIN using simulated data 
 
 The simulation code in the paper is all in this hyperlink:
 <a href="https://github.com/shilab-ecnu/MERLIN/tree/main/simulation">SIMULATION</a>.
@@ -276,9 +276,9 @@ corresponding standard error, and p-value of beta1_hat. beta4_hat,
 se4_hat, and pval4 are the estimated heterogeneity causal effect,
 corresponding standard error, and p-value of beta4_hat.
 
-## Fit MERLIN using real data 
+### Fit MERLIN using real data 
 
-### The Testosterone-BD study with environmental factor sex
+#### The Testosterone-BD study with environmental factor sex
 
 All the raw data for the real-data analyses in the replicated paper are
 stored on
@@ -494,7 +494,7 @@ cat("The estimated heterogeneity effect of Testosterone on BD: ", MERLINbeta4,
     "\n with Standard error: ", MERLINse4, "and P-value: ", MERLINpvalue4)
 ```
 
-## Session information
+### Session information
 
 ``` r
 sessionInfo()
