@@ -1,8 +1,8 @@
 url: https://shilab-ecnu.github.io/MERLIN/
 template:
   bootstrap: 5
-  mathjax: true
-  math-rendering: mathjax
+  katex: True
+  math-rendering: katex
  
   bslib:
     bootswatch: united
