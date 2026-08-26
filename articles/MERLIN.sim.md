@@ -20,11 +20,10 @@ to \\\beta^{(A)}\\ in the manuscript.
   corresponding to \\\beta^{(I)}\\ in the manuscript.
 
 - \\\gamma_1\\: The main genetic effects on the exposure, corresponding
-  to \\\bm{\gamma}^{(G)}\\ in the manuscript.
+  to \\\pmb{\gamma}^{(G)}\\ in the manuscript.
 
 - \\\gamma_3\\: The genetic-by-environment interaction effects on the
-  exposure, corresponding to \\\boldsymbol{\gamma}^{(GI)}\\ in the
-  manuscript.
+  exposure, corresponding to \\\bm{\gamma}^{(G)}\\ in the manuscript.
 
 - \\\beta_2\\: The direct genetic effects on the outcome, representing
   horizontal pleiotropy and corresponding to \\\pmb{\beta}^{(G)}\\ in
