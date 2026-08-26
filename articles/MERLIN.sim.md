@@ -4,35 +4,35 @@
 
 Before applying MERLIN to real-world summary statistics, it is highly
 instructive to understand its behavior using simulated data. In this
-section, we will simulate a scenario where an environmental factor \\E\\
-interacts with genetic variants \\G\\ to influence both the exposure
-\\X\\ and the outcome \\Y\\.
+section, we will simulate a scenario where an environmental factor E
+interacts with genetic variants G to influence both the exposure X and
+the outcome Y.
 
-The underlying data generating mechanism can be defined as: \\
-X=G\gamma_1+(G\times E)\gamma_3+0.1E+\epsilon_X, \\
+The underlying data generating mechanism can be defined as:
+X=G\gamma_1+(G\times E)\gamma_3+0.1E+\epsilon_X,
 
-\\ Y=(\beta_1+\beta_4E)X+G\beta_2+0.1E+\epsilon_Y. \\ Where: -
-\\\beta_1\\: The average causal effect of \\X\\ on \\Y\\, corresponding
-to \\\beta^{(A)}\\ in the manuscript.
+Y=(\beta_1+\beta_4E)X+G\beta_2+0.1E+\epsilon_Y. Where: - \beta_1: The
+average causal effect of X on Y, corresponding to \beta^{(A)} in the
+manuscript.
 
-- \\\beta_4\\: The causal interaction effect quantifying the extent to
-  which the causal effect of \\X\\ on \\Y\\ is modified by \\E\\,
-  corresponding to \\\beta^{(I)}\\ in the manuscript.
+- \beta_4: The causal interaction effect quantifying the extent to which
+  the causal effect of X on Y is modified by E, corresponding to
+  \beta^{(I)} in the manuscript.
 
-- \\\gamma_1\\: The main genetic effects on the exposure, corresponding
-  to \\\pmb{\gamma}^{(G)}\\ in the manuscript.
+- \gamma_1: The main genetic effects on the exposure, corresponding to
+  \pmb{\gamma}^{(G)} in the manuscript.
 
-- \\\gamma_3\\: The genetic-by-environment interaction effects on the
-  exposure, corresponding to \\\bm{\gamma}^{(G)}\\ in the manuscript.
+- \gamma_3: The genetic-by-environment interaction effects on the
+  exposure, corresponding to \bm{\gamma}^{(G)} in the manuscript.
 
-- \\\beta_2\\: The direct genetic effects on the outcome, representing
-  horizontal pleiotropy and corresponding to \\\pmb{\beta}^{(G)}\\ in
-  the manuscript.
+- \beta_2: The direct genetic effects on the outcome, representing
+  horizontal pleiotropy and corresponding to \pmb{\beta}^{(G)} in the
+  manuscript.
 
-- \\\epsilon_X\\, \\\epsilon_Y\\: The residual error terms for the
-  exposure and outcome, respectively. These capture the cumulative
-  errors, crucially including the effects of unmeasured confounders,
-  independent environmental noise, and measurement errors.
+- \epsilon_X, \epsilon_Y: The residual error terms for the exposure and
+  outcome, respectively. These capture the cumulative errors, crucially
+  including the effects of unmeasured confounders, independent
+  environmental noise, and measurement errors.
 
 ## Step-by-Step Simulation
 
@@ -60,11 +60,11 @@ set.seed(2026)
 
 **Generating Genotypes and Environmental Variables**
 
-We simulate \\m = 100\\ independent SNPs for a total of 160,000
-individuals, split equally into an exposure cohort (`n_exp = 80000`) and
-an outcome cohort (`n_out = 80000`). The environmental variable \\E\\ is
-simulated as a balanced binary modifier coded as \\-1\\ and \\1\\, with
-equal proportions in both the exposure and outcome samples.
+We simulate m = 100 independent SNPs for a total of 160,000 individuals,
+split equally into an exposure cohort (`n_exp = 80000`) and an outcome
+cohort (`n_out = 80000`). The environmental variable E is simulated as a
+balanced binary modifier coded as -1 and 1, with equal proportions in
+both the exposure and outcome samples.
 
 ``` r
 
@@ -90,11 +90,10 @@ E <- c(E_exp, E_out)
 
 **Simulating Genetic Effects**
 
-The main genetic effects (\\\gamma_1\\) and \\G \times E\\ interaction
-effects (\\\gamma_3\\) are generated from a bivariate normal
-distribution to allow for correlation (`cor_g1g3 = 0.4`) between them.
-We control their variance using specified heritability parameters
-(`h_g1` and `h_g3`).
+The main genetic effects (\gamma_1) and G \times E interaction effects
+(\gamma_3) are generated from a bivariate normal distribution to allow
+for correlation (`cor_g1g3 = 0.4`) between them. We control their
+variance using specified heritability parameters (`h_g1` and `h_g3`).
 
 ``` r
 
@@ -120,9 +119,9 @@ beta_2   <- rnorm(m, 0, sqrt(sigma2b))
 
 **Generating Exposure and Outcome Phenotypes**
 
-Using the mathematical model defined above, we generate the phenotypes
-\\X\\ and \\Y\\, and then split the data into independent exposure and
-outcome cohorts to mimic a two-sample Mendelian Randomization design.
+Using the mathematical model defined above, we generate the phenotypes X
+and Y, and then split the data into independent exposure and outcome
+cohorts to mimic a two-sample Mendelian Randomization design.
 
 ``` r
 
@@ -166,8 +165,8 @@ out_E    <- E[(n_exp + 1):(n_exp + n_out)]
 
 In practice, researchers usually only have access to summary statistics.
 We define a helper function `get_sumstats` to run single-variant linear
-regressions and extract the effect sizes (\\\hat{\beta}\\) and standard
-errors (\\SE\\).
+regressions and extract the effect sizes (\hat{\beta}) and standard
+errors (SE).
 
 ``` r
 
@@ -206,10 +205,10 @@ out_gwis_sum <- get_sumstats(G[(n_exp + 1):(n_exp + n_out), ], out_gwis,
 **Selecting Instrumental Variables**
 
 We select valid genetic instruments using a significance threshold
-(e.g., \\P \< 5e-8\\ for this toy example). SNPs that pass the threshold
-in either the exposure GWAS or GWIS analysis are included in the union
-set of instruments. Since SNPs are simulated independently here, the LD
-correlation matrix \\R\\ is simply an identity matrix.
+(e.g., P \< 5e-8 for this toy example). SNPs that pass the threshold in
+either the exposure GWAS or GWIS analysis are included in the union set
+of instruments. Since SNPs are simulated independently here, the LD
+correlation matrix R is simply an identity matrix.
 
 ``` r
 
@@ -232,7 +231,7 @@ R <- diag(length(iv_union))
 
 Finally, we format the inputs and execute the MERLIN function. Since we
 simulated independent non-overlapping samples, the sample overlap
-correlations (rho_1 and rho_2) are explicitly set to \\0\\.
+correlations (rho_1 and rho_2) are explicitly set to 0.
 
 ``` r
 
@@ -292,8 +291,8 @@ List of 6
 **Interpreting the Results**
 
 The output `res` is a list containing the estimated parameters. We can
-extract the average causal effect (\\\widehat{\beta}\_1\\) and the
-heterogeneity causal effect (\\\widehat{\beta}\_4\\).
+extract the average causal effect (\widehat{\beta}\_1) and the
+heterogeneity causal effect (\widehat{\beta}\_4).
 
 ``` r
 
@@ -318,11 +317,11 @@ Estimated Interaction Effect (b4): 0.3137
 
 Crucially, recall that we deliberately introduced strong unmeasured
 confounding into the simulation by correlating the residual error terms
-of the exposure and outcome (\\\rho=0.6\\). Despite this confounding,
-the estimated average causal effect was close to its true value of zero
-(\\\widehat{\beta}\_1=-0.0045\\, \\P=0.810\\), whereas the estimated
-interaction effect closely recovered its true value of 0.3
-(\\\widehat{\beta}\_4=0.3137\\, \\P=3.93\times10^{-190}\\). These
-results illustrate that MERLIN can recover both the average and
+of the exposure and outcome (\rho=0.6). Despite this confounding, the
+estimated average causal effect was close to its true value of zero
+(\widehat{\beta}\_1=-0.0045, P=0.810), whereas the estimated interaction
+effect closely recovered its true value of 0.3
+(\widehat{\beta}\_4=0.3137, P=3.93\times10^{-190}). These results
+illustrate that MERLIN can recover both the average and
 modifier-dependent causal effects in this simulated setting with a
 balanced binary modifier.

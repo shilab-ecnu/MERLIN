@@ -6,13 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Part 4: Model Fitting with a Single Available GWIS (MERLIN-MO and MERLIN-ME) • MERLIN</title>
-<!-- mathjax math --><script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script><script>
-  window.MathJax = {
-    chtml: {
-      fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
-    }
-  };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- katex math --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><script src="../katex-auto.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
@@ -85,14 +80,14 @@ the outcome. MERLIN therefore provides two reduced-data extensions:</p>
 <ul>
 <li><p><strong>MERLIN-MO</strong> is used when the <strong>outcome GWIS
 is missing</strong>. In the R package, this model is selected using
-<code>model = "MO"</code>, where <span class="math inline">\(\widehat{\Gamma}_3\)</span> denotes the outcome
-GWIS association.</p></li>
+<code>model = "MO"</code>, where <span class="math inline">\widehat{\Gamma}_3</span> denotes the outcome GWIS
+association.</p></li>
 <li><p><strong>MERLIN-ME</strong> is used when the <strong>exposure GWIS
 is missing</strong>. In the R package, this model is selected using
-<code>model = "ME"</code>, where <span class="math inline">\(\widehat{\gamma}_3\)</span> denotes the exposure
-GWIS association.</p></li>
+<code>model = "ME"</code>, where <span class="math inline">\widehat{\gamma}_3</span> denotes the exposure GWIS
+association.</p></li>
 </ul>
-<p>The distinction between uppercase <span class="math inline">\(\Gamma\)</span> and lowercase <span class="math inline">\(\gamma\)</span> is important: uppercase quantities
+<p>The distinction between uppercase <span class="math inline">\Gamma</span> and lowercase <span class="math inline">\gamma</span> is important: uppercase quantities
 refer to the outcome, whereas lowercase quantities refer to the
 exposure.</p>
 <table class="table">
@@ -145,11 +140,10 @@ reproducibility.</p>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://codeberg.org/thothorn/mvtnorm" class="external-link">mvtnorm</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">2027</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Generating Genotypes and the Modifier</strong></p>
-<p>As in Part 3, we simulate <span class="math inline">\(m =
-100\)</span> independent SNPs for 160,000 individuals and divide them
-equally into an exposure cohort and an outcome cohort. The modifier
-<span class="math inline">\(E\)</span> is generated from a standard
-normal distribution.</p>
+<p>As in Part 3, we simulate <span class="math inline">m = 100</span>
+independent SNPs for 160,000 individuals and divide them equally into an
+exposure cohort and an outcome cohort. The modifier <span class="math inline">E</span> is generated from a standard normal
+distribution.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">n_exp</span> <span class="op">&lt;-</span> <span class="fl">80000</span></span>
 <span><span class="va">n_out</span> <span class="op">&lt;-</span> <span class="fl">80000</span></span>
@@ -174,11 +168,11 @@ normal distribution.</p>
 <span><span class="va">E_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, each <span class="op">=</span> <span class="va">n_out</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">E</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">E_exp</span>, <span class="va">E_out</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Simulating Genetic Effects</strong></p>
-<p>The main genetic effects (<span class="math inline">\(\gamma_1\)</span>) and SNP-by-modifier interaction
-effects (<span class="math inline">\(\gamma_3\)</span>) are simulated
-from a bivariate normal distribution. Their variances are controlled by
-<code>h_g1</code> and <code>h_g3</code>, and <code>cor_g1g3</code>
-determines the correlation between the two sets of genetic effects.</p>
+<p>The main genetic effects (<span class="math inline">\gamma_1</span>)
+and SNP-by-modifier interaction effects (<span class="math inline">\gamma_3</span>) are simulated from a bivariate
+normal distribution. Their variances are controlled by <code>h_g1</code>
+and <code>h_g3</code>, and <code>cor_g1g3</code> determines the
+correlation between the two sets of genetic effects.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">h_g1</span> <span class="op">&lt;-</span> <span class="fl">0.3</span></span>
 <span><span class="va">h_g3</span> <span class="op">&lt;-</span> <span class="fl">0.1</span></span>
@@ -200,7 +194,7 @@ determines the correlation between the two sets of genetic effects.</p>
 <span><span class="va">beta_2</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">m</span>, <span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">sigma2b</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Generating Exposure and Outcome Phenotypes</strong></p>
 <p>We use the same two-sample design as in Part 3. The residual errors
-for <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are correlated to represent unmeasured
+for <span class="math inline">X</span> and <span class="math inline">Y</span> are correlated to represent unmeasured
 confounding, while the exposure and outcome summary statistics are
 calculated in non-overlapping cohorts.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -242,7 +236,7 @@ calculated in non-overlapping cohorts.</p>
 </h2>
 <p>We use the same helper function as in Part 3 to obtain marginal GWAS
 and GWIS associations. For a GWIS, the coefficient and standard error of
-the <span class="math inline">\(G_j \times E\)</span> term are extracted
+the <span class="math inline">G_j \times E</span> term are extracted
 from a single-variant interaction model.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">get_sumstats</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">G</span>, <span class="va">pheno</span>, <span class="va">interaction</span> <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">E</span> <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">{</span></span>
@@ -296,7 +290,7 @@ for this analysis.</p>
 <div class="section level2">
 <h2 id="instrument-selection">Instrument Selection<a class="anchor" aria-label="anchor" href="#instrument-selection"></a>
 </h2>
-<p>For this toy example, SNPs are independent and we use <span class="math inline">\(P &lt; 5e-8\)</span> as the instrument-selection
+<p>For this toy example, SNPs are independent and we use <span class="math inline">P &lt; 5e-8</span> as the instrument-selection
 threshold. In real applications, genome-wide thresholds and LD clumping
 should be used as described in Part 2.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -325,14 +319,13 @@ should be used as described in Part 2.</p>
 <div class="section level3">
 <h3 id="merlin-mo-outcome-gwis-unavailable">MERLIN-MO: Outcome GWIS unavailable<a class="anchor" aria-label="anchor" href="#merlin-mo-outcome-gwis-unavailable"></a>
 </h3>
-<p>When outcome GWIS summary statistics are unavailable, <span class="math inline">\(\widehat{\Gamma}_3\)</span> and its standard error
-are omitted. MERLIN-MO uses the exposure GWAS, exposure GWIS, and
-outcome GWAS summary statistics to jointly estimate the average causal
-effect <span class="math inline">\(\beta_1\)</span> and the interaction
-effect <span class="math inline">\(\beta_4\)</span> within the
-reduced-data model. Although the outcome GWIS is unavailable,
-uncertainty in both causal parameters is retained during model
-fitting.</p>
+<p>When outcome GWIS summary statistics are unavailable, <span class="math inline">\widehat{\Gamma}_3</span> and its standard error are
+omitted. MERLIN-MO uses the exposure GWAS, exposure GWIS, and outcome
+GWAS summary statistics to jointly estimate the average causal effect
+<span class="math inline">\beta_1</span> and the interaction effect
+<span class="math inline">\beta_4</span> within the reduced-data model.
+Although the outcome GWIS is unavailable, uncertainty in both causal
+parameters is retained during model fitting.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Fit MERLIN-MO using the exposure GWAS, exposure GWIS, and outcome GWAS.</span></span>
 <span></span>
@@ -360,12 +353,11 @@ fitting.</p>
 <div class="section level3">
 <h3 id="merlin-me-exposure-gwis-unavailable">MERLIN-ME: Exposure GWIS unavailable<a class="anchor" aria-label="anchor" href="#merlin-me-exposure-gwis-unavailable"></a>
 </h3>
-<p>When exposure GWIS summary statistics are unavailable, <span class="math inline">\(\widehat{\gamma}_3\)</span> and its standard error
-are omitted. MERLIN-ME estimates <span class="math inline">\(\beta_1\)</span> by MR-Egger regression of the
-outcome-GWAS associations on the exposure-GWAS associations. It
-estimates <span class="math inline">\(\beta_4\)</span> by a second
-MR-Egger regression of the outcome-GWIS associations on the
-exposure-GWAS associations.</p>
+<p>When exposure GWIS summary statistics are unavailable, <span class="math inline">\widehat{\gamma}_3</span> and its standard error are
+omitted. MERLIN-ME estimates <span class="math inline">\beta_1</span> by
+MR-Egger regression of the outcome-GWAS associations on the
+exposure-GWAS associations. It estimates <span class="math inline">\beta_4</span> by a second MR-Egger regression of
+the outcome-GWIS associations on the exposure-GWAS associations.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_me</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MERLIN-package.html">MERLIN</a></span><span class="op">(</span></span>
 <span>  gammah1 <span class="op">=</span> <span class="va">exp_gwas_sum</span><span class="op">$</span><span class="va">beta</span><span class="op">[</span><span class="va">iv_me</span><span class="op">]</span>,</span>

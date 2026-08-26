@@ -6,13 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Part 2: Data Preprocessing and Instrumental Variable Selection • MERLIN</title>
-<!-- mathjax math --><script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script><script>
-  window.MathJax = {
-    chtml: {
-      fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
-    }
-  };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- katex math --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><script src="../katex-auto.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
@@ -181,16 +176,15 @@ appropriate version for your OS.</p></li>
 <li><p><code>pval_cutoff_gwas / pval_cutoff_gwis</code>: Significance
 thresholds for extracting potential IVs from GWAS and GWIS
 respectively.</p></li>
-<li><p><code>r2_cutoff</code>: The <span class="math inline">\(r^2\)</span> threshold for LD clumping. SNPs with
-correlations higher than this value within the specified physical
-distance will be clumped.</p></li>
+<li><p><code>r2_cutoff</code>: The <span class="math inline">r^2</span>
+threshold for LD clumping. SNPs with correlations higher than this value
+within the specified physical distance will be clumped.</p></li>
 <li><p><code>kb_cutoff</code>: The physical distance window (in
 kilobases) used for LD clumping.</p></li>
 <li><p><code>maf_cutoff</code>: Minor Allele Frequency threshold for
 quality control.</p></li>
-<li><p><code>lam</code>: Shrinkage turning parameter (<span class="math inline">\(\lambda\)</span>) used for regularizing the
-estimated LD correlation matrix to guarantee positive
-definiteness.</p></li>
+<li><p><code>lam</code>: Shrinkage turning parameter (<span class="math inline">\lambda</span>) used for regularizing the estimated
+LD correlation matrix to guarantee positive definiteness.</p></li>
 <li><p><code>coreNum</code>: Number of CPU cores allocated for parallel
 processing to speed up calculation over genomic blocks.</p></li>
 <li><p><code>intersect_mode</code>: Logical flag. If <code>TRUE</code>,
@@ -306,13 +300,11 @@ by the MERLIN estimation algorithm:</p>
 <li><p><code>snp.causal</code>: Vector of RS IDs for the selected
 independent instrumental variables.</p></li>
 <li><p><code>gammah1</code> / <code>gammah3</code>: Vector of estimated
-genetic main effects (<span class="math inline">\(\hat{\gamma}_1\)</span>) and interaction effects
-(<span class="math inline">\(\hat{\gamma}_3\)</span>) on the
-exposure.</p></li>
+genetic main effects (<span class="math inline">\hat{\gamma}_1</span>)
+and interaction effects (<span class="math inline">\hat{\gamma}_3</span>) on the exposure.</p></li>
 <li><p><code>Gammah1</code> / <code>Gammah3</code>: Vector of estimated
-genetic main effects (<span class="math inline">\(\hat{\Gamma}_1\)</span>) and interaction effects
-(<span class="math inline">\(\hat{\Gamma}_3\)</span>) on the
-outcome.</p></li>
+genetic main effects (<span class="math inline">\hat{\Gamma}_1</span>)
+and interaction effects (<span class="math inline">\hat{\Gamma}_3</span>) on the outcome.</p></li>
 <li><p><code>se1</code> / <code>se2</code> / <code>se3</code> /
 <code>se4</code>: Respective standard errors for <code>gammah1</code>,
 <code>gammah3</code>, <code>Gammah1</code>, and
@@ -342,14 +334,14 @@ both parameters directly to zero:</li>
 <ul>
 <li>
 <strong>One-Sample / Overlapping MR</strong>: If the cohorts
-overlap, <span class="math inline">\(\rho_1\)</span> and <span class="math inline">\(\rho_2\)</span> must be estimated from independent
+overlap, <span class="math inline">\rho_1</span> and <span class="math inline">\rho_2</span> must be estimated from independent
 null variants across the genome using the <code>EstRhofun</code>
 function.</li>
 </ul>
 <p><strong>Parameter Specifications for
 <code>EstRhofun</code></strong>:</p>
 <ul>
-<li><p>ld_r2_thresh: Strict <span class="math inline">\(r^2\)</span>
+<li><p>ld_r2_thresh: Strict <span class="math inline">r^2</span>
 threshold to filter completely independent SNPs across the
 genome.</p></li>
 <li><p>lambad: Shrinkage tuning parameter for the LD estimator matrix

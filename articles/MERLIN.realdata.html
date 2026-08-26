@@ -6,13 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Part 6: Real Data Analysis and Convergence Diagnostics • MERLIN</title>
-<!-- mathjax math --><script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script><script>
-  window.MathJax = {
-    chtml: {
-      fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
-    }
-  };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- katex math --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><script src="../katex-auto.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
@@ -84,7 +79,7 @@
 MERLIN using a real-world dataset. We will investigate the causal
 relationship between Testosterone (Exposure) and Bipolar Disorder (BD)
 (Outcome), specifically examining whether this causal effect is modified
-by Sex (Environmental factor <span class="math inline">\(E\)</span>).</p>
+by Sex (Environmental factor <span class="math inline">E</span>).</p>
 <p><strong>Data Availability</strong></p>
 <p>The summary statistics required for this analysis, along with the
 1000 Genomes European reference panel, can be downloaded from
@@ -139,17 +134,16 @@ model for discrete binary environmental variables (e.g., sex) when the
 exposure and outcome samples share the same environmental distribution.
 This model requires the additional parameter <code>p_common</code>,
 which represents the common proportion/probability of the environmental
-factor taking the value 1 in both samples (i.e., <span class="math inline">\(P(E=1)\)</span>).</p></li>
+factor taking the value 1 in both samples (i.e., <span class="math inline">P(E=1)</span>).</p></li>
 <li><p><code>"discrete_E_adj"</code>: An adjusted version of the
 discrete environmental model for situations where the proportion of the
 binary environmental variable differs between the exposure and outcome
 samples (e.g., when the sex distributions differ between the two
 samples). This model requires <code>p_exp</code> and <code>p_out</code>,
-representing <span class="math inline">\(P(E=1)\)</span> in the exposure
-and outcome samples, respectively. Before model fitting, the exposure
-GWAS and GWIS estimates are adjusted to represent the same proportion of
-<span class="math inline">\(E=1\)</span> as in the outcome
-sample.</p></li>
+representing <span class="math inline">P(E=1)</span> in the exposure and
+outcome samples, respectively. Before model fitting, the exposure GWAS
+and GWIS estimates are adjusted to represent the same proportion of
+<span class="math inline">E=1</span> as in the outcome sample.</p></li>
 <li><p>“<code>MO</code>”: Designed for practical scenarios where outcome
 GWIS summary statistics are unavailable. This model drops the
 requirement for <code>Gammah3</code>, <code>se4</code>, and
@@ -270,8 +264,8 @@ a Gibbs sampler, it is imperative to verify that the Markov chains have
 properly converged to their stationary distributions. Poor convergence
 indicates that the effect estimates may not be reliable.</p>
 <p>We can visually inspect the mixing and convergence of the sampling
-chains for both the main causal effect (<span class="math inline">\(\beta_1\)</span>) and the interaction causal
-effect (<span class="math inline">\(\beta_4\)</span>) using the
+chains for both the main causal effect (<span class="math inline">\beta_1</span>) and the interaction causal effect
+(<span class="math inline">\beta_4</span>) using the
 <code>traceplot</code> function.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot MCMC trace for the main causal effect</span></span>
@@ -345,7 +339,7 @@ Testosterone has a significant overall causal effect on Bipolar Disorder
 across the entire population (based on <code>MERLINpvalue1</code>).
 Whether the causal effect of Testosterone on Bipolar Disorder differs
 significantly between males and females (based on
-<code>MERLINpvalue4</code>). A significant <span class="math inline">\(\beta_4\)</span> implies a strong
+<code>MERLINpvalue4</code>). A significant <span class="math inline">\beta_4</span> implies a strong
 environment-dependent (sex-specific) causal pathway.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

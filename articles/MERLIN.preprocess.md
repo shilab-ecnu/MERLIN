@@ -115,18 +115,17 @@ the following parameters:
 - `pval_cutoff_gwas / pval_cutoff_gwis`: Significance thresholds for
   extracting potential IVs from GWAS and GWIS respectively.
 
-- `r2_cutoff`: The \\r^2\\ threshold for LD clumping. SNPs with
-  correlations higher than this value within the specified physical
-  distance will be clumped.
+- `r2_cutoff`: The r^2 threshold for LD clumping. SNPs with correlations
+  higher than this value within the specified physical distance will be
+  clumped.
 
 - `kb_cutoff`: The physical distance window (in kilobases) used for LD
   clumping.
 
 - `maf_cutoff`: Minor Allele Frequency threshold for quality control.
 
-- `lam`: Shrinkage turning parameter (\\\lambda\\) used for regularizing
-  the estimated LD correlation matrix to guarantee positive
-  definiteness.
+- `lam`: Shrinkage turning parameter (\lambda) used for regularizing the
+  estimated LD correlation matrix to guarantee positive definiteness.
 
 - `coreNum`: Number of CPU cores allocated for parallel processing to
   speed up calculation over genomic blocks.
@@ -256,12 +255,12 @@ estimation algorithm:
   instrumental variables.
 
 - `gammah1` / `gammah3`: Vector of estimated genetic main effects
-  (\\\hat{\gamma}\_1\\) and interaction effects (\\\hat{\gamma}\_3\\) on
-  the exposure.
+  (\hat{\gamma}\_1) and interaction effects (\hat{\gamma}\_3) on the
+  exposure.
 
 - `Gammah1` / `Gammah3`: Vector of estimated genetic main effects
-  (\\\hat{\Gamma}\_1\\) and interaction effects (\\\hat{\Gamma}\_3\\) on
-  the outcome.
+  (\hat{\Gamma}\_1) and interaction effects (\hat{\Gamma}\_3) on the
+  outcome.
 
 - `se1` / `se2` / `se3` / `se4`: Respective standard errors for
   `gammah1`, `gammah3`, `Gammah1`, and `Gammah3`.
@@ -289,14 +288,14 @@ rho1 <- 0
 rho2 <- 0
 ```
 
-- **One-Sample / Overlapping MR**: If the cohorts overlap, \\\rho_1\\
-  and \\\rho_2\\ must be estimated from independent null variants across
-  the genome using the `EstRhofun` function.
+- **One-Sample / Overlapping MR**: If the cohorts overlap, \rho_1 and
+  \rho_2 must be estimated from independent null variants across the
+  genome using the `EstRhofun` function.
 
 **Parameter Specifications for `EstRhofun`**:
 
-- ld_r2_thresh: Strict \\r^2\\ threshold to filter completely
-  independent SNPs across the genome.
+- ld_r2_thresh: Strict r^2 threshold to filter completely independent
+  SNPs across the genome.
 
 - lambad: Shrinkage tuning parameter for the LD estimator matrix during
   correlation calculation.

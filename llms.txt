@@ -103,10 +103,10 @@ We first generate the genotype data and the environmental variable:
     E <- c(E_exp, E_out)
 
 Now simulate the genetic effect sizes. The main genetic effects
-\\\gamma^{(G)}\\ (we denote it as \\\gamma_1\\ in the tutorial code) and
-G×E interaction effects \\\gamma^{(GI)}\\ (we denote it as \\\gamma_3\\
-in the tutorial code) are generated as correlated multivariate normal
-variables with specified heritabilities.
+\gamma^{(G)} (we denote it as \gamma_1 in the tutorial code) and G×E
+interaction effects \gamma^{(GI)} (we denote it as \gamma_3 in the
+tutorial code) are generated as correlated multivariate normal variables
+with specified heritabilities.
 
     h_g1 <- 0.3
     h_g3 <- 0.1
@@ -127,8 +127,8 @@ variables with specified heritabilities.
     gamma_3x <- gamma1_3[, 2]
     beta_2   <- rnorm(m, 0, sqrt(sigma2b))
 
-Generate the exposure (\\X\\) and outcome (\\Y\\) variables with the
-genetic effects defined.
+Generate the exposure (X) and outcome (Y) variables with the genetic
+effects defined.
 
     # Construct the GxE interaction term
     GE <- G * E
@@ -328,13 +328,9 @@ derived based on the following formula, assuming sex coded as Male=1,
 Female=-1. Allele direction must be aligned before analyzing
 sex-stratified data.
 
-\\
 \hat{b}\_{gwis,j}=\frac{1}{2}(\hat{b}\_{male,j}-{\hat{b}}\_{female,j})
-\\
 
-\\
 se(\hat{b}\_{gwis,j})=\frac{1}{2}\sqrt{(se(\hat{b}\_{male,j})^2+se(\hat{b}\_{female,j})^2}
-\\
 
 ‘stringname3’ is the name of the reference panel data. Here we use
 samples from ‘1000 Genomes Project European panel’, which is in plink
@@ -357,8 +353,8 @@ correlations among those IVs. `plink_dir` specifies the local path to
 the PLINK executable; if not provided, PLINK will be automatically
 downloaded. `pval_cutoff_gwas` and `pval_cutoff_gwis` define the P-value
 thresholds for the exposure GWAS and GWIS, respectively. `r2_cutoff` and
-`kb_cutoff` are used in LD clumping to specify the \\r^2\\ threshold and
-the physical distance (in kilobases) between SNPs. `maf_cutoff` sets the
+`kb_cutoff` are used in LD clumping to specify the r^2 threshold and the
+physical distance (in kilobases) between SNPs. `maf_cutoff` sets the
 threshold for minor allele frequency. `lam` denotes the shrinkage
 parameter used in the regularization of the LD matrix. `CoreNum`
 indicates the number of CPU cores to be used for parallel computation.
@@ -397,13 +393,13 @@ to 0.
 
     rho1 <- 0; rho2 <- 0;
 
-For data with sample overlap, \\\rho_1\\ and \\\rho_2\\ are estimated
-using summary statistics among independent variants following [Chen et
-al (2022)](https://www.nature.com/articles/s41467-022-34164-1), we
-select independent SNPs using the truncated algorithm (\\r^2\\ threshold
-denoted by `ld_r2_thresh`). `pth` is the critical value adapted to the
-truncated normal distribution in the estimation procedure. `lambda` is
-the shrinkage turning parameter for LD estimator.
+For data with sample overlap, \rho_1 and \rho_2 are estimated using
+summary statistics among independent variants following [Chen et al
+(2022)](https://www.nature.com/articles/s41467-022-34164-1), we select
+independent SNPs using the truncated algorithm (r^2 threshold denoted by
+`ld_r2_thresh`). `pth` is the critical value adapted to the truncated
+normal distribution in the estimation procedure. `lambda` is the
+shrinkage turning parameter for LD estimator.
 
     ld_r2_thresh <- 0.001;
     lambda <- 0.85;
