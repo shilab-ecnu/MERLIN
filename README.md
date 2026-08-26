@@ -1,3 +1,5 @@
+# MERLIN: MEndelian Randomization for Linear INteraction
+
 - [Overview](#overview)
 - [Documentation](#documentation)
 - [System Requirements](#system-requirements)
