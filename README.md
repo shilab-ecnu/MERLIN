@@ -7,6 +7,7 @@
 - [Demo](#demo)
     - [Fit MERLIN using simulated data](#fit-merlin-using-simulated-data)
     - [Fit MERLIN using real data](#fit-merlin-using-real-data)
+    - [Session information](#session-information)
 
 # Overview 
 
