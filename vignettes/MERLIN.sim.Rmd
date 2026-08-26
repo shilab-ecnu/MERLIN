@@ -7,6 +7,7 @@ output:
     toc: yes
     toc_depth: '3'
     df_print: paged
+    mathjax: true         
 editor_options:
   markdown:
     wrap: 72
