@@ -1,8 +1,53 @@
 # MERLIN: MEndelian Randomization for Linear INteraction
 
-This vignette provides an introduction to the *MERLIN* package. R
-package *MERLIN* implements MERLIN for causal heterogeneity using
-summary statistics.
+- [Overview](#overview)
+- [Documentation](#documentation)
+- [System Requirements](#system-requirements)
+- [Installation](#installation)
+- [Demo](#demo)
+  - [Fit MERLIN using simulated data](#fit-merlin-using-simulated-data)
+  - [Fit MERLIN using real data](#fit-merlin-using-real-data)
+
+# Overview
+
+`MERLIN` (Causal Heterogeneity using Summary Statistics) is a unified
+Bayesian framework that jointly estimates average and heterogeneity
+effects using summary data from genome-wide association studies (GWAS)
+and Genome-Wide Interaction Studies (GWIS).
+
+# Documenation
+
+Full documentation available here:
+<https://shilab-ecnu.github.io/MERLIN/>
+
+# System Requirements
+
+## Hardware requirements
+
+`MERLIN` package requires only a standard computer with enough RAM to
+support the in-memory operations.
+
+## Software requirements
+
+### OS Requirements
+
+This package is supported for *macOS*, *Windows* and *Linux*. The
+package has been tested on the following systems:
+
+- macOS: Tahoe (26.3.1)
+
+- Windows: 11
+
+- Linux: Red Hat 9.5
+
+### Dependencies
+
+    data.table
+    readr
+    Rcpp
+    TwoSampleMR (>= 0.7.9)
+
+# Installation
 
 Install the development version of *MERLIN* by use of the ‘remotes’
 package. Note that *MERLIN* depends on the ‘Rcpp’ and ‘RcppArmadillo’
@@ -11,12 +56,19 @@ for Windows and Mac OS/X, respectively.
 
 To install this package, run the following command in R.
 
-    library(remotes)
-    install_github("shilab-ecnu/MERLIN")
+    install.packages("remotes")
+    remotes::install_github("shilab-ecnu/MERLIN")
 
-Load the package using the following command:
+- This takes 4-7 minutes to install.
 
-    library(MERLIN)
+To update the package just run the
+`remotes::install_github("shilab-ecnu/MERLIN")` command again.
+
+# Demo
+
+This tutorial provides an introduction to the *MERLIN* package. R
+package *MERLIN* implements MERLIN for causal heterogeneity using
+summary statistics.
 
 ## Fit MERLIN using simulated data
 
@@ -205,7 +257,7 @@ corresponding standard error, and p-value of beta1_hat. beta4_hat,
 se4_hat, and pval4 are the estimated heterogeneity causal effect,
 corresponding standard error, and p-value of beta4_hat.
 
-## Real data
+## Fit MERLIN using real data
 
 ### The Testosterone-BD study with environmental factor sex
 

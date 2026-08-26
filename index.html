@@ -67,13 +67,77 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="merlin-mendelian-randomization-for-linear-interaction">MERLIN: MEndelian Randomization for Linear INteraction<a class="anchor" aria-label="anchor" href="#merlin-mendelian-randomization-for-linear-interaction"></a>
 </h1></div>
-<p>This vignette provides an introduction to the <em>MERLIN</em> package. R package <em>MERLIN</em> implements MERLIN for causal heterogeneity using summary statistics.</p>
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#documentation">Documentation</a></li>
+<li><a href="#system-requirements">System Requirements</a></li>
+<li><a href="#installation">Installation</a></li>
+<li>
+<a href="#demo">Demo</a>
+<ul>
+<li><a href="#fit-merlin-using-simulated-data">Fit MERLIN using simulated data</a></li>
+<li><a href="#fit-merlin-using-real-data">Fit MERLIN using real data</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section level1">
+<h1 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h1>
+<p><code>MERLIN</code> (Causal Heterogeneity using Summary Statistics) is a unified Bayesian framework that jointly estimates average and heterogeneity effects using summary data from genome-wide association studies (GWAS) and Genome-Wide Interaction Studies (GWIS).</p>
+</div>
+<div class="section level1">
+<h1 id="documenation">Documenation<a class="anchor" aria-label="anchor" href="#documenation"></a>
+</h1>
+<p>Full documentation available here: <a href="https://shilab-ecnu.github.io/MERLIN/" class="uri">https://shilab-ecnu.github.io/MERLIN/</a></p>
+</div>
+<div class="section level1">
+<h1 id="system-requirements">System Requirements<a class="anchor" aria-label="anchor" href="#system-requirements"></a>
+</h1>
+<div class="section level2">
+<h2 id="hardware-requirements">Hardware requirements<a class="anchor" aria-label="anchor" href="#hardware-requirements"></a>
+</h2>
+<p><code>MERLIN</code> package requires only a standard computer with enough RAM to support the in-memory operations.</p>
+</div>
+<div class="section level2">
+<h2 id="software-requirements">Software requirements<a class="anchor" aria-label="anchor" href="#software-requirements"></a>
+</h2>
+<div class="section level3">
+<h3 id="os-requirements">OS Requirements<a class="anchor" aria-label="anchor" href="#os-requirements"></a>
+</h3>
+<p>This package is supported for <em>macOS</em>, <em>Windows</em> and <em>Linux</em>. The package has been tested on the following systems:</p>
+<ul>
+<li><p>macOS: Tahoe (26.3.1)</p></li>
+<li><p>Windows: 11</p></li>
+<li><p>Linux: Red Hat 9.5</p></li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="dependencies">Dependencies<a class="anchor" aria-label="anchor" href="#dependencies"></a>
+</h3>
+<pre><code>data.table
+readr
+Rcpp
+TwoSampleMR (&gt;= 0.7.9)</code></pre>
+</div>
+</div>
+</div>
+<div class="section level1">
+<h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h1>
 <p>Install the development version of <em>MERLIN</em> by use of the ‘remotes’ package. Note that <em>MERLIN</em> depends on the ‘Rcpp’ and ‘RcppArmadillo’ packages, which also require appropriate settings of Rtools and Xcode for Windows and Mac OS/X, respectively.</p>
 <p>To install this package, run the following command in R.</p>
-<pre><code><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span></span>
-<span><span class="fu">install_github</span><span class="op">(</span><span class="st">"shilab-ecnu/MERLIN"</span><span class="op">)</span></span></code></pre>
-<p>Load the package using the following command:</p>
-<pre><code><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/shilab-ecnu/MERLIN" class="external-link">MERLIN</a></span><span class="op">)</span></span></code></pre>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"shilab-ecnu/MERLIN"</span><span class="op">)</span></span></code></pre>
+<ul>
+<li>This takes 4-7 minutes to install.</li>
+</ul>
+<p>To update the package just run the <code>remotes::install_github("shilab-ecnu/MERLIN")</code> command again.</p>
+</div>
+<div class="section level1">
+<h1 id="demo">Demo<a class="anchor" aria-label="anchor" href="#demo"></a>
+</h1>
+<p>This tutorial provides an introduction to the <em>MERLIN</em> package. R package <em>MERLIN</em> implements MERLIN for causal heterogeneity using summary statistics.</p>
 <div class="section level2">
 <h2 id="fit-merlin-using-simulated-data">Fit MERLIN using simulated data<a class="anchor" aria-label="anchor" href="#fit-merlin-using-simulated-data"></a>
 </h2>
@@ -238,7 +302,7 @@
 <p>beta1_hat, se1_hat, and pval1 are the estimated average causal effect, corresponding standard error, and p-value of beta1_hat. beta4_hat, se4_hat, and pval4 are the estimated heterogeneity causal effect, corresponding standard error, and p-value of beta4_hat.</p>
 </div>
 <div class="section level2">
-<h2 id="real-data">Real data<a class="anchor" aria-label="anchor" href="#real-data"></a>
+<h2 id="fit-merlin-using-real-data">Fit MERLIN using real data<a class="anchor" aria-label="anchor" href="#fit-merlin-using-real-data"></a>
 </h2>
 <div class="section level3">
 <h3 id="the-testosterone-bd-study-with-environmental-factor-sex">The Testosterone-BD study with environmental factor sex<a class="anchor" aria-label="anchor" href="#the-testosterone-bd-study-with-environmental-factor-sex"></a>
@@ -487,6 +551,7 @@ loaded via a namespace (and not attached):
 [22] rlang_1.1.7         vroom_1.7.0</code></pre>
 </div>
 </div>
+
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
