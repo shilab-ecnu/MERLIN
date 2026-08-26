@@ -1,4 +1,4 @@
-# MERLIN: MEndelian Randomization for Linear INteraction
+# Overview
 
 - [Overview](#overview)
 - [Documentation](#documentation)
@@ -7,8 +7,6 @@
 - [Demo](#demo)
   - [Fit MERLIN using simulated data](#fit-merlin-using-simulated-data)
   - [Fit MERLIN using real data](#fit-merlin-using-real-data)
-
-# Overview
 
 `MERLIN` (Causal Heterogeneity using Summary Statistics) is a unified
 Bayesian framework that jointly estimates average and heterogeneity
