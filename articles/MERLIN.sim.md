@@ -20,14 +20,15 @@ manuscript.
   \beta^{(I)} in the manuscript.
 
 - \gamma_1: The main genetic effects on the exposure, corresponding to
-  \pmb{\gamma}^{(G)} in the manuscript.
+  \boldsymbol{\gamma}^{(G)} in the manuscript.
 
 - \gamma_3: The genetic-by-environment interaction effects on the
-  exposure, corresponding to \bm{\gamma}^{(G)} in the manuscript.
+  exposure, corresponding to \boldsymbol{\gamma}^{(G)} in the
+  manuscript.
 
 - \beta_2: The direct genetic effects on the outcome, representing
-  horizontal pleiotropy and corresponding to \pmb{\beta}^{(G)} in the
-  manuscript.
+  horizontal pleiotropy and corresponding to \boldsymbol{\beta}^{(G)} in
+  the manuscript.
 
 - \epsilon_X, \epsilon_Y: The residual error terms for the exposure and
   outcome, respectively. These capture the cumulative errors, crucially
