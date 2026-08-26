@@ -20,7 +20,7 @@ to \\\beta^{(A)}\\ in the manuscript.
   corresponding to \\\beta^{(I)}\\ in the manuscript.
 
 - \\\gamma_1\\: The main genetic effects on the exposure, corresponding
-  to \\\symbf{\gamma}^{(G)}\\ in the manuscript.
+  to \\\bm{\gamma}^{(G)}\\ in the manuscript.
 
 - \\\gamma_3\\: The genetic-by-environment interaction effects on the
   exposure, corresponding to \\\boldsymbol{\gamma}^{(GI)}\\ in the
