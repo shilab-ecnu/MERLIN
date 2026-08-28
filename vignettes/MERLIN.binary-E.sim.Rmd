@@ -1,5 +1,5 @@
 ---
-title: "Part 5: Model Fitting with a Discrete Binary Modifier (`discrete_E` and `discrete_E_adj`)"
+title: "Part 7: Model Fitting with a Discrete Binary Modifier (`discrete_E` and `discrete_E_adj`)"
 date: "\\small \\today"
 output:
   html_document:
@@ -10,7 +10,7 @@ editor_options:
   markdown:
     wrap: 72
 vignette: >
-  %\VignetteIndexEntry{Part 5: Model Fitting with a Binary Modifier}
+  %\VignetteIndexEntry{Part 7: Model Fitting with a Binary Modifier}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

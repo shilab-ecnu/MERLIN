@@ -1,5 +1,5 @@
 ---
-title: "Part 4: Model Fitting with a Single Available GWIS (MERLIN-MO and MERLIN-ME)"
+title: "Part 6: Model Fitting with a Single Available GWIS (MERLIN-MO and MERLIN-ME)"
 date: "\\small \\today"
 output:
   html_document:
@@ -10,7 +10,7 @@ editor_options:
   markdown:
     wrap: 72
 vignette: >
-  %\VignetteIndexEntry{Part 4: Model Fitting with a Single Available GWIS}
+  %\VignetteIndexEntry{Part 6: Model Fitting with a Single Available GWIS}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
