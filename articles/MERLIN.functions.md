@@ -57,7 +57,7 @@ Low-level C++ helper for reading SNP information from a reference.
 `Read_summarystat()`  
 Low-level C++ helper for reading summary-statistics columns.
 
-[`select()`](https://rdrr.io/pkg/MASS/man/lm.ridge.html)  
+`select()`  
 Low-level C++ helper for selecting character-vector elements by index.
 
 `getLineNum()`  
