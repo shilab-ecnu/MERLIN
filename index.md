@@ -1,7 +1,6 @@
 # MERLIN: MEndelian Randomization for Linear INteraction
 
 - [Overview](#overview)
-- [Documentation](#documentation)
 - [System Requirements](#system-requirements)
 - [Installation](#installation)
 
@@ -11,11 +10,6 @@
 Bayesian framework that jointly estimates average and heterogeneity
 effects using summary data from genome-wide association studies (GWAS)
 and Genome-Wide Interaction Studies (GWIS).
-
-## Documenation
-
-Full documentation available here:
-<https://shilab-ecnu.github.io/MERLIN/>
 
 ## System Requirements 
 
