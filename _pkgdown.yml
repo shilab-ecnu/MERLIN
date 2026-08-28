@@ -34,18 +34,21 @@ navbar:
       menu:
         - text: "List of articles"
           href: articles/index.html
-        - text: "Part 1: Introduction and Data Requirements"
+        - text: "Part 1: Introduction"
           href: articles/MERLIN.intro.html
-        - text: "Part 2: Data Preprocessing and Instrumental Variable Selection"
-          href: articles/MERLIN.preprocess.html
-        - text: "Part 3: Model Fitting Using Simulated Data"
+        - text: "Part 2: Model Fitting Using Simulated Data"
           href: articles/MERLIN.sim.html
-        - text: "Part 4: Model Fitting with a Single Available GWIS (MERLIN-MO and MERLIN-ME)"
-          href: articles/MERLIN.single-GWIS.sim.html
-        - text: "Part 5: Model Fitting with a Discrete Binary Modifier (`discrete_E` and `discrete_E_adj`)"
-          href: articles/MERLIN.binary-E.sim.html
-        - text: "Part 6: Real Data Analysis and Convergence Diagnostics"
+        - text: "Part 3: Data preparation"
+          href: articles/MERLIN.dataprep.html
+        - text: "Part 4: Data Preprocessing and Instrumental Variable Selection"
+          href: articles/MERLIN.preprocess.html
+        - text: "Part 5: Model Fitting and Convergence Diagnostics"
           href: articles/MERLIN.realdata.html
+        - text: "Part 6: Model Fitting with a Single Available GWIS (MERLIN-MO and MERLIN-ME)"
+          href: articles/MERLIN.single-GWIS.sim.html
+        - text: "Part 7: Model Fitting with a Discrete Binary Modifier (`discrete_E` and `discrete_E_adj`)"
+          href: articles/MERLIN.binary-E.sim.html
+        
     changelog:
       text: "Changelog"
       href: news/index.html
@@ -61,17 +64,19 @@ articles:
   - title: "Getting started"
     contents:
       - MERLIN.intro
-
-  - title: "Data preparation"
-    contents:
-      - MERLIN.preprocess
-
-  - title: "Analysis and simulation"
-    contents:
       - MERLIN.sim
+
+  - title: "Real data analysis"
+    contents:
+      - MERLIN.dataprep
+      - MERLIN.preprocess
+      - MERLIN.realdata
+
+  - title: "Model extensions"
+    contents:
       - MERLIN.single-GWIS.sim
       - MERLIN.binary-E.sim
-      - MERLIN.realdata
+      
   - title: internal
     contents:
       - MERLIN.functions
