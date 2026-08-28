@@ -1,4 +1,4 @@
-# Part 2: Data Preprocessing and Instrumental Variable Selection
+# Part 4: Data Preprocessing and Instrumental Variable Selection
 
 ## Overview of the Preprocessing Pipeline
 
@@ -289,8 +289,9 @@ rho2 <- 0
 ```
 
 - **One-Sample / Overlapping MR**: If the cohorts overlap, \rho_1 and
-  \rho_2 must be estimated from independent null variants across the
-  genome using the `EstRhofun` function.
+  \rho_2 are estimated using the `EstRhofun` function on summary
+  statistics among independent variants following [Chen et al
+  (2022)](https://www.nature.com/articles/s41467-022-34164-1).
 
 **Parameter Specifications for `EstRhofun`**:
 

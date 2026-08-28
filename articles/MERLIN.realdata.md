@@ -1,34 +1,17 @@
-# Part 6: Real Data Analysis and Convergence Diagnostics
-
-## Case Study: Testosterone on Bipolar Disorder
-
-In this final section, we demonstrate the practical application of
-MERLIN using a real-world dataset. We will investigate the causal
-relationship between Testosterone (Exposure) and Bipolar Disorder (BD)
-(Outcome), specifically examining whether this causal effect is modified
-by Sex (Environmental factor E).
-
-**Data Availability**
-
-The summary statistics required for this analysis, along with the 1000
-Genomes European reference panel, can be downloaded from
-Figshare:<https://figshare.com/articles/dataset/Data_for_MERLIN/29910116>.
-We assume that you have already downloaded these datasets and completed
-the data preprocessing steps outlined in Part 2 (including `matchpanel`,
-`ivselect`, and `EstRhofun`).
+# Part 5: Model Fitting and Convergence Diagnostics
 
 ## Loading Preprocessed Inputs
 
-From the preprocessing pipeline in Part 2, we have already obtained the
+From the preprocessing pipeline in Part 4, we have already obtained the
 following variables:
 
-The selected genetic instruments and their effect sizes/standard errors
-for both main and interaction effects (`gammah1`, `gammah3`, `Gammah1`,
-`Gammah3`, `se1`, `se2`, `se3`, `se4`).
+- The selected genetic instruments and their effect sizes/standard
+  errors for both main and interaction effects (`gammah1`, `gammah3`,
+  `Gammah1`, `Gammah3`, `se1`, `se2`, `se3`, `se4`).
 
-The regularized Linkage Disequilibrium (LD) correlation matrix `R`.
+- The regularized Linkage Disequilibrium (LD) correlation matrix `R`.
 
-The sample overlap correlation estimates `rho1` and `rho2`.
+- The sample overlap correlation estimates `rho1` and `rho2`.
 
 ``` r
 
@@ -154,54 +137,6 @@ List of 14
  $ Beta4.hat : num 0.263
  $ Beta4.se  : num 0.0926
  $ Beta4.pval: num 0.00445
-```
-
-MERLIN can still be applied when either the exposure GWIS or the outcome
-GWIS summary statistics are unavailable. As an illustrative example, we
-consider the case where the exposure GWIS data are missing. In this
-setting, users should specify `model = "ME"`, and `gammah3`, `se2`, and
-`rho_2` can be omitted.
-
-``` r
-
-res.drop <- MERLIN(gammah1    = gammah1, 
-                   gammah3    = NULL, 
-                   Gammah1    = Gammah1, 
-                   Gammah3    = Gammah3,
-                   se1        = se1, 
-                   se2        = NULL, 
-                   se3        = se3, 
-                   se4        = se4, 
-                   R          = R, 
-                   rho_1      = rho1, 
-                   rho_2      = NULL,
-                   model      = "ME",
-                   maxIter    = 12000,       
-                   burnin     = 5000, 
-                   thin       = 10,
-                   seed       = 2026)    
-str(res.drop)
-```
-
-The console below shows the progress and output structure in this
-setting.
-
-``` text
-Running MERLIN method (Model: ME)...
-
---------------------------------------------------
-MERLIN Analysis Completed Successfully!
-Total processing time: 0.0001 seconds
---------------------------------------------------
-
-> str(res)
-List of 6
- $ Beta1.hat : num 0.186
- $ Beta1.se  : num 0.259
- $ Beta1.pval: num 0.475
- $ Beta4.hat : num 0.725
- $ Beta4.se  : num 0.223
- $ Beta4.pval: num 0.00132
 ```
 
 ## Convergence Diagnostics

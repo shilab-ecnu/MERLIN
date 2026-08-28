@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Part 1: Introduction and Data Requirements • MERLIN</title>
+<title>Part 1: Introduction • MERLIN</title>
 <!-- katex math --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><script src="../katex-auto.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Part 1: Introduction and Data Requirements">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Part 1: Introduction">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -34,12 +34,13 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-guide" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Guide</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-guide">
 <li><a class="dropdown-item" href="../articles/index.html">List of articles</a></li>
-    <li><a class="dropdown-item" href="../articles/MERLIN.intro.html">Part 1: Introduction and Data Requirements</a></li>
-    <li><a class="dropdown-item" href="../articles/MERLIN.preprocess.html">Part 2: Data Preprocessing and Instrumental Variable Selection</a></li>
-    <li><a class="dropdown-item" href="../articles/MERLIN.sim.html">Part 3: Model Fitting Using Simulated Data</a></li>
-    <li><a class="dropdown-item" href="../articles/MERLIN.single-GWIS.sim.html">Part 4: Model Fitting with a Single Available GWIS (MERLIN-MO and MERLIN-ME)</a></li>
-    <li><a class="dropdown-item" href="../articles/MERLIN.binary-E.sim.html">Part 5: Model Fitting with a Discrete Binary Modifier (`discrete_E` and `discrete_E_adj`)</a></li>
-    <li><a class="dropdown-item" href="../articles/MERLIN.realdata.html">Part 6: Real Data Analysis and Convergence Diagnostics</a></li>
+    <li><a class="dropdown-item" href="../articles/MERLIN.intro.html">Part 1: Introduction</a></li>
+    <li><a class="dropdown-item" href="../articles/MERLIN.sim.html">Part 2: Model Fitting Using Simulated Data</a></li>
+    <li><a class="dropdown-item" href="../articles/MERLIN.dataprep.html">Part 3: Data preparation</a></li>
+    <li><a class="dropdown-item" href="../articles/MERLIN.preprocess.html">Part 4: Data Preprocessing and Instrumental Variable Selection</a></li>
+    <li><a class="dropdown-item" href="../articles/MERLIN.realdata.html">Part 5: Model Fitting and Convergence Diagnostics</a></li>
+    <li><a class="dropdown-item" href="../articles/MERLIN.single-GWIS.sim.html">Part 6: Model Fitting with a Single Available GWIS (MERLIN-MO and MERLIN-ME)</a></li>
+    <li><a class="dropdown-item" href="../articles/MERLIN.binary-E.sim.html">Part 7: Model Fitting with a Discrete Binary Modifier (`discrete_E` and `discrete_E_adj`)</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../articles/MERLIN.functions.html">Functions</a></li>
@@ -63,7 +64,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>Part 1: Introduction and Data Requirements</h1>
+      <h1>Part 1: Introduction</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/shilab-ecnu/MERLIN/blob/main/vignettes/MERLIN.intro.Rmd" class="external-link"><code>vignettes/MERLIN.intro.Rmd</code></a></small>
@@ -117,68 +118,40 @@ console:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/shilab-ecnu/MERLIN" class="external-link">MERLIN</a></span><span class="op">)</span></span></code></pre></div>
 </div>
-</div>
-<div class="section level2">
-<h2 id="data-requirements">Data Requirements<a class="anchor" aria-label="anchor" href="#data-requirements"></a>
-</h2>
-<p>To successfully perform causal inference with environmental
-interactions using MERLIN, you need to prepare specific datasets. The
-core inputs consist of four sets of summary statistics and a reference
-panel for LD estimation.</p>
 <div class="section level3">
-<h3 id="summary-statistics-format">Summary Statistics Format<a class="anchor" aria-label="anchor" href="#summary-statistics-format"></a>
+<h3 id="session-information">Session information<a class="anchor" aria-label="anchor" href="#session-information"></a>
 </h3>
-<p>MERLIN requires four summary statistics files:</p>
-<p>Exposure GWAS (expgwas): Main genetic effects on the exposure.</p>
-<p>Exposure GWIS (expgwis): Genetic-environmental interaction effects on
-the exposure.</p>
-<p>Outcome GWAS (outgwas): Main genetic effects on the outcome.</p>
-<p>Outcome GWIS (outgwis): Genetic-environmental interaction effects on
-the outcome.</p>
-<p>MERLIN can still be applied when GWIS data are unavailable for either
-the exposure or the outcome (see the Data Analysis section for further
-details). All summary statistics files must be tab-delimited text files
-(they can be gzipped, e.g., .txt.gz). They must contain the following
-standard columns, with exact column names in the header:</p>
-<p><img src="MERLIN_example_data.png" class="r-plt" alt="" width="100%"></p>
-</div>
-<div class="section level3">
-<h3 id="constructing-gwis-data-from-stratified-gwas">Constructing GWIS Data from Stratified GWAS<a class="anchor" aria-label="anchor" href="#constructing-gwis-data-from-stratified-gwas"></a>
-</h3>
-<p>In many real-world scenarios, direct GWIS summary statistics might
-not be publicly available. However, if the environmental factor is a
-binary variable (e.g., Sex: Male/Female), you can derive both GWAS and
-GWIS inputs from stratified summary statistics. Assuming sex is coded as
-Male = <span class="math inline">1</span> and Female = <span class="math inline">-1</span>, and that the allele directions are
-perfectly aligned between the two datasets:</p>
-<p>GWAS (Main Effect): Can be generated by meta-analyzing the male and
-female data using inverse-variance weighting (e.g., using software like
-<code>METAL</code>, see <a href="https://github.com/statgen/METAL" class="external-link uri">https://github.com/statgen/METAL</a>). After installing the
-software, the analysis can be executed via the command line (e.g., in
-Linux or other shell environments) using a configuration file. A sample
-configuration file ‘metal.config.Testosterone.txt’ is available for
-download: <a href="https://figshare.com/articles/dataset/Data_for_MERLIN/29910116" class="external-link uri">https://figshare.com/articles/dataset/Data_for_MERLIN/29910116</a>.</p>
-<p>GWIS (Interaction Effect): The SNP interaction effects and their
-standard errors can be derived using the following formulas: <span class="math display">\hat{b}_{gwis,j}=\frac{1}{2}(\hat{b}_{male,j}-\hat{b}_{female,j})</span>
-<span class="math display">se(\hat{b}_{gwis,j})=\frac{1}{2}\sqrt{(se(\hat{b}_{male,j})^2+se(\hat{b}_{female,j})^2}</span></p>
-</div>
-<div class="section level3">
-<h3 id="reference-panel-data">Reference Panel Data<a class="anchor" aria-label="anchor" href="#reference-panel-data"></a>
-</h3>
-<p>To account for Linkage Disequilibrium (LD) structure during
-instrumental variable selection (LD clumping) and to estimate sample
-overlap, MERLIN requires a reference panel. The reference panel must be
-in PLINK binary format (.bed, .bim, .fam). For European ancestry
-studies, the 1000 Genomes Project European panel is highly
-recommended.</p>
-<p>You will also need a genomic partition file (e.g.,
-<code>all.bed</code>) to divide the genome into structured LD blocks
-separated by recombination hotspots. This block-wise partitioning
-facilitates efficient and parallelized regional LD matrix
-estimation.</p>
-<p>If you do not have these files, a pre-formatted reference panel and
-LD block file for European populations are provided alongside our
-package data at: <a href="https://figshare.com/articles/dataset/Data_for_MERLIN/29910116" class="external-link uri">https://figshare.com/articles/dataset/Data_for_MERLIN/29910116</a>.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre class="text"><code>R version 4.4.3 (2025-02-28)
+Platform: aarch64-apple-darwin20
+Running under: macOS 26.4.1
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRblas.0.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRlapack.dylib; LAPACK version 3.12.0
+
+locale:
+[1] C.UTF-8/C.UTF-8/C.UTF-8/C/C.UTF-8/C.UTF-8
+
+time zone: Asia/Shanghai
+tzcode source: internal
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base
+
+other attached packages:
+[1] MERLIN_1.1.2
+
+loaded via a namespace (and not attached):
+ [1] R6_2.6.1            tidyselect_1.2.1    bit_4.6.0
+ [4] tzdb_0.5.0          magrittr_2.0.4      glue_1.8.0
+ [7] tibble_3.3.1        parallel_4.4.3      pkgconfig_2.0.3
+[10] bit64_4.6.0-1       lifecycle_1.0.5     readr_2.2.0
+[13] cli_3.6.5           vctrs_0.7.2         data.table_1.18.2.1
+[16] compiler_4.4.3      tools_4.4.3         hms_1.1.4
+[19] pillar_1.11.1       Rcpp_1.1.1          crayon_1.5.3
+[22] rlang_1.1.7         vroom_1.7.0</code></pre>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

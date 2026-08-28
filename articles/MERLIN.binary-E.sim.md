@@ -1,4 +1,4 @@
-# Part 5: Model Fitting with a Discrete Binary Modifier (\`discrete_E\` and \`discrete_E_adj\`)
+# Part 7: Model Fitting with a Discrete Binary Modifier (\`discrete_E\` and \`discrete_E_adj\`)
 
 ## Introduction to the Binary-Modifier Models
 

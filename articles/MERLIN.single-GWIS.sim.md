@@ -1,4 +1,4 @@
-# Part 4: Model Fitting with a Single Available GWIS (MERLIN-MO and MERLIN-ME)
+# Part 6: Model Fitting with a Single Available GWIS (MERLIN-MO and MERLIN-ME)
 
 ## Introduction to the Single-GWIS Extensions
 

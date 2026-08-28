@@ -34,12 +34,13 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-guide" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Guide</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-guide">
 <li><a class="dropdown-item" href="../articles/index.html">List of articles</a></li>
-    <li><a class="dropdown-item" href="../articles/MERLIN.intro.html">Part 1: Introduction and Data Requirements</a></li>
-    <li><a class="dropdown-item" href="../articles/MERLIN.preprocess.html">Part 2: Data Preprocessing and Instrumental Variable Selection</a></li>
-    <li><a class="dropdown-item" href="../articles/MERLIN.sim.html">Part 3: Model Fitting Using Simulated Data</a></li>
-    <li><a class="dropdown-item" href="../articles/MERLIN.single-GWIS.sim.html">Part 4: Model Fitting with a Single Available GWIS (MERLIN-MO and MERLIN-ME)</a></li>
-    <li><a class="dropdown-item" href="../articles/MERLIN.binary-E.sim.html">Part 5: Model Fitting with a Discrete Binary Modifier (`discrete_E` and `discrete_E_adj`)</a></li>
-    <li><a class="dropdown-item" href="../articles/MERLIN.realdata.html">Part 6: Real Data Analysis and Convergence Diagnostics</a></li>
+    <li><a class="dropdown-item" href="../articles/MERLIN.intro.html">Part 1: Introduction</a></li>
+    <li><a class="dropdown-item" href="../articles/MERLIN.sim.html">Part 2: Model Fitting Using Simulated Data</a></li>
+    <li><a class="dropdown-item" href="../articles/MERLIN.dataprep.html">Part 3: Data preparation</a></li>
+    <li><a class="dropdown-item" href="../articles/MERLIN.preprocess.html">Part 4: Data Preprocessing and Instrumental Variable Selection</a></li>
+    <li><a class="dropdown-item" href="../articles/MERLIN.realdata.html">Part 5: Model Fitting and Convergence Diagnostics</a></li>
+    <li><a class="dropdown-item" href="../articles/MERLIN.single-GWIS.sim.html">Part 6: Model Fitting with a Single Available GWIS (MERLIN-MO and MERLIN-ME)</a></li>
+    <li><a class="dropdown-item" href="../articles/MERLIN.binary-E.sim.html">Part 7: Model Fitting with a Discrete Binary Modifier (`discrete_E` and `discrete_E_adj`)</a></li>
   </ul>
 </li>
 <li class="active nav-item"><a class="nav-link" href="../articles/MERLIN.functions.html">Functions</a></li>
@@ -349,8 +350,8 @@ MERLIN.</p>
 <span>  <span class="va">stringname3</span>,</span>
 <span>  <span class="va">block_file</span>,</span>
 <span>  plink_dir <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  pval_cutoff_gwas <span class="op">=</span> <span class="fl">0.00000005</span>,</span>
-<span>  pval_cutoff_gwis <span class="op">=</span> <span class="fl">0.00000005</span>,</span>
+<span>  pval_cutoff_gwas <span class="op">=</span> <span class="fl">5e-8</span>,</span>
+<span>  pval_cutoff_gwis <span class="op">=</span> <span class="fl">5e-8</span>,</span>
 <span>  r2_cutoff <span class="op">=</span> <span class="fl">0.01</span>,</span>
 <span>  kb_cutoff <span class="op">=</span> <span class="fl">1024</span>,</span>
 <span>  maf_cutoff <span class="op">=</span> <span class="fl">0.05</span>,</span>
