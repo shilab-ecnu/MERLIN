@@ -94,16 +94,12 @@ Low-level set-difference helper used during LD pruning.
 
 #### MERLIN model kernels
 
-`MRGEI_Gam3seo()`  
-Run the standard MERLIN MCMC kernel.
+`MRGEI_Gam3seo_3to1()`  
+Run the standard, continuous-environment and binary-environment MERLIN
+MCMC kernel, with the relevant parameters adjusted according to the
+specific analysis setting.
 
-`MRGEI_Gam3seo_addE2()`  
-Run the continuous-environment MERLIN MCMC kernel.
-
-`MRGEI_Gam3seo_binary()`  
-Run the binary-environment MERLIN MCMC kernel.
-
-`MRGEI_Gamseo_fixb1()`  
+`MRGEI_Gamseo()`  
 Run the `MO`(without outcome gwis) MERLIN MCMC kernel.
 
 #### Matrix and numerical utilities
@@ -175,12 +171,14 @@ MERLIN(
   R,
   rho_1 = NULL,
   rho_2 = NULL,
-  model = c("standard", "continuous_E", "binary", "MO", "ME"),
-  p1 = NULL,
+  model = c("standard", "continuous_E", "discrete_E", "discrete_E_adj", "MO", "ME"),
+  p_common = NULL,
+  p_exp = NULL,
+  p_out = NULL,
   maxIter = 12000,
   burnin = 5000,
   thin = 10,
-  seed = NULL
+  seed = 20262027
 )
 ```
 
@@ -189,26 +187,26 @@ MERLIN(
 | Argument | Description |
 |----|----|
 | `gammah1` | Numeric vector of exposure GWAS main-effect estimates. |
-| `gammah3` | Numeric vector of exposure GWIS interaction-effect estimates. Required for `standard`, `continuous_E`, `binary`, and `MO`. |
+| `gammah3` | Numeric vector of exposure GWIS interaction-effect estimates. Required for `standard`, `continuous_E`, `discrete_E`, `discrete_E_adj`, and `MO`. |
 | `Gammah1` | Numeric vector of outcome GWAS main-effect estimates. |
-| `Gammah3` | Numeric vector of outcome GWIS interaction-effect estimates. Required for `standard`, `continuous_E`, `binary`, and `ME`. |
+| `Gammah3` | Numeric vector of outcome GWIS interaction-effect estimates. Required for `standard`, `continuous_E`, `discrete_E`, `discrete_E_adj`, and `ME`. |
 | `se1`, `se2`, `se3`, `se4` | Standard-error vectors corresponding to `gammah1`, `gammah3`, `Gammah1`, and `Gammah3`. |
 | `R` | Numeric LD correlation matrix for the selected SNPs. |
 | `rho_1` | Correlation parameter for the GWAS summary-statistics components. |
 | `rho_2` | Correlation parameter for the GWIS summary-statistics components. Required for models using both GWIS terms. |
-| `model` | MERLIN model variant. |
-| `p1` | Proportion parameter required by the `binary` model. |
-| `maxIter` | Total number of MCMC iterations. Must be divisible by `thin`. |
+| `model` | MERLIN model variant: `standard`, `continuous_E`, `discrete_E`, `discrete_E_adj`, `MO`, or `ME`. |
+| `p_common` | Common proportion P(E=1) for `model = "discrete_E"`. |
+| `p_exp` | Proportion P(E=1) in the exposure sample for `model = "discrete_E_adj"`. |
+| `p_out` | Proportion P(E=1) in the outcome sample for `model = "discrete_E_adj"`. |
+| `maxIter` | Number of post-burn-in MCMC iterations. Must be divisible by `thin`. |
 | `burnin` | Number of burn-in iterations. |
 | `thin` | Thinning interval. |
 | `seed` | Optional random seed for reproducibility. |
 
 ##### Value
 
-A list returned by the selected C++ model kernel. The public workflow
-typically uses elements such as `Beta1.hat`, `Beta1.se`, `Beta1.pval`,
-`Beta4.hat`, `Beta4.se`, `Beta4.pval`, and saved MCMC samples such as
-`Beta1res` and `Beta4res`.
+A list containing `Beta1.hat`, `Beta1.se`, `Beta1.pval`, `Beta4.hat`,
+`Beta4.se`, and `Beta4.pval`.
 
 #### **`ivselect()`**
 
@@ -334,7 +332,7 @@ traceplot(bhatpoint)
 
 | Argument | Description |
 |----|----|
-| `bhatpoint` | Numeric vector of saved MCMC samples, such as `res$Beta1res` or `res$Beta4res`. |
+| `bhatpoint` | Numeric vector of saved MCMC samples returned by a low-level MCMC kernel, such as `fit$Beta1res` or `fit$Beta4res`. |
 
 ##### Value
 
@@ -781,15 +779,15 @@ should call
 [`MERLIN()`](https://shilab-ecnu.github.io/MERLIN/reference/MERLIN-package.md)
 instead.
 
-#### **`MRGEI_Gam3seo()`**
+#### **`MRGEI_Gam3seo_3to1()`**
 
-Run the standard MERLIN MCMC kernel.
+Run the standard and continuous-environment MERLIN MCMC kernel.
 
 ##### Usage
 
 ``` r
 
-MRGEI_Gam3seo(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, maxIter, burnin, thin)
+MRGEI_Gam3seo_3to1(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, 0.5, maxIter, burnin, thin)
 ```
 
 ##### Arguments
@@ -807,34 +805,16 @@ MRGEI_Gam3seo(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, 
 
 A list of MERLIN estimates and saved MCMC samples.
 
-#### **`MRGEI_Gam3seo_addE2()`**
+#### **`MRGEI_Gam3seo_3to1()`**
 
-Run the continuous-environment MERLIN MCMC kernel.
-
-##### Usage
-
-``` r
-
-MRGEI_Gam3seo_addE2(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, maxIter, burnin, thin)
-```
-
-##### Arguments
-
-Same as `MRGEI_Gam3seo()`.
-
-##### Value
-
-A list of MERLIN estimates and saved MCMC samples.
-
-#### **`MRGEI_Gam3seo_binary()`**
-
-Run the binary-environment MERLIN MCMC kernel.
+Run the binary-environment MERLIN MCMC kernel for an unbalanced sample
+distribution.
 
 ##### Usage
 
 ``` r
 
-MRGEI_Gam3seo_binary(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, p1, maxIter, burnin, thin)
+MRGEI_Gam3seo_3to1(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, p1, maxIter, burnin, thin)
 ```
 
 ##### Arguments
@@ -853,7 +833,7 @@ MRGEI_Gam3seo_binary(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, 
 
 A list of MERLIN estimates and saved MCMC samples.
 
-#### **`MRGEI_Gamseo_fixb1()`**
+#### **`MRGEI_Gamseo()`**
 
 Run the `MO`(without outcome gwis) MERLIN MCMC kernel.
 
@@ -861,20 +841,19 @@ Run the `MO`(without outcome gwis) MERLIN MCMC kernel.
 
 ``` r
 
-MRGEI_Gamseo_fixb1(gammah1, gammah3, Gammah1, se1, se2, se3, R, rho, b1, maxIter, burnin, thin)
+MRGEI_Gamseo(gammah1, gammah3, Gammah1, se1, se2, se3, R, rho, maxIter, burnin, thin)
 ```
 
 ##### Arguments
 
-| Argument | Description |
-|----|----|
-| `gammah1`, `gammah3` | Exposure GWAS and GWIS effect estimates. |
-| `Gammah1` | Outcome GWAS effect estimates. |
-| `se1`, `se2`, `se3` | Corresponding standard errors. |
-| `R` | LD correlation matrix. |
-| `rho` | Correlation parameter. |
-| `b1` | The main effect estimate (\beta_1), which can be either manually specified or obtained from an alternative MR method. When the “`MO`” mode is selected, the Egger method is used to estimate \beta_1. |
-| `maxIter`, `burnin`, `thin` | MCMC control parameters. |
+| Argument                    | Description                              |
+|-----------------------------|------------------------------------------|
+| `gammah1`, `gammah3`        | Exposure GWAS and GWIS effect estimates. |
+| `Gammah1`                   | Outcome GWAS effect estimates.           |
+| `se1`, `se2`, `se3`         | Corresponding standard errors.           |
+| `R`                         | LD correlation matrix.                   |
+| `rho`                       | Correlation parameter.                   |
+| `maxIter`, `burnin`, `thin` | MCMC control parameters.                 |
 
 ##### Value
 
