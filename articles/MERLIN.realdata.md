@@ -36,11 +36,11 @@ The `model` argument specifies the underlying biological and statistical
 assumptions for the causal pathway. MERLIN currently supports five
 distinct modes:
 
-- “`standard`” (Default): The comprehensive model assuming both main
+- `"standard"` (Default): The comprehensive model assuming both main
   genetic effects and G×E interaction effects are present in both the
   exposure and the outcome pathways.
 
-- “`continuous_E`”: A specialized version of the standard model
+- `"continuous_E"`: A specialized version of the standard model
   optimized for a continuous environmental variable.
 
 - `"discrete_E"`: A specialized version of the standard model for
@@ -59,11 +59,11 @@ distinct modes:
   and GWIS estimates are adjusted to represent the same proportion of
   E=1 as in the outcome sample.
 
-- “`MO`”: Designed for practical scenarios where outcome GWIS summary
+- `"MO"`: Designed for practical scenarios where outcome GWIS summary
   statistics are unavailable. This model drops the requirement for
   `Gammah3`, `se4`, and `rho_2`.
 
-- “`ME`”: Designed for practical scenarios where exposure GWIS summary
+- `"ME"`: Designed for practical scenarios where exposure GWIS summary
   statistics are unavailable. This model drops the requirement for
   `gammah3`, `se2`, and `rho_2`.
 
@@ -168,7 +168,7 @@ traceplot(res$Beta4res)
 
 **Interpretation Guidelines for Traceplots**:
 
-Good Convergence: The plot should look like a “hairy caterpillar,” with
+Good Convergence: The plot should look like a “hairy caterpillar”, with
 the chain rapidly mixing and oscillating around a stable mean value
 without any obvious long-term trends or drifting.
 
@@ -177,7 +177,7 @@ certain regions, or shows a distinct upward/downward trend, you may need
 to increase the number of MCMC iterations or check your input data for
 extreme outliers.
 
-**Note**: When using the “`MO`” or “`ME`” model, parameter estimation is
+**Note**: When using the `"MO"` or `"ME"` model, parameter estimation is
 no longer performed via the MCMC procedure. Consequently, convergence
 diagnostics are not required.
 

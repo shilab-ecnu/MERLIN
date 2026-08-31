@@ -109,10 +109,10 @@ environmental variable types.</p>
 and statistical assumptions for the causal pathway. MERLIN currently
 supports five distinct modes:</p>
 <ul>
-<li><p>“<code>standard</code>” (Default): The comprehensive model
+<li><p><code>"standard"</code> (Default): The comprehensive model
 assuming both main genetic effects and G×E interaction effects are
 present in both the exposure and the outcome pathways.</p></li>
-<li><p>“<code>continuous_E</code>”: A specialized version of the
+<li><p><code>"continuous_E"</code>: A specialized version of the
 standard model optimized for a continuous environmental
 variable.</p></li>
 <li><p><code>"discrete_E"</code>: A specialized version of the standard
@@ -130,11 +130,11 @@ representing <span class="math inline">P(E=1)</span> in the exposure and
 outcome samples, respectively. Before model fitting, the exposure GWAS
 and GWIS estimates are adjusted to represent the same proportion of
 <span class="math inline">E=1</span> as in the outcome sample.</p></li>
-<li><p>“<code>MO</code>”: Designed for practical scenarios where outcome
+<li><p><code>"MO"</code>: Designed for practical scenarios where outcome
 GWIS summary statistics are unavailable. This model drops the
 requirement for <code>Gammah3</code>, <code>se4</code>, and
 <code>rho_2</code>.</p></li>
-<li><p>“<code>ME</code>”: Designed for practical scenarios where
+<li><p><code>"ME"</code>: Designed for practical scenarios where
 exposure GWIS summary statistics are unavailable. This model drops the
 requirement for <code>gammah3</code>, <code>se2</code>, and
 <code>rho_2</code>.</p></li>
@@ -221,15 +221,15 @@ chains for both the main causal effect (<span class="math inline">\beta_1</span>
 <span><span class="fu">traceplot</span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">Beta4res</span><span class="op">)</span></span></code></pre></div>
 <p><img src="traceplot4.png" class="r-plt" alt="" width="80%"></p>
 <p><strong>Interpretation Guidelines for Traceplots</strong>:</p>
-<p>Good Convergence: The plot should look like a “hairy caterpillar,”
+<p>Good Convergence: The plot should look like a “hairy caterpillar”,
 with the chain rapidly mixing and oscillating around a stable mean value
 without any obvious long-term trends or drifting.</p>
 <p>Poor Convergence: If the chain exhibits slow wandering, gets stuck in
 certain regions, or shows a distinct upward/downward trend, you may need
 to increase the number of MCMC iterations or check your input data for
 extreme outliers.</p>
-<p><strong>Note</strong>: When using the “<code>MO</code>” or
-“<code>ME</code>” model, parameter estimation is no longer performed via
+<p><strong>Note</strong>: When using the <code>"MO"</code> or
+<code>"ME"</code> model, parameter estimation is no longer performed via
 the MCMC procedure. Consequently, convergence diagnostics are not
 required.</p>
 </div>

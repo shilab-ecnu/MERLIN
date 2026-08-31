@@ -56,20 +56,21 @@ prepared. Download here:
 # Define the names/paths of your raw files and reference panel
 library(MERLIN)
 
-expgwas <- "Testosterone.GWAS.txt.gz"
-expgwis <- "Testosterone.GWIS.txt.gz"
-outgwas <- "BD.GWAS.txt.gz"
-outgwis <- "BD.GWIS.txt.gz"
-panel   <- "g1000_eur"
+expgwas     <- "Testosterone.GWAS.txt.gz"
+expgwis     <- "Testosterone.GWIS.txt.gz"
+outgwas     <- "BD.GWAS.txt.gz"
+outgwis     <- "BD.GWIS.txt.gz"
+stringname3 <- "g1000_eur"
+block_file  <- "all.bed"
 ```
 
 ``` r
 
 # Perform matching and extract the directories of the output matched data
-expgwas.match <- matchpanel(expgwas, panel)$data_dir
-expgwis.match <- matchpanel(expgwis, panel)$data_dir
-outgwas.match <- matchpanel(outgwas, panel)$data_dir
-outgwis.match <- matchpanel(outgwis, panel)$data_dir
+expgwas.match <- matchpanel(expgwas, stringname3)$data_dir
+expgwis.match <- matchpanel(expgwis, stringname3)$data_dir
+outgwas.match <- matchpanel(outgwas, stringname3)$data_dir
+outgwis.match <- matchpanel(outgwis, stringname3)$data_dir
 ```
 
 The console output below shows the progress of processing the exposure
@@ -149,7 +150,6 @@ maf_cutoff       <- 0.05
 lam              <- 0.1
 coreNum          <- 1
 intersect_mode   <- FALSE
-block_file       <- "all.bed"
 ```
 
 ``` r
@@ -317,7 +317,7 @@ rho1    <- mean(RhoEst1$Rhores)
 
 # Estimate correlation for GWIS summary statistics 
 # (using exposure and outcome GWIS or relevant null datasets)
-RhoEst2 <- EstRhofun(expgwas, outgwas, stringname3, ld_r2_thresh, lambad, pth)
+RhoEst2 <- EstRhofun(expgwis, outgwis, stringname3, ld_r2_thresh, lambad, pth)
 rho2    <- mean(RhoEst2$Rhores)
 ```
 
