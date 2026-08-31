@@ -12,138 +12,138 @@ return values on the same page.
 
 #### Main workflow
 
-[`MERLIN()`](https://shilab-ecnu.github.io/MERLIN/reference/MERLIN-package.md)  
+[`MERLIN()`](#merlin)  
 Run the MERLIN Bayesian Mendelian randomization model for average causal
 effects and causal heterogeneity effects.
 
-`ivselect()`  
+[`ivselect()`](#ivselect)  
 Select instrumental variables, perform LD clumping, align summary
 statistics, and estimate the LD correlation matrix.
 
-`matchpanel()`  
+[`matchpanel()`](#matchpanel)  
 Match a GWAS or GWIS summary-statistics file to a PLINK reference panel
 and harmonise allele directions.
 
-`EstRhofun()`  
+[`EstRhofun()`](#estrhofun)  
 Estimate sample-overlap correlation between two summary-statistics
 files.
 
-`traceplot()`  
+[`traceplot()`](#traceplot)  
 Create a trace plot for saved MCMC samples.
 
 #### Allele matching and summary-statistics helpers
 
-`reverse()`  
+[`reverse()`](#reverse)  
 Return the complementary nucleotide for a single allele.
 
-`matchAellel()`  
+[`matchAellel()`](#matchaellel)  
 Compare allele pairs and return sign factors for harmonising effect
 directions.
 
-`summaryQC()`  
+[`summaryQC()`](#summaryqc)  
 Remove MHC-region SNPs and variants with extreme chi-square statistics.
 
-`matchsnp()`  
+[`matchsnp()`](#matchsnp)  
 Low-level C++ interface for matching SNPs between exposure, outcome, and
 reference-panel data.
 
-`matchscreen()`  
+[`matchscreen()`](#matchscreen)  
 Low-level C++ interface for screening SNPs and matching them across
 input files.
 
-`ReadSNPinfo()`  
+[`ReadSNPinfo()`](#readsnpinfo)  
 Low-level C++ helper for reading SNP information from a reference.
 
-`Read_summarystat()`  
+[`Read_summarystat()`](#read_summarystat)  
 Low-level C++ helper for reading summary-statistics columns.
 
-`select()`  
+[`select()`](#select)  
 Low-level C++ helper for selecting character-vector elements by index.
 
-`getLineNum()`  
+[`getLineNum()`](#getlinenum)  
 Count the number of lines in a text file.
 
 #### LD blocks and correlation matrices
 
-`load_block_file()`  
+[`load_block_file()`](#load_block_file)  
 Load genomic block definitions.
 
-`test_blocks()`  
+[`test_blocks()`](#test_blocks)  
 Assign variants to LD blocks and return block-level diagnostics.
 
-`Cal_blockinf()`  
+[`Cal_blockinf()`](#cal_blockinf)  
 Calculate block membership information for variants.
 
-`Cal_blockR()`  
+[`Cal_blockR()`](#cal_blockr)  
 Calculate block-wise LD information and independent variant indices.
 
-`Cal_block_Rmatrix()`  
+[`Cal_block_Rmatrix()`](#cal_block_rmatrix)  
 Calculate an LD correlation matrix for selected variants.
 
-`Cal_block_Rvec()`  
+[`Cal_block_Rvec()`](#cal_block_rvec)  
 Calculate a vectorised representation of block-wise LD correlations.
 
-`IndepSummary()`  
+[`IndepSummary()`](#indepsummary)  
 Select approximately independent variants from summary statistics.
 
-`LDclump()`  
+[`LDclump()`](#ldclump)  
 Perform LD-based pruning or clumping on a correlation matrix.
 
-`std_setdiff()`  
+[`std_setdiff()`](#std_setdiff)  
 Low-level set-difference helper used during LD pruning.
 
 #### MERLIN model kernels
 
-`MRGEI_Gam3seo_3to1()`  
+[`MRGEI_Gam3seo_3to1()`](#mrgei_gam3seo_3to1)  
 Run the standard, continuous-environment and binary-environment MERLIN
 MCMC kernel, with the relevant parameters adjusted according to the
 specific analysis setting.
 
-`MRGEI_Gamseo()`  
+[`MRGEI_Gamseo()`](#mrgei_gamseo)  
 Run the `MO`(without outcome gwis) MERLIN MCMC kernel.
 
 #### Matrix and numerical utilities
 
-`comb()`  
+[`comb()`](#comb)  
 Generate pairwise index combinations.
 
-`Mat2Vec()`  
+[`Mat2Vec()`](#mat2vec)  
 Convert the upper-triangular part of a matrix into a vector.
 
-`Vec2Mat()`  
+[`Vec2Mat()`](#vec2mat)  
 Reconstruct a symmetric matrix from a vectorised upper-triangular
 representation.
 
-`MatSum()`  
+[`MatSum()`](#matsum)  
 Calculate an element-wise vector summary used by truncated-normal
 routines.
 
 #### Normal and truncated-normal utilities
 
-`phi()`  
+[`phi()`](#phi)  
 Evaluate a standard normal cumulative distribution approximation.
 
-`multiphi()`  
+[`multiphi()`](#multiphi)  
 Apply `phi()` to a numeric vector.
 
-`cdfNormal()`  
+[`cdfNormal()`](#cdfnormal)  
 Evaluate a normal cumulative distribution function.
 
-`MulticdfNormal()`  
+[`MulticdfNormal()`](#multicdfnormal)  
 Apply the standard normal cumulative distribution function to a numeric
 vector.
 
-`inverseNormal()`  
+[`inverseNormal()`](#inversenormal)  
 Evaluate a normal quantile function.
 
-`MultiinverseNormal()`  
+[`MultiinverseNormal()`](#multiinversenormal)  
 Apply the standard normal quantile function to a probability vector.
 
-`truncEstfun()`  
+[`truncEstfun()`](#truncestfun)  
 Run a Gibbs sampler for bivariate truncated-normal correlation
 estimation.
 
-`testR()`  
+[`testR()`](#testr)  
 Calculate a P-value for an estimated correlation coefficient.
 
 ## Detailed reference
@@ -1105,17 +1105,3 @@ testR(rho, n)
 ##### Value
 
 A P-value for testing the correlation estimate.
-
-## Suggested public API
-
-For website-facing documentation, the clearest public API is likely:
-
-- [`MERLIN()`](https://shilab-ecnu.github.io/MERLIN/reference/MERLIN-package.md)
-- `matchpanel()`
-- `ivselect()`
-- `EstRhofun()`
-- `traceplot()`
-
-The remaining functions are best documented as internal helpers or
-low-level developer interfaces unless they are intentionally supported
-for end users.
