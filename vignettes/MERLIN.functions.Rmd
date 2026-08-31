@@ -1,4 +1,3 @@
-
 ---
 title: "MERLIN Functions"
 output:
@@ -6,6 +5,9 @@ output:
     toc: true
     toc_depth: 3
     number_sections: false
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r setup, include=FALSE}
@@ -16,151 +18,163 @@ knitr::opts_chunk$set(
 ```
 
 # Package index
+
 This page provides a reference for the main user-facing functions,
 helper functions, and lower-level C++ interfaces currently available in
-**MERLIN**. It combines a compact package index with inline reference entries,
-so users can read function descriptions, usage, arguments, and return values on
-the same page.
+**MERLIN**. It combines a compact package index with inline reference
+entries, so users can read function descriptions, usage, arguments, and
+return values on the same page.
 
 ## All functions
 
 ### Main workflow
 
-`MERLIN()`  
-  Run the MERLIN Bayesian Mendelian randomization model for average causal effects
-and causal heterogeneity effects.
+[`MERLIN()`](#merlin)\
+Run the MERLIN Bayesian Mendelian randomization model for average causal
+effects and causal heterogeneity effects.
 
-`ivselect()`  
-  Select instrumental variables, perform LD clumping, align summary statistics,
-and estimate the LD correlation matrix.
+[`ivselect()`](#ivselect)\
+Select instrumental variables, perform LD clumping, align summary
+statistics, and estimate the LD correlation matrix.
 
-`matchpanel()`  
-  Match a GWAS or GWIS summary-statistics file to a PLINK reference panel and
-harmonise allele directions.
+[`matchpanel()`](#matchpanel)\
+Match a GWAS or GWIS summary-statistics file to a PLINK reference panel
+and harmonise allele directions.
 
-`EstRhofun()`  
-  Estimate sample-overlap correlation between two summary-statistics files.
-  
-`traceplot()`  
-  Create a trace plot for saved MCMC samples.
-  
+[`EstRhofun()`](#estrhofun)\
+Estimate sample-overlap correlation between two summary-statistics
+files.
+
+[`traceplot()`](#traceplot)\
+Create a trace plot for saved MCMC samples.
+
 ### Allele matching and summary-statistics helpers
 
-`reverse()`  
-  Return the complementary nucleotide for a single allele.
-  
-`matchAellel()`  
-  Compare allele pairs and return sign factors for harmonising effect directions.
-  
-`summaryQC()`  
-  Remove MHC-region SNPs and variants with extreme chi-square statistics.
-  
-`matchsnp()`  
-  Low-level C++ interface for matching SNPs between exposure, outcome, and
+[`reverse()`](#reverse)\
+Return the complementary nucleotide for a single allele.
+
+[`matchAellel()`](#matchaellel)\
+Compare allele pairs and return sign factors for harmonising effect
+directions.
+
+[`summaryQC()`](#summaryqc)\
+Remove MHC-region SNPs and variants with extreme chi-square statistics.
+
+[`matchsnp()`](#matchsnp)\
+Low-level C++ interface for matching SNPs between exposure, outcome, and
 reference-panel data.
 
-`matchscreen()`  
-  Low-level C++ interface for screening SNPs and matching them across input files.
-  
-`ReadSNPinfo()`  
-  Low-level C++ helper for reading SNP information from a reference.
+[`matchscreen()`](#matchscreen)\
+Low-level C++ interface for screening SNPs and matching them across
+input files.
 
-`Read_summarystat()`  
-  Low-level C++ helper for reading summary-statistics columns.
-  
-`select()`  
-  Low-level C++ helper for selecting character-vector elements by index.
-  
-`getLineNum()`  
-  Count the number of lines in a text file.
-  
+[`ReadSNPinfo()`](#readsnpinfo)\
+Low-level C++ helper for reading SNP information from a reference.
+
+[`Read_summarystat()`](#read_summarystat)\
+Low-level C++ helper for reading summary-statistics columns.
+
+[`select()`](#select)\
+Low-level C++ helper for selecting character-vector elements by index.
+
+[`getLineNum()`](#getlinenum)\
+Count the number of lines in a text file.
+
 ### LD blocks and correlation matrices
 
-`load_block_file()`  
-  Load genomic block definitions.
-  
-`test_blocks()`  
-  Assign variants to LD blocks and return block-level diagnostics.
-  
-`Cal_blockinf()`  
-  Calculate block membership information for variants.
-  
-`Cal_blockR()`  
-  Calculate block-wise LD information and independent variant indices.
-  
-`Cal_block_Rmatrix()`  
-  Calculate an LD correlation matrix for selected variants.
-  
-`Cal_block_Rvec()`  
-  Calculate a vectorised representation of block-wise LD correlations.
-  
-`IndepSummary()`  
-  Select approximately independent variants from summary statistics.
-  
-`LDclump()`  
-  Perform LD-based pruning or clumping on a correlation matrix.
-  
-`std_setdiff()`  
-  Low-level set-difference helper used during LD pruning.
+[`load_block_file()`](#load_block_file)\
+Load genomic block definitions.
+
+[`test_blocks()`](#test_blocks)\
+Assign variants to LD blocks and return block-level diagnostics.
+
+[`Cal_blockinf()`](#cal_blockinf)\
+Calculate block membership information for variants.
+
+[`Cal_blockR()`](#cal_blockr)\
+Calculate block-wise LD information and independent variant indices.
+
+[`Cal_block_Rmatrix()`](#cal_block_rmatrix)\
+Calculate an LD correlation matrix for selected variants.
+
+[`Cal_block_Rvec()`](#cal_block_rvec)\
+Calculate a vectorised representation of block-wise LD correlations.
+
+[`IndepSummary()`](#indepsummary)\
+Select approximately independent variants from summary statistics.
+
+[`LDclump()`](#ldclump)\
+Perform LD-based pruning or clumping on a correlation matrix.
+
+[`std_setdiff()`](#std_setdiff)\
+Low-level set-difference helper used during LD pruning.
 
 ### MERLIN model kernels
-`MRGEI_Gam3seo_3to1()`  
-  Run the standard, continuous-environment and binary-environment MERLIN MCMC kernel, with the relevant parameters adjusted according to the specific analysis setting.
-  
-`MRGEI_Gamseo()`  
-  Run the `MO`(without outcome gwis) MERLIN MCMC kernel.
-  
-  
+
+[`MRGEI_Gam3seo_3to1()`](#mrgei_gam3seo_3to1)\
+Run the standard, continuous-environment and binary-environment MERLIN
+MCMC kernel, with the relevant parameters adjusted according to the
+specific analysis setting.
+
+[`MRGEI_Gamseo()`](#mrgei_gamseo)\
+Run the `MO`(without outcome gwis) MERLIN MCMC kernel.
+
 ### Matrix and numerical utilities
 
-`comb()`  
-  Generate pairwise index combinations.
-  
-`Mat2Vec()`  
-  Convert the upper-triangular part of a matrix into a vector.
-  
-`Vec2Mat()`  
-  Reconstruct a symmetric matrix from a vectorised upper-triangular
+[`comb()`](#comb)\
+Generate pairwise index combinations.
+
+[`Mat2Vec()`](#mat2vec)\
+Convert the upper-triangular part of a matrix into a vector.
+
+[`Vec2Mat()`](#vec2mat)\
+Reconstruct a symmetric matrix from a vectorised upper-triangular
 representation.
 
-`MatSum()`  
-  Calculate an element-wise vector summary used by truncated-normal routines.
-  
+[`MatSum()`](#matsum)\
+Calculate an element-wise vector summary used by truncated-normal
+routines.
+
 ### Normal and truncated-normal utilities
-`phi()`  
-  Evaluate a standard normal cumulative distribution approximation.
-  
-`multiphi()`  
-  Apply `phi()` to a numeric vector.
-  
-`cdfNormal()`  
-  Evaluate a normal cumulative distribution function.
-  
-`MulticdfNormal()`  
-  Apply the standard normal cumulative distribution function to a numeric vector.
-  
-`inverseNormal()`  
-  Evaluate a normal quantile function.
-  
-`MultiinverseNormal()`  
-  Apply the standard normal quantile function to a probability vector.
-  
-`truncEstfun()`  
-  Run a Gibbs sampler for bivariate truncated-normal correlation estimation.
-  
-`testR()`  
-  Calculate a P-value for an estimated correlation coefficient.
-  
+
+[`phi()`](#phi)\
+Evaluate a standard normal cumulative distribution approximation.
+
+[`multiphi()`](#multiphi)\
+Apply `phi()` to a numeric vector.
+
+[`cdfNormal()`](#cdfnormal)\
+Evaluate a normal cumulative distribution function.
+
+[`MulticdfNormal()`](#multicdfnormal)\
+Apply the standard normal cumulative distribution function to a numeric
+vector.
+
+[`inverseNormal()`](#inversenormal)\
+Evaluate a normal quantile function.
+
+[`MultiinverseNormal()`](#multiinversenormal)\
+Apply the standard normal quantile function to a probability vector.
+
+[`truncEstfun()`](#truncestfun)\
+Run a Gibbs sampler for bivariate truncated-normal correlation
+estimation.
+
+[`testR()`](#testr)\
+Calculate a P-value for an estimated correlation coefficient.
+
 # Detailed reference
 
 ## Main workflow
 
 ### **`MERLIN()`**
-Run the MERLIN Bayesian Mendelian randomization model. This wrapper validates
-inputs and dispatches to a model-specific C++ MCMC routine.
+
+Run the MERLIN Bayesian Mendelian randomization model. This wrapper
+validates inputs and dispatches to a model-specific C++ MCMC routine.
 
 #### Usage
-```r
+
+``` r
 MERLIN(
   gammah1,
   gammah3 = NULL,
@@ -185,8 +199,9 @@ MERLIN(
 ```
 
 #### Arguments
+
 | Argument | Description |
-|---|---|
+|------------------------------------|------------------------------------|
 | `gammah1` | Numeric vector of exposure GWAS main-effect estimates. |
 | `gammah3` | Numeric vector of exposure GWIS interaction-effect estimates. Required for `standard`, `continuous_E`, `discrete_E`, `discrete_E_adj`, and `MO`. |
 | `Gammah1` | Numeric vector of outcome GWAS main-effect estimates. |
@@ -196,23 +211,27 @@ MERLIN(
 | `rho_1` | Correlation parameter for the GWAS summary-statistics components. |
 | `rho_2` | Correlation parameter for the GWIS summary-statistics components. Required for models using both GWIS terms. |
 | `model` | MERLIN model variant: `standard`, `continuous_E`, `discrete_E`, `discrete_E_adj`, `MO`, or `ME`. |
-| `p_common` | Common proportion \(P(E=1)\) for `model = "discrete_E"`. |
-| `p_exp` | Proportion \(P(E=1)\) in the exposure sample for `model = "discrete_E_adj"`. |
-| `p_out` | Proportion \(P(E=1)\) in the outcome sample for `model = "discrete_E_adj"`. |
+| `p_common` | Common proportion $P(E=1)$ for `model = "discrete_E"`. |
+| `p_exp` | Proportion $P(E=1)$ in the exposure sample for `model = "discrete_E_adj"`. |
+| `p_out` | Proportion $P(E=1)$ in the outcome sample for `model = "discrete_E_adj"`. |
 | `maxIter` | Number of post-burn-in MCMC iterations. Must be divisible by `thin`. |
 | `burnin` | Number of burn-in iterations. |
 | `thin` | Thinning interval. |
 | `seed` | Optional random seed for reproducibility. |
 
 #### Value
-A list containing `Beta1.hat`, `Beta1.se`, `Beta1.pval`, `Beta4.hat`, `Beta4.se`, and `Beta4.pval`.
 
+A list containing `Beta1.hat`, `Beta1.se`, `Beta1.pval`, `Beta4.hat`,
+`Beta4.se`, and `Beta4.pval`.
 
 ### **`ivselect()`**
-Select instrumental variables and calculate the LD matrix used by MERLIN.
+
+Select instrumental variables and calculate the LD matrix used by
+MERLIN.
 
 #### Usage
-```r
+
+``` r
 ivselect(
   expgwas_dir,
   expgwis_dir = NULL,
@@ -233,8 +252,9 @@ ivselect(
 ```
 
 #### Arguments
+
 | Argument | Description |
-|---|---|
+|------------------------------------|------------------------------------|
 | `expgwas_dir` | Path to exposure GWAS summary statistics. |
 | `expgwis_dir` | Optional path to exposure GWIS summary statistics. |
 | `outgwas_dir` | Path to outcome GWAS summary statistics. |
@@ -252,43 +272,49 @@ ivselect(
 | `intersect_mode` | If `TRUE`, use the intersection of GWAS and GWIS IVs; otherwise use their union followed by LD clumping. |
 
 #### Value
-A list with selected SNPs, harmonised summary-statistics vectors, standard-error
-vectors, and the LD matrix: `snp.causal`, `gammah1`, `gammah3`, `Gammah1`,
-`Gammah3`, `se1`, `se2`, `se3`, `se4`, and `R`.
 
+A list with selected SNPs, harmonised summary-statistics vectors,
+standard-error vectors, and the LD matrix: `snp.causal`, `gammah1`,
+`gammah3`, `Gammah1`, `Gammah3`, `se1`, `se2`, `se3`, `se4`, and `R`.
 
 ### **`matchpanel()`**
-Match a summary-statistics file to a reference panel and harmonise effect
-directions.
+
+Match a summary-statistics file to a reference panel and harmonise
+effect directions.
 
 #### Usage
-```r
+
+``` r
 matchpanel(ss, stringname3)
 ```
 
 #### Arguments
+
 | Argument | Description |
-|---|---|
+|------------------------------------|------------------------------------|
 | `ss` | Path to a GWAS or GWIS summary-statistics file. The expected columns include `SNP`, `CHR`, `BP`, `A1`, `A2`, `BETA`, `SE`, and `P`. |
 | `stringname3` | Prefix of the PLINK reference panel files. The function reads `paste0(stringname3, ".bim")`. |
 
 #### Value
-A list with `data`, the matched data frame, and `data_dir`, the path to the
-written matched file. The output file is named by prefixing the input file name
-with `match.`.
 
+A list with `data`, the matched data frame, and `data_dir`, the path to
+the written matched file. The output file is named by prefixing the
+input file name with `match.`.
 
 ### **`EstRhofun()`**
+
 Estimate the correlation parameter induced by sample overlap.
 
 #### Usage
-```r
+
+``` r
 EstRhofun(fileexposure, fileoutcome, stringname3, ld_r2_thresh, lam, pth, coreNum = 1)
 ```
 
 #### Arguments
+
 | Argument | Description |
-|---|---|
+|------------------------------------|------------------------------------|
 | `fileexposure` | Path to exposure summary statistics. |
 | `fileoutcome` | Path to outcome summary statistics. |
 | `stringname3` | Prefix of the PLINK reference panel files. |
@@ -298,78 +324,92 @@ EstRhofun(fileexposure, fileoutcome, stringname3, ld_r2_thresh, lam, pth, coreNu
 | `coreNum` | Number of CPU cores used in LD calculations. |
 
 #### Value
-A list containing `rhohat`, estimated correlation values; `pvalue`, correlation
-test P-values; `pres`, the number of variants used for each threshold; and
-`Rhores`, saved samples from the truncated-normal correlation estimator.
 
+A list containing `rhohat`, estimated correlation values; `pvalue`,
+correlation test P-values; `pres`, the number of variants used for each
+threshold; and `Rhores`, saved samples from the truncated-normal
+correlation estimator.
 
 ### **`traceplot()`**
+
 Create a trace plot for a vector of saved MCMC samples.
 
 #### Usage
-```r
+
+``` r
 traceplot(bhatpoint)
 ```
 
 #### Arguments
+
 | Argument | Description |
-|---|---|
+|------------------------------------|------------------------------------|
 | `bhatpoint` | Numeric vector of saved MCMC samples returned by a low-level MCMC kernel, such as `fit$Beta1res` or `fit$Beta4res`. |
 
 #### Value
-A `ggplot` object showing sample index on the x-axis and sampled effect values
-on the y-axis.
 
+A `ggplot` object showing sample index on the x-axis and sampled effect
+values on the y-axis.
 
 ## Allele matching and summary-statistics helpers
 
 ### **`reverse()`**
+
 Return the complementary nucleotide for a single allele.
 
 #### Usage
-```r
+
+``` r
 reverse(x)
 ```
 
 #### Arguments
+
 | Argument | Description |
-|---|---|
+|------------------------------------|------------------------------------|
 | `x` | Allele string. Recognised values are `A`, `T`, `C`, and `G`. Other values are returned unchanged. |
 
 #### Value
+
 The complementary allele for recognised nucleotides.
 
-
 ### **`matchAellel()`**
+
 Compare allele pairs from summary statistics and the reference panel.
 
 #### Usage
-```r
+
+``` r
 matchAellel(al_gwas, al_gtex)
 ```
 
 #### Arguments
+
 | Argument | Description |
-|---|---|
+|------------------------------------|------------------------------------|
 | `al_gwas` | Two-column matrix or data frame of alleles from summary statistics. |
 | `al_gtex` | Two-column matrix or data frame of alleles from the reference panel. |
 
 #### Value
-A numeric sign-factor vector. Values are `1` for matched alleles, `-1` for
-swapped alleles, and `0` for unresolved mismatches.
 
+A numeric sign-factor vector. Values are `1` for matched alleles, `-1`
+for swapped alleles, and `0` for unresolved mismatches.
 
 ### **`summaryQC()`**
-Remove variants from problematic genomic regions or with extreme statistics.
+
+Remove variants from problematic genomic regions or with extreme
+statistics.
 
 #### Usage
-```r
+
+``` r
 summaryQC(mhcstart, mhcend, bh1, bh2, s12, s22, bp, chr, rsname,avbIndex, idx4panel, xbound, ybound)
 ```
 
 #### Arguments
+
 | Argument | Description |
-|---|---|
+|------------------------------------|------------------------------------|
 | `mhcstart`, `mhcend` | Start and end base-pair positions defining the MHC exclusion region on chromosome 6. |
 | `bh1`, `bh2` | Effect estimates for two traits or summary-statistics components. |
 | `s12`, `s22` | Standard errors corresponding to `bh1` and `bh2`. |
@@ -380,43 +420,49 @@ summaryQC(mhcstart, mhcend, bh1, bh2, s12, s22, bp, chr, rsname,avbIndex, idx4pa
 | `xbound`, `ybound` | Chi-square thresholds for filtering exposure and outcome components. |
 
 #### Value
-A list of filtered effects, standard errors, positions, SNP names, indices, and
-counts of removed SNPs: `pmhc`, `px`, and `py`.
 
+A list of filtered effects, standard errors, positions, SNP names,
+indices, and counts of removed SNPs: `pmhc`, `px`, and `py`.
 
 ### **`matchsnp()`**
-Low-level C++ interface for matching SNPs across exposure summary statistics,
-outcome summary statistics, and a reference panel.
+
+Low-level C++ interface for matching SNPs across exposure summary
+statistics, outcome summary statistics, and a reference panel.
 
 #### Usage
-```r
+
+``` r
 matchsnp(stringname1, stringname2, stringname3, matchExp)
 ```
 
 #### Arguments
+
 | Argument | Description |
-|---|---|
+|------------------------------------|------------------------------------|
 | `stringname1` | Path to the first summary-statistics file, typically exposure. |
 | `stringname2` | Path to the second summary-statistics file, typically outcome. |
 | `stringname3` | Prefix of the PLINK reference panel files. |
 | `matchExp` | Logical flag controlling matching orientation in the C++ routine. |
 
 #### Value
-A list containing matched effect estimates, standard errors, chromosomes,
-positions, SNP identifiers, and reference-panel indices.
 
+A list containing matched effect estimates, standard errors,
+chromosomes, positions, SNP identifiers, and reference-panel indices.
 
 ### **`matchscreen()`**
+
 Low-level C++ interface for P-value screening and SNP matching.
 
 #### Usage
-```r
+
+``` r
 matchscreen(screenname, stringname1, stringname2, stringname3, pva_cutoff, matchExp = FALSE)
 ```
 
 #### Arguments
+
 | Argument | Description |
-|---|---|
+|------------------------------------|------------------------------------|
 | `screenname` | Summary-statistics file used for initial P-value screening. |
 | `stringname1`, `stringname2` | Additional summary-statistics files to match. |
 | `stringname3` | Prefix of the PLINK reference panel files. |
@@ -424,276 +470,322 @@ matchscreen(screenname, stringname1, stringname2, stringname3, pva_cutoff, match
 | `matchExp` | Logical flag controlling matching orientation in the C++ routine. |
 
 #### Value
-A list of screened and matched summary-statistics components and reference-panel
-indices.
 
+A list of screened and matched summary-statistics components and
+reference-panel indices.
 
 ### **`ReadSNPinfo()`**
+
 Read SNP information from a reference file into preallocated vectors.
 
 #### Usage
-```r
+
+``` r
 ReadSNPinfo(stringname, A1, A2, rsname, chr, bp, morgan, N)
 ```
 
 #### Arguments
-| Argument | Description |
-|---|---|
-| `stringname` | Path to the SNP information file. |
-| `A1`, `A2` | Preallocated vectors for allele codes. |
-| `rsname` | Preallocated vector for SNP identifiers. |
-| `chr`, `bp` | Preallocated vectors for chromosome and base-pair position. |
-| `morgan` | Preallocated vector for genetic-map positions. |
-| `N` | Number of records to read. |
+
+| Argument     | Description                                                 |
+|------------------------------------|------------------------------------|
+| `stringname` | Path to the SNP information file.                           |
+| `A1`, `A2`   | Preallocated vectors for allele codes.                      |
+| `rsname`     | Preallocated vector for SNP identifiers.                    |
+| `chr`, `bp`  | Preallocated vectors for chromosome and base-pair position. |
+| `morgan`     | Preallocated vector for genetic-map positions.              |
+| `N`          | Number of records to read.                                  |
 
 #### Value
+
 A list containing the populated SNP information vectors.
 
-
 ### **`Read_summarystat()`**
+
 Read summary-statistics columns into preallocated vectors.
 
 #### Usage
-```r
+
+``` r
 Read_summarystat(stringname, SA1, SA2, rsname, betah, s2, pvalue, chr, bp, N)
 ```
 
 #### Arguments
-| Argument | Description |
-|---|---|
-| `stringname` | Path to the summary-statistics file. |
-| `SA1`, `SA2` | Preallocated allele-code vectors. |
-| `rsname` | Preallocated SNP identifier vector. |
-| `betah` | Preallocated vector for effect estimates. |
-| `s2` | Preallocated vector for standard errors. |
-| `pvalue` | Preallocated vector for P-values. |
-| `chr`, `bp` | Preallocated vectors for chromosome and base-pair position. |
-| `N` | Number of records to read. |
+
+| Argument     | Description                                                 |
+|------------------------------------|------------------------------------|
+| `stringname` | Path to the summary-statistics file.                        |
+| `SA1`, `SA2` | Preallocated allele-code vectors.                           |
+| `rsname`     | Preallocated SNP identifier vector.                         |
+| `betah`      | Preallocated vector for effect estimates.                   |
+| `s2`         | Preallocated vector for standard errors.                    |
+| `pvalue`     | Preallocated vector for P-values.                           |
+| `chr`, `bp`  | Preallocated vectors for chromosome and base-pair position. |
+| `N`          | Number of records to read.                                  |
 
 #### Value
-Called for its side effects on preallocated vectors. The R wrapper returns
-invisibly.
 
+Called for its side effects on preallocated vectors. The R wrapper
+returns invisibly.
 
 ### **`select()`**
+
 Select elements from a character vector by index.
 
 #### Usage
-```r
+
+``` r
 select(vec_, idx_)
 ```
 
 #### Arguments
-| Argument | Description |
-|---|---|
-| `vec_` | Character vector. |
-| `idx_` | Numeric vector of indices. |
+
+| Argument | Description                |
+|----------|----------------------------|
+| `vec_`   | Character vector.          |
+| `idx_`   | Numeric vector of indices. |
 
 #### Value
+
 A character vector containing selected elements.
 
-
 ### **`getLineNum()`**
+
 Count the number of lines in a file.
 
 #### Usage
-```r
+
+``` r
 getLineNum(filename)
 ```
 
 #### Arguments
-| Argument | Description |
-|---|---|
+
+| Argument   | Description       |
+|------------|-------------------|
 | `filename` | Path to the file. |
 
 #### Value
-Integer line count.
 
+Integer line count.
 
 ## LD blocks and correlation matrices
 
 ### **`load_block_file()`**
+
 Load genomic block definitions.
 
 #### Usage
-```r
+
+``` r
 load_block_file(block_file)
 ```
+
 #### Arguments
-| Argument | Description |
-|---|---|
+
+| Argument     | Description                                |
+|--------------|--------------------------------------------|
 | `block_file` | Path to the genomic block definition file. |
 
 #### Value
+
 An object returned by the C++ loader containing block definitions.
 
-
 ### **`test_blocks()`**
+
 Assign variants to blocks and return diagnostic information.
 
 #### Usage
-```r
+
+``` r
 test_blocks(bp, chr, block_file)
 ```
 
 #### Arguments
-| Argument | Description |
-|---|---|
-| `bp` | Integer vector of base-pair positions. |
-| `chr` | Integer vector of chromosome numbers. |
+
+| Argument     | Description                                |
+|--------------|--------------------------------------------|
+| `bp`         | Integer vector of base-pair positions.     |
+| `chr`        | Integer vector of chromosome numbers.      |
 | `block_file` | Path to the genomic block definition file. |
 
 #### Value
+
 A list with block assignment and block-level diagnostic information.
 
-
 ### **`Cal_blockinf()`**
+
 Calculate block membership information for variants.
 
 #### Usage
-```r
+
+``` r
 Cal_blockinf(bp, chr, block_file)
 ```
 
 #### Arguments
-| Argument | Description |
-|---|---|
-| `bp` | Integer vector of base-pair positions. |
-| `chr` | Integer vector of chromosome numbers. |
+
+| Argument     | Description                                |
+|--------------|--------------------------------------------|
+| `bp`         | Integer vector of base-pair positions.     |
+| `chr`        | Integer vector of chromosome numbers.      |
 | `block_file` | Path to the genomic block definition file. |
 
 #### Value
+
 A list of block membership information.
 
-
 ### **`Cal_blockR()`**
+
 Calculate block-wise LD information and independent variant indices.
 
 #### Usage
-```r
+
+``` r
 Cal_blockR(bp, chr, avbIndex, idx4panel, block_file, stringname3, ld_r2_thresh, coreNum, lam)
 ```
+
 #### Arguments
-| Argument | Description |
-|---|---|
-| `bp`, `chr` | Base-pair positions and chromosomes for selected SNPs. |
-| `avbIndex` | Zero-based reference-panel variant indices. |
-| `idx4panel` | Zero-based indices for panel-specific processing. |
-| `block_file` | Genomic block definition file. |
-| `stringname3` | Prefix of the PLINK reference panel files. |
-| `ld_r2_thresh` | LD threshold for selecting independent variants. |
-| `coreNum` | Number of CPU cores. |
-| `lam` | LD regularisation parameter. |
+
+| Argument       | Description                                            |
+|----------------|--------------------------------------------------------|
+| `bp`, `chr`    | Base-pair positions and chromosomes for selected SNPs. |
+| `avbIndex`     | Zero-based reference-panel variant indices.            |
+| `idx4panel`    | Zero-based indices for panel-specific processing.      |
+| `block_file`   | Genomic block definition file.                         |
+| `stringname3`  | Prefix of the PLINK reference panel files.             |
+| `ld_r2_thresh` | LD threshold for selecting independent variants.       |
+| `coreNum`      | Number of CPU cores.                                   |
+| `lam`          | LD regularisation parameter.                           |
 
 #### Value
+
 A list containing block-wise LD results and independent variant indices.
 
-| `stringname3` | Prefix of the PLINK reference panel files. |
-| `ld_r2_thresh` | LD threshold for independent-SNP selection. |
-| `coreNum` | Number of CPU cores. |
-| `lam` | LD regularisation parameter. |
+| `stringname3` \| Prefix of the PLINK reference panel files. \|
+| `ld_r2_thresh` \| LD threshold for independent-SNP selection. \|
+| `coreNum` \| Number of CPU cores. \|
+| `lam` \| LD regularisation parameter. \|
 
 #### Value
+
 A list containing the LD matrix `R` and related block information.
 
-
 ### **`Cal_block_Rvec()`**
+
 Calculate a vectorised representation of block-wise LD correlations.
 
 #### Usage
-```r
+
+``` r
 Cal_block_Rvec(bp, chr, avbIndex, block_file, stringname3, coreNum, lam)
 ```
 
 #### Arguments
-| Argument | Description |
-|---|---|
-| `bp`, `chr` | Base-pair positions and chromosomes for selected SNPs. |
-| `avbIndex` | Zero-based reference-panel variant indices. |
-| `block_file` | Genomic block definition file. |
-| `stringname3` | Prefix of the PLINK reference panel files. |
-| `coreNum` | Number of CPU cores. |
-| `lam` | LD regularisation parameter. |
+
+| Argument      | Description                                            |
+|---------------|--------------------------------------------------------|
+| `bp`, `chr`   | Base-pair positions and chromosomes for selected SNPs. |
+| `avbIndex`    | Zero-based reference-panel variant indices.            |
+| `block_file`  | Genomic block definition file.                         |
+| `stringname3` | Prefix of the PLINK reference panel files.             |
+| `coreNum`     | Number of CPU cores.                                   |
+| `lam`         | LD regularisation parameter.                           |
 
 #### Value
-A list containing vectorised LD-correlation output and block information.
 
+A list containing vectorised LD-correlation output and block
+information.
 
 ### **`IndepSummary()`**
-Select approximately independent variants and return their summary statistics.
+
+Select approximately independent variants and return their summary
+statistics.
 
 #### Usage
-```r
+
+``` r
 IndepSummary(bp, chr, avbIndex, block_file, stringname3, bh1, bh2, se1, se2, coreNum, lam, ld_r2_thresh)
 ```
 
 #### Arguments
-| Argument | Description |
-|---|---|
-| `bp`, `chr` | Base-pair positions and chromosomes. |
-| `avbIndex` | Zero-based reference-panel variant indices. |
-| `block_file` | Genomic block definition file. |
-| `stringname3` | Prefix of the PLINK reference panel files. |
-| `bh1`, `bh2` | Effect estimates for two summary-statistics components. |
-| `se1`, `se2` | Standard errors corresponding to `bh1` and `bh2`. |
-| `coreNum` | Number of CPU cores. |
-| `lam` | LD regularisation parameter. |
-| `ld_r2_thresh` | LD threshold for independent variant selection. |
+
+| Argument       | Description                                             |
+|----------------|---------------------------------------------------------|
+| `bp`, `chr`    | Base-pair positions and chromosomes.                    |
+| `avbIndex`     | Zero-based reference-panel variant indices.             |
+| `block_file`   | Genomic block definition file.                          |
+| `stringname3`  | Prefix of the PLINK reference panel files.              |
+| `bh1`, `bh2`   | Effect estimates for two summary-statistics components. |
+| `se1`, `se2`   | Standard errors corresponding to `bh1` and `bh2`.       |
+| `coreNum`      | Number of CPU cores.                                    |
+| `lam`          | LD regularisation parameter.                            |
+| `ld_r2_thresh` | LD threshold for independent variant selection.         |
 
 #### Value
-A list containing independent-variant effects and standard errors, including
-`bh1_ind`, `bh2_ind`, `se1_ind`, and `se2_ind`.
 
+A list containing independent-variant effects and standard errors,
+including `bh1_ind`, `bh2_ind`, `se1_ind`, and `se2_ind`.
 
 ### **`LDclump()`**
+
 Perform LD pruning or clumping on a correlation matrix.
 
 #### Usage
-```r
+
+``` r
 LDclump(R, ld_r2_thresh)
 ```
 
 #### Arguments
-| Argument | Description |
-|---|---|
-| `R` | LD correlation matrix. |
+
+| Argument       | Description                                           |
+|----------------|-------------------------------------------------------|
+| `R`            | LD correlation matrix.                                |
 | `ld_r2_thresh` | Squared-correlation threshold used to prune variants. |
 
 #### Value
+
 An integer vector of retained variant indices.
 
-
 ### **`std_setdiff()`**
+
 Return the set difference between two integer vectors.
 
 #### Usage
-```r
+
+``` r
 std_setdiff(x, y)
 ```
 
 #### Arguments
-| Argument | Description |
-|---|---|
+
+| Argument | Description      |
+|----------|------------------|
 | `x`, `y` | Integer vectors. |
 
 #### Value
+
 Elements of `x` not present in `y`.
 
-
 ## MERLIN model kernels
-The following functions are low-level C++ MCMC kernels. Most users should call
-`MERLIN()` instead.
+
+The following functions are low-level C++ MCMC kernels. Most users
+should call `MERLIN()` instead.
 
 ### **`MRGEI_Gam3seo_3to1()`**
+
 Run the standard and continuous-environment MERLIN MCMC kernel.
 
 #### Usage
-```r
+
+``` r
 MRGEI_Gam3seo_3to1(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, 0.5, maxIter, burnin, thin)
 ```
+
 #### Arguments
+
 | Argument | Description |
-|---|---|
+|------------------------------------|------------------------------------|
 | `gammah1`, `gammah3` | Exposure GWAS and GWIS effect estimates. |
 | `Gammah1`, `Gammah3` | Outcome GWAS and GWIS effect estimates. |
 | `se1`, `se2`, `se3`, `se4` | Corresponding standard errors. |
@@ -702,20 +794,24 @@ MRGEI_Gam3seo_3to1(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rh
 | `maxIter`, `burnin`, `thin` | MCMC control parameters. |
 
 #### Value
+
 A list of MERLIN estimates and saved MCMC samples.
 
-
 ### **`MRGEI_Gam3seo_3to1()`**
-Run the binary-environment MERLIN MCMC kernel for an unbalanced sample distribution.
+
+Run the binary-environment MERLIN MCMC kernel for an unbalanced sample
+distribution.
 
 #### Usage
-```r
+
+``` r
 MRGEI_Gam3seo_3to1(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, p1, maxIter, burnin, thin)
 ```
 
 #### Arguments
+
 | Argument | Description |
-|---|---|
+|------------------------------------|------------------------------------|
 | `gammah1`, `gammah3` | Exposure GWAS and GWIS effect estimates. |
 | `Gammah1`, `Gammah3` | Outcome GWAS and GWIS effect estimates. |
 | `se1`, `se2`, `se3`, `se4` | Corresponding standard errors. |
@@ -725,244 +821,268 @@ MRGEI_Gam3seo_3to1(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rh
 | `maxIter`, `burnin`, `thin` | MCMC control parameters. |
 
 #### Value
+
 A list of MERLIN estimates and saved MCMC samples.
 
-
 ### **`MRGEI_Gamseo()`**
+
 Run the `MO`(without outcome gwis) MERLIN MCMC kernel.
 
 #### Usage
-```r
+
+``` r
 MRGEI_Gamseo(gammah1, gammah3, Gammah1, se1, se2, se3, R, rho, maxIter, burnin, thin)
 ```
 
 #### Arguments
-| Argument | Description |
-|---|---|
-| `gammah1`, `gammah3` | Exposure GWAS and GWIS effect estimates. |
-| `Gammah1` | Outcome GWAS effect estimates. |
-| `se1`, `se2`, `se3` | Corresponding standard errors. |
-| `R` | LD correlation matrix. |
-| `rho` | Correlation parameter. |
-| `maxIter`, `burnin`, `thin` | MCMC control parameters. |
+
+| Argument                    | Description                              |
+|-----------------------------|------------------------------------------|
+| `gammah1`, `gammah3`        | Exposure GWAS and GWIS effect estimates. |
+| `Gammah1`                   | Outcome GWAS effect estimates.           |
+| `se1`, `se2`, `se3`         | Corresponding standard errors.           |
+| `R`                         | LD correlation matrix.                   |
+| `rho`                       | Correlation parameter.                   |
+| `maxIter`, `burnin`, `thin` | MCMC control parameters.                 |
 
 #### Value
+
 A list of MERLIN estimates and saved MCMC samples.
 
-
 ### **`Mat2Vec()`**
+
 Convert the upper-triangular part of a matrix into a vector.
 
 #### Usage
-```r
+
+``` r
 Mat2Vec(R)
 ```
 
 #### Arguments
-| Argument | Description |
-|---|---|
-| `R` | Square matrix. |
+
+| Argument | Description    |
+|----------|----------------|
+| `R`      | Square matrix. |
 
 #### Value
+
 A vector containing the upper-triangular entries of `R`.
 
-
 ### **`Vec2Mat()`**
+
 Reconstruct a symmetric matrix from a vectorised upper-triangular
 representation.
 
 #### Usage
-```r
+
+``` r
 Vec2Mat(RV, p1)
 ```
 
 #### Arguments
-| Argument | Description |
-|---|---|
-| `RV` | Vectorised upper-triangular entries. |
-| `p1` | Dimension of the target square matrix. |
+
+| Argument | Description                            |
+|----------|----------------------------------------|
+| `RV`     | Vectorised upper-triangular entries.   |
+| `p1`     | Dimension of the target square matrix. |
 
 #### Value
+
 A symmetric matrix.
 
-
 ### **`MatSum()`**
-Calculate an element-wise vector summary used by truncated-normal routines.
+
+Calculate an element-wise vector summary used by truncated-normal
+routines.
 
 #### Usage
-```r
+
+``` r
 MatSum(y1, y2)
 ```
 
 #### Arguments
-| Argument | Description |
-|---|---|
+
+| Argument   | Description      |
+|------------|------------------|
 | `y1`, `y2` | Numeric vectors. |
 
 #### Value
-A numeric vector returned by the C++ routine.
 
+A numeric vector returned by the C++ routine.
 
 ## Normal and truncated-normal utilities
 
 ### **`phi()`**
+
 Evaluate an approximation to the standard normal cumulative distribution
 function.
 
 #### Usage
-```r
+
+``` r
 phi(x)
 ```
 
 #### Arguments
-| Argument | Description |
-|---|---|
-| `x` | Numeric value. |
+
+| Argument | Description    |
+|----------|----------------|
+| `x`      | Numeric value. |
 
 #### Value
+
 Approximate standard normal cumulative probability.
 
-
 ### **`multiphi()`**
+
 Apply `phi()` to each element of a numeric vector.
 
 #### Usage
-```r
+
+``` r
 multiphi(x)
 ```
 
 #### Arguments
-| Argument | Description |
-|---|---|
-| `x` | Numeric vector. |
+
+| Argument | Description     |
+|----------|-----------------|
+| `x`      | Numeric vector. |
 
 #### Value
+
 Numeric vector of standard normal cumulative probabilities.
 
-
 ### **`cdfNormal()`**
+
 Evaluate a normal cumulative distribution function.
 
-
 #### Usage
-```r
+
+``` r
 cdfNormal(x, mean, sd)
 ```
 
 #### Arguments
-| Argument | Description |
-|---|---|
-| `x` | Numeric value. |
-| `mean` | Normal mean. |
-| `sd` | Normal standard deviation. |
+
+| Argument | Description                |
+|----------|----------------------------|
+| `x`      | Numeric value.             |
+| `mean`   | Normal mean.               |
+| `sd`     | Normal standard deviation. |
 
 #### Value
+
 Normal cumulative probability.
 
-
 ### **`MulticdfNormal()`**
+
 Apply the standard normal cumulative distribution function to a vector.
 
 #### Usage
-```r
+
+``` r
 MulticdfNormal(x)
 ```
 
 #### Arguments
-| Argument | Description |
-|---|---|
-| `x` | Numeric vector. |
+
+| Argument | Description     |
+|----------|-----------------|
+| `x`      | Numeric vector. |
 
 #### Value
+
 Numeric vector of standard normal cumulative probabilities.
 
-
 ### **`inverseNormal()`**
+
 Evaluate a normal quantile function.
 
 #### Usage
-```r
+
+``` r
 inverseNormal(prob, mean, sd)
 ```
 
 #### Arguments
-| Argument | Description |
-|---|---|
-| `prob` | Probability value. |
-| `mean` | Normal mean. |
-| `sd` | Normal standard deviation. |
+
+| Argument | Description                |
+|----------|----------------------------|
+| `prob`   | Probability value.         |
+| `mean`   | Normal mean.               |
+| `sd`     | Normal standard deviation. |
 
 #### Value
+
 Normal quantile.
 
-
 ### **`MultiinverseNormal()`**
+
 Apply the standard normal quantile function to a probability vector.
 
 #### Usage
-```r
+
+``` r
 MultiinverseNormal(prob)
 ```
 
 #### Arguments
-| Argument | Description |
-|---|---|
-| `prob` | Probability vector. |
+
+| Argument | Description         |
+|----------|---------------------|
+| `prob`   | Probability vector. |
 
 #### Value
+
 Numeric vector of standard normal quantiles.
 
-
 ### **`truncEstfun()`**
-Run a Gibbs sampler for estimating correlation from bivariate truncated-normal
-data.
+
+Run a Gibbs sampler for estimating correlation from bivariate
+truncated-normal data.
 
 #### Usage
-```r
+
+``` r
 truncEstfun(a, b, x1, x2, maxIter, burnin, thin)
 ```
 
 #### Arguments
-| Argument | Description |
-|---|---|
-| `a`, `b` | Lower and upper truncation bounds. |
+
+| Argument   | Description                                         |
+|------------|-----------------------------------------------------|
+| `a`, `b`   | Lower and upper truncation bounds.                  |
 | `x1`, `x2` | Numeric vectors of paired observations or Z-scores. |
-| `maxIter` | Total number of MCMC iterations. |
-| `burnin` | Number of burn-in iterations. |
-| `thin` | Thinning interval. |
+| `maxIter`  | Total number of MCMC iterations.                    |
+| `burnin`   | Number of burn-in iterations.                       |
+| `thin`     | Thinning interval.                                  |
 
 #### Value
+
 A numeric vector of saved correlation samples.
 
-
 ### **`testR()`**
+
 Calculate a P-value for an estimated correlation coefficient.
 
 #### Usage
-```r
+
+``` r
 testR(rho, n)
 ```
 
 #### Arguments
-| Argument | Description |
-|---|---|
-| `rho` | Estimated correlation coefficient. |
-| `n` | Number of variants or observations used in the estimate. |
+
+| Argument | Description                                              |
+|----------|----------------------------------------------------------|
+| `rho`    | Estimated correlation coefficient.                       |
+| `n`      | Number of variants or observations used in the estimate. |
 
 #### Value
+
 A P-value for testing the correlation estimate.
-
-
-# Suggested public API
-For website-facing documentation, the clearest public API is likely:
-
-- `MERLIN()`
-- `matchpanel()`
-- `ivselect()`
-- `EstRhofun()`
-- `traceplot()`
-
-The remaining functions are best documented as internal helpers or low-level
-developer interfaces unless they are intentionally supported for end users.
 
 
