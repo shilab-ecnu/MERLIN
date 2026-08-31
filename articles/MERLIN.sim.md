@@ -326,3 +326,5 @@ effect closely recovered its true value of 0.3
 illustrate that MERLIN can recover both the average and
 modifier-dependent causal effects in this simulated setting with a
 balanced binary modifier.
+
+**Total running time of the script:** ( 0 minutes 11.615 seconds)
