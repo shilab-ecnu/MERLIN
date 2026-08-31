@@ -370,7 +370,7 @@ MERLIN <- function(gammah1, gammah3 = NULL, Gammah1, Gammah3 = NULL,
     }
     
     if (model == "standard") {
-      result <- MRGEI_Gam3seo(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, maxIter, burnin, thin)
+      result <- MRGEI_Gam3seo_3to1(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, 0.5, maxIter, burnin, thin)
       res_final <- list(
         Beta1.hat  = result$Beta1.hat,
         Beta1.se   = result$Beta1.se,
@@ -379,7 +379,7 @@ MERLIN <- function(gammah1, gammah3 = NULL, Gammah1, Gammah3 = NULL,
         Beta4.se   = result$Beta4.se,
         Beta4.pval = result$Beta4.pval)
     } else if (model == "continuous_E") {
-      result <- MRGEI_Gam3seo_addE2(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, maxIter, burnin, thin)
+      result <- MRGEI_Gam3seo_3to1(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, 0.5, maxIter, burnin, thin)
       res_final <- list(
         Beta1.hat  = result$Beta1.hat,
         Beta1.se   = result$Beta1.se,
@@ -424,7 +424,7 @@ MERLIN <- function(gammah1, gammah3 = NULL, Gammah1, Gammah3 = NULL,
       se2_std <- sd_target * se2
       se4_std <- sd_target * se4
 
-      result <- MRGEI_Gam3seo_binary(
+      result <- MRGEI_Gam3seo_3to1(
         gammah1, gammah3_std,
         Gammah1, Gammah3_std,
         se1, se2_std, se3, se4_std,
@@ -516,7 +516,7 @@ MERLIN <- function(gammah1, gammah3 = NULL, Gammah1, Gammah3 = NULL,
       se4_out <- sd_out * se4
 
       # Outcome marginal GWAS is already at the outcome E mean.
-      result <- MRGEI_Gam3seo_binary(
+      result <- MRGEI_Gam3seo_3to1(
         gammah1_out, gammah3_out,
         Gammah1, Gammah3_out,
         se1_out, se2_out, se3, se4_out,
@@ -852,5 +852,4 @@ EstRhofun <- function(fileexposure, fileoutcome, stringname3,
   return(list(rhohat = rhohat, pvalue = pvalue, pres = pres, Rhores = Rhores))
 
 }
-
 
