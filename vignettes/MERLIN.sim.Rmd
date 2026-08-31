@@ -37,8 +37,8 @@ $$
 
 $$
 Y=(\beta_1+\beta_4E)X+G\beta_2+0.1E+\epsilon_Y.
-$$ Where: - $\beta_1$: The average causal effect of $X$ on $Y$,
-corresponding to $\beta^{(A)}$ in the manuscript.
+$$ Where: 
+-   $\beta_1$: The average causal effect of $X$ on $Y$, corresponding to $\beta^{(A)}$ in the manuscript.
 
 -   $\beta_4$: The causal interaction effect quantifying the extent to
     which the causal effect of $X$ on $Y$ is modified by $E$,
@@ -333,3 +333,5 @@ interaction effect closely recovered its true value of 0.3
 illustrate that MERLIN can recover both the average and
 modifier-dependent causal effects in this simulated setting with a
 balanced binary modifier.
+
+**Total running time of the script: ** ( 0 minutes 11.615 seconds)
