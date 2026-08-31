@@ -11,7 +11,7 @@ using namespace std;
 
 double Updatesig2(arma::vec &gamk, double ak,double bk, int &p ){
     double invga,invgb,sig2;
-    invga = ak + p / 2;
+    invga = ak + p / 2.0;
     invgb = as_scalar(gamk.t()*gamk) / 2 + bk;
 
     sig2 =  1 / randg<double>(distr_param(invga, 1/invgb));
@@ -45,6 +45,7 @@ mat s1rs1 = inv(S1) * R * inv(S1);
 mat s2rs2 = inv(S2) * R * inv(S2);
 mat s3rs3 = inv(S3) * R * inv(S3);
 mat s1rs3 = inv(S1) * R * inv(S3);
+mat s3rs1 = s1rs3.t();
 vec s1rs1_temp = diagvec(s1rs1);
 vec s3rs3_temp = diagvec(s3rs3);
 vec s1rs3_temp = diagvec(s1rs3);
@@ -103,7 +104,7 @@ for(int iter = 0; iter < (int_fast32_t)(maxIter + burnin) ; iter ++){
 
     double mu1;
     mu1 = rho1 * (- (dot(s1rs1.row(j), gamma1) - gamma1[j] * s1rs1_temp[j] )
-                  + 2 * rho * beta1 * (dot(s1rs3.row(j), gamma1) - gamma1[j] * s1rs3_temp[j])
+                  + rho * beta1 * (dot(s1rs3.row(j), gamma1) + dot(s3rs1.row(j), gamma1) - 2 * gamma1[j] * s1rs3_temp[j])
                   - b12 * (dot(s3rs3.row(j), gamma1) - gamma1[j] * s3rs3_temp[j] )
                   - rho * beta1 * s1s3g1_hat[j] + beta1 * s3s3G1_hat[j]
                   + s1s1g1_hat[j] - rho * s1s3G1_hat[j]
@@ -120,7 +121,7 @@ for(int iter = 0; iter < (int_fast32_t)(maxIter + burnin) ; iter ++){
     double mu3;
     mu3 = rho1 * (- b42 * (dot(s3rs3.row(j), gamma3) - gamma3[j] * s3rs3_temp[j] )
                   - rho * beta4 * s1s3g1_hat[j] + beta4 * s3s3G1_hat[j]
-                  + rho * beta4 * dot(s1rs3.row(j), gamma1) - beta1 * beta4 * dot(s3rs3.row(j), gamma1) - beta4 * dot(s3rs3.row(j), beta2)
+                  + rho * beta4 * dot(s3rs1.row(j), gamma1) - beta1 * beta4 * dot(s3rs3.row(j), gamma1) - beta4 * dot(s3rs3.row(j), beta2)
                  ) * v32[j]
                   + s2s2g3_hat[j] * v32[j]
                   - (dot(s2rs2.row(j), gamma3) - gamma3[j] * s2rs2_temp[j] ) * v32[j];
@@ -134,7 +135,7 @@ for(int iter = 0; iter < (int_fast32_t)(maxIter + burnin) ; iter ++){
     double mub2;
     mub2 = rho1 * (- (dot(s3rs3.row(j), beta2) - beta2[j] * s3rs3_temp[j] )
                    - rho * s1s3g1_hat[j] + s3s3G1_hat[j]
-                   + rho * dot(s1rs3.row(j), gamma1) - beta1 * dot(s3rs3.row(j), gamma1) - beta4 * dot(s3rs3.row(j), gamma3)
+                   + rho * dot(s3rs1.row(j), gamma1) - beta1 * dot(s3rs3.row(j), gamma1) - beta4 * dot(s3rs3.row(j), gamma3)
                   ) * vb22[j];
     mub22[j] = mub2 + randn()*sqrt(vb22[j]);
     beta2[j] = mub22[j];
@@ -152,7 +153,7 @@ for(int iter = 0; iter < (int_fast32_t)(maxIter + burnin) ; iter ++){
     vb42 = 1. / as_scalar( rho1 * gamma3.t() * s3rs3 * gamma3);
     double mub4;
     mub4 = rho1 * as_scalar(-rho* gamma3.t() * s1s3g1_hat + gamma3.t() * s3s3G1_hat
-                            + rho * gamma3.t() * s1rs3 * gamma1 - beta1 * gamma1.t() * s3rs3 * gamma3 - beta2.t() * s3rs3 * gamma3
+                            + rho * gamma3.t() * s3rs1 * gamma1 - beta1 * gamma1.t() * s3rs3 * gamma3 - beta2.t() * s3rs3 * gamma3
                            ) * vb42 ;
     mub44 = mub4 + randn()*sqrt(vb42);
     beta4 = mub44;
