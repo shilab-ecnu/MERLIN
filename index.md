@@ -51,6 +51,3 @@ To install this package, run the following command in R.
     remotes::install_github("shilab-ecnu/MERLIN")
 
 - This takes 4-7 minutes to install.
-
-To update the package just run the
-`remotes::install_github("shilab-ecnu/MERLIN")` command again.
