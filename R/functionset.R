@@ -375,18 +375,22 @@ MERLIN <- function(gammah1, gammah3 = NULL, Gammah1, Gammah3 = NULL,
         Beta1.hat  = result$Beta1.hat,
         Beta1.se   = result$Beta1.se,
         Beta1.pval = result$Beta1.pval,
+        Beta1res   = result$Beta1res,
         Beta4.hat  = result$Beta4.hat,
         Beta4.se   = result$Beta4.se,
-        Beta4.pval = result$Beta4.pval)
+        Beta4.pval = result$Beta4.pval,
+        Beta4res   = result$Beta4res)
     } else if (model == "continuous_E") {
       result <- MRGEI_Gam3seo_3to1(gammah1, gammah3, Gammah1, Gammah3, se1, se2, se3, se4, R, rho_1, rho_2, 0.5, maxIter, burnin, thin)
       res_final <- list(
         Beta1.hat  = result$Beta1.hat,
         Beta1.se   = result$Beta1.se,
         Beta1.pval = result$Beta1.pval,
+        Beta1res   = result$Beta1res,
         Beta4.hat  = result$Beta4.hat,
         Beta4.se   = result$Beta4.se,
-        Beta4.pval = result$Beta4.pval)
+        Beta4.pval = result$Beta4.pval,
+        Beta4res   = result$Beta4res)
     } else if (model == "discrete_E") {
       # discrete_E means that exposure and outcome have the same
       # P(E = 1). It does not necessarily mean p_common = 0.5.
@@ -448,9 +452,11 @@ MERLIN <- function(gammah1, gammah3 = NULL, Gammah1, Gammah3 = NULL,
         Beta1.hat  = beta1_hat,
         Beta1.se   = beta1_se,
         Beta1.pval = 2 * pnorm(abs(beta1_hat / beta1_se), lower.tail = FALSE),
+        Beta1res   = beta1_raw_draw,
         Beta4.hat  = beta4_hat,
         Beta4.se   = beta4_se,
-        Beta4.pval = 2 * pnorm(abs(beta4_hat / beta4_se), lower.tail = FALSE)
+        Beta4.pval = 2 * pnorm(abs(beta4_hat / beta4_se), lower.tail = FALSE),
+        Beta4res   = beta4_raw_draw
       )
      } else if (model == "discrete_E_adj") {
        check_probability(p_exp, "p_exp")
@@ -541,9 +547,11 @@ MERLIN <- function(gammah1, gammah3 = NULL, Gammah1, Gammah3 = NULL,
         Beta1.hat  = beta1_hat,
         Beta1.se   = beta1_se,
         Beta1.pval = 2 * pnorm(abs(beta1_hat / beta1_se), lower.tail = FALSE),
+        Beta1res   = beta1_raw_draw,
         Beta4.hat  = beta4_hat,
         Beta4.se   = beta4_se,
-        Beta4.pval = 2 * pnorm(abs(beta4_hat / beta4_se), lower.tail = FALSE)
+        Beta4.pval = 2 * pnorm(abs(beta4_hat / beta4_se), lower.tail = FALSE),
+        Beta4res   = beta4_raw_draw
       )    
       }
     } else if (model == "MO") { 
@@ -569,9 +577,11 @@ MERLIN <- function(gammah1, gammah3 = NULL, Gammah1, Gammah3 = NULL,
       Beta1.hat  = result$Beta1.hat,
       Beta1.se   = result$Beta1.se,
       Beta1.pval = result$Beta1.pval,
+      Beta1res   = result$Beta1res,
       Beta4.hat  = result$Beta4.hat,
       Beta4.se   = result$Beta4.se,
-      Beta4.pval = result$Beta4.pval)
+      Beta4.pval = result$Beta4.pval,
+      Beta4res   = result$Beta4res)
     } else if (model == "ME") { 
     
     check_required_vec(Gammah3, "Gammah3")
