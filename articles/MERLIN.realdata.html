@@ -214,11 +214,11 @@ chains for both the main causal effect (<span class="math inline">\beta_1</span>
 <code>traceplot</code> function.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot MCMC trace for the main causal effect</span></span>
-<span><span class="fu">traceplot</span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">Beta1res</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">traceplot</span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">Beta1.hat</span><span class="op">)</span></span></code></pre></div>
 <p><img src="traceplot1.png" class="r-plt" alt="" width="80%"></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot MCMC trace for the heterogeneity (interaction) causal effect</span></span>
-<span><span class="fu">traceplot</span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">Beta4res</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">traceplot</span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">Beta4.hat</span><span class="op">)</span></span></code></pre></div>
 <p><img src="traceplot4.png" class="r-plt" alt="" width="80%"></p>
 <p><strong>Interpretation Guidelines for Traceplots</strong>:</p>
 <p>Good Convergence: The plot should look like a “hairy caterpillar”,
