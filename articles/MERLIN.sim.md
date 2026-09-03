@@ -11,9 +11,10 @@ the outcome Y.
 The underlying data generating mechanism can be defined as:
 X=G\gamma_1+(G\times E)\gamma_3+0.1E+\epsilon_X,
 
-Y=(\beta_1+\beta_4E)X+G\beta_2+0.1E+\epsilon_Y. Where: - \beta_1: The
-average causal effect of X on Y, corresponding to \beta^{(A)} in the
-manuscript.
+Y=(\beta_1+\beta_4E)X+G\beta_2+0.1E+\epsilon_Y. Where:
+
+- \beta_1: The average causal effect of X on Y, corresponding to
+  \beta^{(A)} in the manuscript.
 
 - \beta_4: The causal interaction effect quantifying the extent to which
   the causal effect of X on Y is modified by E, corresponding to
