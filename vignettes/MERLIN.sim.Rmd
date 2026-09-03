@@ -38,6 +38,7 @@ $$
 $$
 Y=(\beta_1+\beta_4E)X+G\beta_2+0.1E+\epsilon_Y.
 $$ Where: 
+
 -   $\beta_1$: The average causal effect of $X$ on $Y$, corresponding to $\beta^{(A)}$ in the manuscript.
 
 -   $\beta_4$: The causal interaction effect quantifying the extent to
