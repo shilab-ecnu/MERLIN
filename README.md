@@ -10,7 +10,9 @@
 `MERLIN` (Causal Heterogeneity using Summary Statistics) is a unified
 Bayesian framework that jointly estimates average and heterogeneity
 effects using summary data from genome-wide association studies (GWAS)
-and Genome-Wide Interaction Studies (GWIS).
+and Genome-Wide Interaction Studies (GWIS). 
+
+The simulation and real data analyses code for reproduction can be found here: <a href="https://github.com/ydong-work/MERLIN_analysis/tree/main">REPRODUCTION</a>. 
 
 ## Documenation
 
