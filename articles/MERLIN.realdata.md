@@ -130,13 +130,15 @@ Total processing time: 92.6 seconds
 --------------------------------------------------
 
 > str(res)
-List of 14
- $ Beta1.hat : num 0.218
- $ Beta1.se  : num 0.103
- $ Beta1.pval: num 0.0342
- $ Beta4.hat : num 0.263
- $ Beta4.se  : num 0.0926
- $ Beta4.pval: num 0.00445
+List of 8
+ $ Beta1.hat : num 0.22
+ $ Beta1.se  : num 0.101
+ $ Beta1.pval: num 0.0294
+ $ Beta1res  : num [1:1200, 1] 0.305 0.164 0.221 0.194 0.102 ...
+ $ Beta4.hat : num 0.267
+ $ Beta4.se  : num 0.0934
+ $ Beta4.pval: num 0.00423
+ $ Beta4res  : num [1:1200, 1] 0.194 0.213 0.238 0.233 0.237 ...
 ```
 
 ## Convergence Diagnostics
@@ -226,8 +228,8 @@ MERLIN Causal Inference Results: Testosterone on BD
 
 1. Average Causal Effect (Main Effect):
    Beta: 0.2180
-   SE:   0.1030
-   P-val: 3.42e-02
+   SE:   0.101
+   P-val: 0.0294
 
 2. Heterogeneity Causal Effect (Sex Interaction):
    Beta: 0.2630
