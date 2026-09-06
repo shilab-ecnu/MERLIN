@@ -155,7 +155,7 @@ causal effect (\beta_4) using the `traceplot` function.
 ``` r
 
 # Plot MCMC trace for the main causal effect
-traceplot(res$Beta1.hat)
+traceplot(res$Beta1res)
 ```
 
 ![](traceplot1.png)
@@ -163,7 +163,7 @@ traceplot(res$Beta1.hat)
 ``` r
 
 # Plot MCMC trace for the heterogeneity (interaction) causal effect
-traceplot(res$Beta4.hat)
+traceplot(res$Beta4res)
 ```
 
 ![](traceplot4.png)
