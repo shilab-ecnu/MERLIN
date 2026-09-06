@@ -174,19 +174,19 @@ causal effect ($\beta_4$) using the `traceplot` function.
 
 ```{r,eval = FALSE}
 # Plot MCMC trace for the main causal effect
-traceplot(res$Beta1.hat)
+traceplot(res$Beta1res)
 ```
 
-```{r, echo=FALSE, out.width="80%"}
+```{r, echo=FALSE, out.width="100%"}
 knitr::include_graphics("traceplot1.png")
 ```
 
 ```{r,eval = FALSE}
 # Plot MCMC trace for the heterogeneity (interaction) causal effect
-traceplot(res$Beta4.hat)
+traceplot(res$Beta4res)
 ```
 
-```{r, echo=FALSE, out.width="80%"}
+```{r, echo=FALSE, out.width="100%"}
 knitr::include_graphics("traceplot4.png")
 ```
 
