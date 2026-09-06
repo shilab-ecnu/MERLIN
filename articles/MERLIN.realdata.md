@@ -179,9 +179,9 @@ certain regions, or shows a distinct upward/downward trend, you may need
 to increase the number of MCMC iterations or check your input data for
 extreme outliers.
 
-**Note**: When using the `"MO"` or `"ME"` model, parameter estimation is
-no longer performed via the MCMC procedure. Consequently, convergence
-diagnostics are not required.
+**Note**: When using the `"ME"` model, parameter estimation is no longer
+performed via the MCMC procedure. Consequently, convergence diagnostics
+are not required.
 
 ## Results Extraction and Interpretation
 
