@@ -8,6 +8,8 @@ between Testosterone (Exposure) and Bipolar Disorder (BD) (Outcome),
 specifically examining whether this causal effect is modified by Sex
 (Environmental factor E).
 
+**Total running time of the script:** approximately 15 minutes
+
 ## Data preparation
 
 To successfully perform causal inference with environmental interactions
