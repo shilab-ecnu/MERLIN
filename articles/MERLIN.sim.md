@@ -32,10 +32,10 @@ Y=(\beta_1+\beta_4E)X+G\beta_2+E\beta_E+\epsilon_Y. Where:
   the manuscript.
 
 - \gamma_E: The effect of environment E on the exposure, corresponding
-  to \boldsymbol{\gamma}^{(E)} in the manuscript.
+  to \gamma^{(E)} in the manuscript.
 
 - \beta_E: The effect of modifier E on the outcome, corresponding to
-  \boldsymbol{\beta}^{(E)} in the manuscript.
+  \beta^{(E)} in the manuscript.
 
 - \epsilon_X, \epsilon_Y: The residual error terms for the exposure and
   outcome, respectively. These capture the cumulative errors, crucially
