@@ -9,9 +9,9 @@ interacts with genetic variants G to influence both the exposure X and
 the outcome Y.
 
 The underlying data generating mechanism can be defined as:
-X=G\gamma_1+(G\times E)\gamma_3+0.1E+\epsilon_X,
+X=G\gamma_1+(G\times E)\gamma_3+E\gamma_E+\epsilon_X,
 
-Y=(\beta_1+\beta_4E)X+G\beta_2+0.1E+\epsilon_Y. Where:
+Y=(\beta_1+\beta_4E)X+G\beta_2+E\beta_E+\epsilon_Y. Where:
 
 - \beta_1: The average causal effect of X on Y, corresponding to
   \beta^{(A)} in the manuscript.
@@ -30,6 +30,12 @@ Y=(\beta_1+\beta_4E)X+G\beta_2+0.1E+\epsilon_Y. Where:
 - \beta_2: The direct genetic effects on the outcome, representing
   horizontal pleiotropy and corresponding to \boldsymbol{\beta}^{(G)} in
   the manuscript.
+
+- \gamma_E: The effect of environment E on the exposure, corresponding
+  to \boldsymbol{\gamma}^{(E)} in the manuscript.
+
+- \beta_E: The effect of modifier E on the outcome, corresponding to
+  \boldsymbol{\beta}^{(E)} in the manuscript.
 
 - \epsilon_X, \epsilon_Y: The residual error terms for the exposure and
   outcome, respectively. These capture the cumulative errors, crucially
@@ -147,11 +153,15 @@ noise_xy <- rmvnorm(n_exp + n_out, mean = c(0, 0), sigma = sigma_noise)
 noise_x <- noise_xy[, 1]
 noise_y <- noise_xy[, 2]
 
+# Define the effect of E on X and Y
+gamma_e <- 0.1
+beta_e <- 0.1
+
 # Generate Exposure (X)
-X <- G %*% gamma_1x + GE %*% gamma_3x + 0.1 * E + noise_x
+X <- G %*% gamma_1x + GE %*% gamma_3x + E * gamma_e + noise_x
 
 # Generate Outcome (Y) 
-Y <- X * b1 + G %*% beta_2 + X * E * b4 + 0.1 * E + noise_y
+Y <- X * b1 + G %*% beta_2 + X * E * b4 + E * beta_e + noise_y
 
 # Split into Exposure and Outcome datasets
 exp_gwas <- X[1:n_exp]

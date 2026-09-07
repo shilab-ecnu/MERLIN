@@ -81,10 +81,10 @@
 instructive to understand its behavior using simulated data. In this
 section, we will simulate a scenario where an environmental factor <span class="math inline">E</span> interacts with genetic variants <span class="math inline">G</span> to influence both the exposure <span class="math inline">X</span> and the outcome <span class="math inline">Y</span>.</p>
 <p>The underlying data generating mechanism can be defined as: <span class="math display">
-X=G\gamma_1+(G\times E)\gamma_3+0.1E+\epsilon_X,
+X=G\gamma_1+(G\times E)\gamma_3+E\gamma_E+\epsilon_X,
 </span></p>
 <p><span class="math display">
-Y=(\beta_1+\beta_4E)X+G\beta_2+0.1E+\epsilon_Y.
+Y=(\beta_1+\beta_4E)X+G\beta_2+E\beta_E+\epsilon_Y.
 </span> Where:</p>
 <ul>
 <li><p><span class="math inline">\beta_1</span>: The average causal
@@ -102,6 +102,12 @@ manuscript.</p></li>
 <li><p><span class="math inline">\beta_2</span>: The direct genetic
 effects on the outcome, representing horizontal pleiotropy and
 corresponding to <span class="math inline">\boldsymbol{\beta}^{(G)}</span> in the
+manuscript.</p></li>
+<li><p><span class="math inline">\gamma_E</span>: The effect of
+environment E on the exposure, corresponding to <span class="math inline">\boldsymbol{\gamma}^{(E)}</span> in the
+manuscript.</p></li>
+<li><p><span class="math inline">\beta_E</span>: The effect of modifier
+E on the outcome, corresponding to <span class="math inline">\boldsymbol{\beta}^{(E)}</span> in the
 manuscript.</p></li>
 <li><p><span class="math inline">\epsilon_X</span>, <span class="math inline">\epsilon_Y</span>: The residual error terms for the
 exposure and outcome, respectively. These capture the cumulative errors,
@@ -204,11 +210,15 @@ Randomization design.</p>
 <span><span class="va">noise_x</span> <span class="op">&lt;-</span> <span class="va">noise_xy</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span></span>
 <span><span class="va">noise_y</span> <span class="op">&lt;-</span> <span class="va">noise_xy</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span></span>
 <span></span>
+<span><span class="co"># Define the effect of E on X and Y</span></span>
+<span><span class="va">gamma_e</span> <span class="op">&lt;-</span> <span class="fl">0.1</span></span>
+<span><span class="va">beta_e</span> <span class="op">&lt;-</span> <span class="fl">0.1</span></span>
+<span></span>
 <span><span class="co"># Generate Exposure (X)</span></span>
-<span><span class="va">X</span> <span class="op">&lt;-</span> <span class="va">G</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">gamma_1x</span> <span class="op">+</span> <span class="va">GE</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">gamma_3x</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="op">*</span> <span class="va">E</span> <span class="op">+</span> <span class="va">noise_x</span></span>
+<span><span class="va">X</span> <span class="op">&lt;-</span> <span class="va">G</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">gamma_1x</span> <span class="op">+</span> <span class="va">GE</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">gamma_3x</span> <span class="op">+</span> <span class="va">E</span> <span class="op">*</span> <span class="va">gamma_e</span> <span class="op">+</span> <span class="va">noise_x</span></span>
 <span></span>
 <span><span class="co"># Generate Outcome (Y) </span></span>
-<span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="va">X</span> <span class="op">*</span> <span class="va">b1</span> <span class="op">+</span> <span class="va">G</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">beta_2</span> <span class="op">+</span> <span class="va">X</span> <span class="op">*</span> <span class="va">E</span> <span class="op">*</span> <span class="va">b4</span> <span class="op">+</span> <span class="fl">0.1</span> <span class="op">*</span> <span class="va">E</span> <span class="op">+</span> <span class="va">noise_y</span></span>
+<span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="va">X</span> <span class="op">*</span> <span class="va">b1</span> <span class="op">+</span> <span class="va">G</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">beta_2</span> <span class="op">+</span> <span class="va">X</span> <span class="op">*</span> <span class="va">E</span> <span class="op">*</span> <span class="va">b4</span> <span class="op">+</span> <span class="va">E</span> <span class="op">*</span> <span class="va">beta_e</span> <span class="op">+</span> <span class="va">noise_y</span></span>
 <span></span>
 <span><span class="co"># Split into Exposure and Outcome datasets</span></span>
 <span><span class="va">exp_gwas</span> <span class="op">&lt;-</span> <span class="va">X</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="va">n_exp</span><span class="op">]</span></span>
