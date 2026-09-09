@@ -85,12 +85,12 @@ posterior samples (default: `10`).
 **Executing the Analysis**
 
 For our Testosterone-BD case study, the environmental factor (Sex) is
-technically a **binary** variable. While MERLIN provides a specialized
-`"discrete"` model, statistical evaluations have demonstrated that when
-the sample size ratio between the two environmental categories is
-relatively balanced (i.e., the proportion is close to 1:1), the default
-`"standard"` model is highly robust and yields almost identical causal
-estimates.
+technically a **binary** variable. While MERLIN provides specialized
+`"discrete_E"` and `"discrete_E_adj"` models, statistical evaluations
+have demonstrated that when the sample size ratio between the two
+environmental categories is relatively balanced (i.e., the proportion is
+close to 1:1), the default `"standard"` model is highly robust and
+yields almost identical causal estimates.
 
 Therefore, for simplicity and to showcase the most universally
 applicable workflow, we will proceed with the default
@@ -131,7 +131,7 @@ Total processing time: 92.6 seconds
 
 > str(res)
 List of 8
- $ Beta1.hat : num 0.2202
+ $ Beta1.hat : num 0.2203
  $ Beta1.se  : num 0.1011
  $ Beta1.pval: num 0.0294
  $ Beta1res  : num [1:1200, 1] 0.305 0.164 0.221 0.194 0.102 ...

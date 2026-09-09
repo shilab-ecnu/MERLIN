@@ -154,12 +154,13 @@ autocorrelation among posterior samples (default: <code>10</code>).</p>
 results.</p>
 <p><strong>Executing the Analysis</strong></p>
 <p>For our Testosterone-BD case study, the environmental factor (Sex) is
-technically a <strong>binary</strong> variable. While MERLIN provides a
-specialized <code>"discrete"</code> model, statistical evaluations have
-demonstrated that when the sample size ratio between the two
-environmental categories is relatively balanced (i.e., the proportion is
-close to 1:1), the default <code>"standard"</code> model is highly
-robust and yields almost identical causal estimates.</p>
+technically a <strong>binary</strong> variable. While MERLIN provides
+specialized <code>"discrete_E"</code> and <code>"discrete_E_adj"</code>
+models, statistical evaluations have demonstrated that when the sample
+size ratio between the two environmental categories is relatively
+balanced (i.e., the proportion is close to 1:1), the default
+<code>"standard"</code> model is highly robust and yields almost
+identical causal estimates.</p>
 <p>Therefore, for simplicity and to showcase the most universally
 applicable workflow, we will proceed with the default
 <code>model = "standard"</code>. We also specify the MCMC parameters and
@@ -194,7 +195,7 @@ Total processing time: 92.6 seconds
 
 &gt; str(res)
 List of 8
- $ Beta1.hat : num 0.2202
+ $ Beta1.hat : num 0.2203
  $ Beta1.se  : num 0.1011
  $ Beta1.pval: num 0.0294
  $ Beta1res  : num [1:1200, 1] 0.305 0.164 0.221 0.194 0.102 ...
