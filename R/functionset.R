@@ -760,7 +760,7 @@ summaryQC = function(mhcstart, mhcend, bh1, bh2, s12, s22, bp, chr,
 }
 
 
-EstRhofun <- function(fileexposure, fileoutcome, stringname3,
+EstRhofun <- function(fileexposure, fileoutcome, stringname3, block_file,
                       ld_r2_thresh, lam, pth, coreNum = 1){
 
   # Estimate the rho
