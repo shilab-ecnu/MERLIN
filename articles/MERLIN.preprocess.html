@@ -358,13 +358,30 @@ distribution in the estimation routine.</p></li>
 <span><span class="va">lambad</span>       <span class="op">&lt;-</span> <span class="fl">0.85</span></span>
 <span><span class="va">pth</span>          <span class="op">&lt;-</span> <span class="fl">1.96</span></span>
 <span></span>
+<span><span class="co"># Decompress the data</span></span>
+<span><span class="va">expgwas_txt</span> <span class="op">&lt;-</span> <span class="st">"Testosterone.GWAS.txt"</span></span>
+<span><span class="va">expgwis_txt</span> <span class="op">&lt;-</span> <span class="st">"Testosterone.GWIS.txt"</span></span>
+<span><span class="va">outgwas_txt</span> <span class="op">&lt;-</span> <span class="st">"BD.GWAS.txt"</span></span>
+<span><span class="va">outgwis_txt</span> <span class="op">&lt;-</span> <span class="st">"BD.GWIS.txt"</span></span>
+<span><span class="va">gz_files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">expgwas</span>, <span class="va">expgwis</span>, <span class="va">outgwas</span>, <span class="va">outgwis</span><span class="op">)</span></span>
+<span><span class="va">txt_files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">expgwas_txt</span>, <span class="va">expgwis_txt</span>, <span class="va">outgwas_txt</span>, <span class="va">outgwis_txt</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">gz_files</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">R.utils</span><span class="fu">::</span><span class="fu">gunzip</span><span class="op">(</span></span>
+<span>    <span class="va">gz_files</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,</span>
+<span>    destname  <span class="op">=</span> <span class="va">txt_files</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,</span>
+<span>    remove    <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>    overwrite <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
 <span><span class="co"># Estimate correlation for GWAS summary statistics</span></span>
-<span><span class="va">RhoEst1</span> <span class="op">&lt;-</span> <span class="fu">EstRhofun</span><span class="op">(</span><span class="va">expgwas</span>, <span class="va">outgwas</span>, <span class="va">stringname3</span>, <span class="va">ld_r2_thresh</span>, <span class="va">lambad</span>, <span class="va">pth</span><span class="op">)</span></span>
+<span><span class="va">RhoEst1</span> <span class="op">&lt;-</span> <span class="fu">EstRhofun</span><span class="op">(</span><span class="va">expgwas_txt</span>, <span class="va">outgwas_txt</span>, <span class="va">stringname3</span>, <span class="va">ld_r2_thresh</span>, <span class="va">lambad</span>, <span class="va">pth</span><span class="op">)</span></span>
 <span><span class="va">rho1</span>    <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">RhoEst1</span><span class="op">$</span><span class="va">Rhores</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Estimate correlation for GWIS summary statistics </span></span>
 <span><span class="co"># (using exposure and outcome GWIS or relevant null datasets)</span></span>
-<span><span class="va">RhoEst2</span> <span class="op">&lt;-</span> <span class="fu">EstRhofun</span><span class="op">(</span><span class="va">expgwis</span>, <span class="va">outgwis</span>, <span class="va">stringname3</span>, <span class="va">ld_r2_thresh</span>, <span class="va">lambad</span>, <span class="va">pth</span><span class="op">)</span></span>
+<span><span class="va">RhoEst2</span> <span class="op">&lt;-</span> <span class="fu">EstRhofun</span><span class="op">(</span><span class="va">expgwis_txt</span>, <span class="va">outgwis_txt</span>, <span class="va">stringname3</span>, <span class="va">ld_r2_thresh</span>, <span class="va">lambad</span>, <span class="va">pth</span><span class="op">)</span></span>
 <span><span class="va">rho2</span>    <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">RhoEst2</span><span class="op">$</span><span class="va">Rhores</span><span class="op">)</span></span></code></pre></div>
 <p>With the matched data, screened instrumental variables, estimated LD
 matrix <code>R</code>, and sample overlap parameters

@@ -311,13 +311,30 @@ ld_r2_thresh <- 0.001
 lambad       <- 0.85
 pth          <- 1.96
 
+# Decompress the data
+expgwas_txt <- "Testosterone.GWAS.txt"
+expgwis_txt <- "Testosterone.GWIS.txt"
+outgwas_txt <- "BD.GWAS.txt"
+outgwis_txt <- "BD.GWIS.txt"
+gz_files <- c(expgwas, expgwis, outgwas, outgwis)
+txt_files <- c(expgwas_txt, expgwis_txt, outgwas_txt, outgwis_txt)
+
+for (i in seq_along(gz_files)) {
+  R.utils::gunzip(
+    gz_files[i],
+    destname  = txt_files[i],
+    remove    = FALSE,
+    overwrite = TRUE
+  )
+}
+
 # Estimate correlation for GWAS summary statistics
-RhoEst1 <- EstRhofun(expgwas, outgwas, stringname3, ld_r2_thresh, lambad, pth)
+RhoEst1 <- EstRhofun(expgwas_txt, outgwas_txt, stringname3, ld_r2_thresh, lambad, pth)
 rho1    <- mean(RhoEst1$Rhores)
 
 # Estimate correlation for GWIS summary statistics 
 # (using exposure and outcome GWIS or relevant null datasets)
-RhoEst2 <- EstRhofun(expgwis, outgwis, stringname3, ld_r2_thresh, lambad, pth)
+RhoEst2 <- EstRhofun(expgwis_txt, outgwis_txt, stringname3, ld_r2_thresh, lambad, pth)
 rho2    <- mean(RhoEst2$Rhores)
 ```
 
