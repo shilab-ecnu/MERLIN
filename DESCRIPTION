@@ -21,6 +21,8 @@ LinkingTo:
     RcppDist
 Imports: 
     data.table,
+    ggplot2,
+    bigsnpr,
     readr,
     Rcpp,
     TwoSampleMR (>= 0.7.9)
