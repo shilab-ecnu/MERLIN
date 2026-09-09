@@ -295,7 +295,7 @@ Estimate the correlation parameter induced by sample overlap.
 
 ``` r
 
-EstRhofun(fileexposure, fileoutcome, stringname3, ld_r2_thresh, lam, pth, coreNum = 1)
+EstRhofun(fileexposure, fileoutcome, stringname3, block_file, ld_r2_thresh, lam, pth, coreNum = 1)
 ```
 
 ##### Arguments
@@ -305,6 +305,7 @@ EstRhofun(fileexposure, fileoutcome, stringname3, ld_r2_thresh, lam, pth, coreNu
 | `fileexposure` | Path to exposure summary statistics. |
 | `fileoutcome` | Path to outcome summary statistics. |
 | `stringname3` | Prefix of the PLINK reference panel files. |
+| `block_file` | Genomic block definition file. |
 | `ld_r2_thresh` | LD threshold used when selecting approximately independent variants. |
 | `lam` | Regularisation parameter for LD estimation. |
 | `pth` | Truncation threshold or vector of thresholds used in the truncated-normal estimator. |

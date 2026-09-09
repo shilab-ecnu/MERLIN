@@ -520,7 +520,7 @@ file is named by prefixing the input file name with
 <h5 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a>
 </h5>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">EstRhofun</span><span class="op">(</span><span class="va">fileexposure</span>, <span class="va">fileoutcome</span>, <span class="va">stringname3</span>, <span class="va">ld_r2_thresh</span>, <span class="va">lam</span>, <span class="va">pth</span>, coreNum <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">EstRhofun</span><span class="op">(</span><span class="va">fileexposure</span>, <span class="va">fileoutcome</span>, <span class="va">stringname3</span>, <span class="va">block_file</span>, <span class="va">ld_r2_thresh</span>, <span class="va">lam</span>, <span class="va">pth</span>, coreNum <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level5">
 <h5 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a>
@@ -548,20 +548,24 @@ file is named by prefixing the input file name with
 <td>Prefix of the PLINK reference panel files.</td>
 </tr>
 <tr class="even">
+<td><code>block_file</code></td>
+<td>Genomic block definition file.</td>
+</tr>
+<tr class="odd">
 <td><code>ld_r2_thresh</code></td>
 <td>LD threshold used when selecting approximately independent
 variants.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>lam</code></td>
 <td>Regularisation parameter for LD estimation.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>pth</code></td>
 <td>Truncation threshold or vector of thresholds used in the
 truncated-normal estimator.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>coreNum</code></td>
 <td>Number of CPU cores used in LD calculations.</td>
 </tr>
