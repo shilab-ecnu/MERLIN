@@ -246,7 +246,7 @@ ivselect(
 | `outgwis_dir` | Optional path to outcome GWIS summary statistics. |
 | `stringname3` | Prefix of the PLINK reference panel files. |
 | `block_file` | Genomic block definition file. |
-| `plink_dir` | Path to the PLINK executable. If `NULL`, the function attempts to download PLINK via `bigsnpr::download_plink()`. |
+| `plink_dir` | Path to the PLINK executable. If `NULL`, the function attempts to download PLINK via [`bigsnpr::download_plink()`](https://privefl.github.io/bigsnpr/reference/download_plink.html). |
 | `pval_cutoff_gwas` | P-value threshold for exposure GWAS clumping. |
 | `pval_cutoff_gwis` | P-value threshold for exposure GWIS clumping. |
 | `r2_cutoff` | LD `r^2` threshold used by PLINK clumping. |
