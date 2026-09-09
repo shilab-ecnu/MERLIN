@@ -22,14 +22,14 @@ LinkingTo:
 Imports: 
     data.table,
     ggplot2,
-    bigsnpr,
     readr,
     Rcpp,
     TwoSampleMR (>= 0.7.9)
 Suggests: 
     knitr,
     rmarkdown,
-    mvtnorm
+    mvtnorm,
+    bigsnpr
 VignetteBuilder: knitr
 NeedsCompilation: yes
 Packaged: 2026-07-22 12:38:41 UTC; 36433
