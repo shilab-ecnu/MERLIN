@@ -153,6 +153,13 @@ ivselect <- function(expgwas_dir, expgwis_dir = NULL,
   # Step 3: PLINK Setup
   message("Step 3/7: Setting up PLINK...")
   if (is.null(plink_dir)) {
+    if (!requireNamespace("bigsnpr", quietly = TRUE)) {
+    stop(
+      "Package 'bigsnpr' is required when 'plink_dir' is NULL. ",
+      "Install it with install.packages('bigsnpr'), ",
+      "or provide the path to a PLINK executable."
+    )
+  }
     plink_dir <- bigsnpr::download_plink()
   }
   message("  ✓ Using PLINK: ", plink_dir)
