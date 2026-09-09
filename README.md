@@ -14,7 +14,7 @@ and Genome-Wide Interaction Studies (GWIS).
 
 The simulation and real data analyses code for reproduction can be found here: <a href="https://github.com/ydong-work/MERLIN_analysis/tree/main">REPRODUCTION</a>. 
 
-## Documenation
+## Documentation
 
 Full documentation available here:
 <https://shilab-ecnu.github.io/MERLIN/>
