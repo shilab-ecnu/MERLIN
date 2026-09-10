@@ -329,12 +329,12 @@ for (i in seq_along(gz_files)) {
 }
 
 # Estimate correlation for GWAS summary statistics
-RhoEst1 <- EstRhofun(expgwas_txt, outgwas_txt, stringname3, ld_r2_thresh, lambad, pth)
+RhoEst1 <- EstRhofun(expgwas_txt, outgwas_txt, stringname3, block_file, ld_r2_thresh, lambad, pth)
 rho1    <- mean(RhoEst1$Rhores)
 
 # Estimate correlation for GWIS summary statistics 
 # (using exposure and outcome GWIS or relevant null datasets)
-RhoEst2 <- EstRhofun(expgwis_txt, outgwis_txt, stringname3, ld_r2_thresh, lambad, pth)
+RhoEst2 <- EstRhofun(expgwis_txt, outgwis_txt, stringname3, block_file, ld_r2_thresh, lambad, pth)
 rho2    <- mean(RhoEst2$Rhores)
 ```
 
