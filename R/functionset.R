@@ -783,6 +783,16 @@ EstRhofun <- function(fileexposure, fileoutcome, stringname3, ld_r2_thresh, pth,
   )
 
   # Construct and run the PLINK LD-pruning command.
+  if (is.null(plink_dir)) {
+    if (!requireNamespace("bigsnpr", quietly = TRUE)) {
+    stop(
+      "Package 'bigsnpr' is required when 'plink_dir' is NULL. ",
+      "Install it with install.packages('bigsnpr'), ",
+      "or provide the path to a PLINK executable."
+    )
+  }
+    plink_dir <- bigsnpr::download_plink()
+  }
   plink_command <- paste(
     plink_dir,
     "--bfile", stringname3,
