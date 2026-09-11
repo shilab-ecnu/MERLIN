@@ -335,11 +335,9 @@ both parameters directly to zero:</li>
 <ul>
 <li>
 <strong>One-Sample / Overlapping MR</strong>: If the cohorts
-overlap, <span class="math inline">\rho_1</span> and <span class="math inline">\rho_2</span> are estimated using the
-<code>EstRhofun</code> function on summary statistics among independent
-variants following
-<a href="https://www.nature.com/articles/s41467-022-34164-1" class="external-link">Chen et al
-(2022)</a>.</li>
+overlap, <span class="math inline">\rho_1</span> and <span class="math inline">\rho_2</span> are estimated using
+<code>EstRhofun</code> based on approximately LD-independent null
+variants.</li>
 </ul>
 <p><strong>Parameter Specifications for
 <code>EstRhofun</code></strong>:</p>
@@ -347,17 +345,13 @@ variants following
 <li><p>ld_r2_thresh: Strict <span class="math inline">r^2</span>
 threshold to filter completely independent SNPs across the
 genome.</p></li>
-<li><p>lambad: Shrinkage tuning parameter for the LD estimator matrix
-during correlation calculation.</p></li>
 <li><p>pth: Critical value threshold adapted to the truncated normal
 distribution in the estimation routine.</p></li>
 </ul>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Set parameters for correlation estimation</span></span>
 <span><span class="va">ld_r2_thresh</span> <span class="op">&lt;-</span> <span class="fl">0.001</span></span>
-<span><span class="va">lambad</span>       <span class="op">&lt;-</span> <span class="fl">0.85</span></span>
 <span><span class="va">pth</span>          <span class="op">&lt;-</span> <span class="fl">1.96</span></span>
-<span></span>
 <span></span>
 <span><span class="co"># Estimate correlation for GWAS summary statistics</span></span>
 <span><span class="va">RhoEst1</span> <span class="op">&lt;-</span> <span class="fu">EstRhofun</span><span class="op">(</span><span class="va">expgwas</span>, <span class="va">outgwas</span>, <span class="va">stringname3</span>, <span class="va">ld_r2_thresh</span>, <span class="va">pth</span>, <span class="va">plink_dir</span><span class="op">)</span></span>

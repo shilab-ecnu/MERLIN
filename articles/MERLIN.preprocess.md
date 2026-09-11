@@ -289,17 +289,13 @@ rho2 <- 0
 ```
 
 - **One-Sample / Overlapping MR**: If the cohorts overlap, \rho_1 and
-  \rho_2 are estimated using the `EstRhofun` function on summary
-  statistics among independent variants following [Chen et al
-  (2022)](https://www.nature.com/articles/s41467-022-34164-1).
+  \rho_2 are estimated using `EstRhofun` based on approximately
+  LD-independent null variants.
 
 **Parameter Specifications for `EstRhofun`**:
 
 - ld_r2_thresh: Strict r^2 threshold to filter completely independent
   SNPs across the genome.
-
-- lambad: Shrinkage tuning parameter for the LD estimator matrix during
-  correlation calculation.
 
 - pth: Critical value threshold adapted to the truncated normal
   distribution in the estimation routine.
@@ -308,9 +304,7 @@ rho2 <- 0
 
 # Set parameters for correlation estimation
 ld_r2_thresh <- 0.001
-lambad       <- 0.85
 pth          <- 1.96
-
 
 # Estimate correlation for GWAS summary statistics
 RhoEst1 <- EstRhofun(expgwas, outgwas, stringname3, ld_r2_thresh, pth, plink_dir)
