@@ -77,9 +77,29 @@ double inverseNormal(double prob, double mean, double sd){
 arma::vec MultiinverseNormal(arma::vec &prob){
   int p = prob.n_elem;
   arma::vec res = zeros(p, 1);
+
+  const double prob_eps = 1e-12;
+
   for(int i = 0; i < p; i++){
-    res[i] = inverseNormal(prob[i], 0, 1);
+
+    if(!std::isfinite(prob[i])){
+      Rcpp::stop(
+        "Non-finite probability occurred in MultiinverseNormal."
+      );
+    }
+
+    double safe_prob = std::max(
+      prob_eps,
+      std::min(1.0 - prob_eps, prob[i])
+    );
+
+    res[i] = inverseNormal(
+      safe_prob,
+      0,
+      1
+    );
   }
+
   return res;
 }
 
