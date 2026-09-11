@@ -320,7 +320,7 @@ EstRhofun(fileexposure, fileoutcome, stringname3, ld_r2_thresh, pth, plink_dir)
 | `stringname3`  | Prefix of the PLINK reference panel files, without the `.bed`, `.bim`, or `.fam` extension.          |
 | `ld_r2_thresh` | LD threshold passed to PLINK `--indep-pairwise` when selecting approximately independent variants. |
 | `pth`          | Absolute Z-score threshold used to identify null variants in both summary-statistics datasets.      |
-| `plink_dir`    | Path to the PLINK executable.                                                                       |
+| `plink_dir`    | Path to the PLINK executable. If `NULL`, the function attempts to download PLINK via `bigsnpr::download_plink()`. |
 
 #### Value
 
