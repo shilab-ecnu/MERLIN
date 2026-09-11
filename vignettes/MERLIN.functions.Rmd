@@ -307,28 +307,26 @@ Estimate the correlation parameter induced by sample overlap.
 
 #### Usage
 
-``` r
-EstRhofun(fileexposure, fileoutcome, stringname3, block_file, ld_r2_thresh, lam, pth, coreNum = 1)
+```r
+EstRhofun(fileexposure, fileoutcome, stringname3, ld_r2_thresh, pth, plink_dir)
 ```
 
 #### Arguments
 
-| Argument | Description |
-|------------------------------------|------------------------------------|
-| `fileexposure` | Path to exposure summary statistics. |
-| `fileoutcome` | Path to outcome summary statistics. |
-| `stringname3` | Prefix of the PLINK reference panel files. |
-| `block_file` | Genomic block definition file. |
-| `ld_r2_thresh` | LD threshold used when selecting approximately independent variants. |
-| `lam` | Regularisation parameter for LD estimation. |
-| `pth` | Truncation threshold or vector of thresholds used in the truncated-normal estimator. |
-| `coreNum` | Number of CPU cores used in LD calculations. |
+| Argument       | Description                                                                                         |
+| -------------- | --------------------------------------------------------------------------------------------------- |
+| `fileexposure` | Path to exposure summary statistics. The file must contain `SNP`, `BETA`, and `SE` columns.          |
+| `fileoutcome`  | Path to outcome summary statistics. The file must contain `SNP`, `BETA`, and `SE` columns.           |
+| `stringname3`  | Prefix of the PLINK reference panel files, without the `.bed`, `.bim`, or `.fam` extension.          |
+| `ld_r2_thresh` | LD threshold passed to PLINK `--indep-pairwise` when selecting approximately independent variants. |
+| `pth`          | Absolute Z-score threshold used to identify null variants in both summary-statistics datasets.      |
+| `plink_dir`    | Path to the PLINK executable.                                                                       |
 
 #### Value
 
-A list containing `rhohat`, estimated correlation values; `pvalue`,
-correlation test P-values; `pres`, the number of variants used for each
-threshold; and `Rhores`, saved samples from the truncated-normal
+A list containing `rhohat`, the estimated sample-overlap correlation;
+`pvalue`, the correlation test P-value; `pres`, the number of independent
+null variants used; and `Rhores`, saved samples from the truncated-normal
 correlation estimator.
 
 ### **`traceplot()`**
