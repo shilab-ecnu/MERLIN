@@ -520,15 +520,15 @@ file is named by prefixing the input file name with
 <h5 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a>
 </h5>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">EstRhofun</span><span class="op">(</span><span class="va">fileexposure</span>, <span class="va">fileoutcome</span>, <span class="va">stringname3</span>, <span class="va">block_file</span>, <span class="va">ld_r2_thresh</span>, <span class="va">lam</span>, <span class="va">pth</span>, coreNum <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">EstRhofun</span><span class="op">(</span><span class="va">fileexposure</span>, <span class="va">fileoutcome</span>, <span class="va">stringname3</span>, <span class="va">ld_r2_thresh</span>, <span class="va">pth</span>, <span class="va">plink_dir</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level5">
 <h5 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a>
 </h5>
 <table class="table">
 <colgroup>
-<col width="50%">
-<col width="50%">
+<col width="12%">
+<col width="87%">
 </colgroup>
 <thead><tr class="header">
 <th>Argument</th>
@@ -537,37 +537,33 @@ file is named by prefixing the input file name with
 <tbody>
 <tr class="odd">
 <td><code>fileexposure</code></td>
-<td>Path to exposure summary statistics.</td>
+<td>Path to exposure summary statistics. The file must contain
+<code>SNP</code>, <code>BETA</code>, and <code>SE</code> columns.</td>
 </tr>
 <tr class="even">
 <td><code>fileoutcome</code></td>
-<td>Path to outcome summary statistics.</td>
+<td>Path to outcome summary statistics. The file must contain
+<code>SNP</code>, <code>BETA</code>, and <code>SE</code> columns.</td>
 </tr>
 <tr class="odd">
 <td><code>stringname3</code></td>
-<td>Prefix of the PLINK reference panel files.</td>
+<td>Prefix of the PLINK reference panel files, without the
+<code>.bed</code>, <code>.bim</code>, or <code>.fam</code>
+extension.</td>
 </tr>
 <tr class="even">
-<td><code>block_file</code></td>
-<td>Genomic block definition file.</td>
-</tr>
-<tr class="odd">
 <td><code>ld_r2_thresh</code></td>
-<td>LD threshold used when selecting approximately independent
-variants.</td>
-</tr>
-<tr class="even">
-<td><code>lam</code></td>
-<td>Regularisation parameter for LD estimation.</td>
+<td>LD threshold passed to PLINK <code>--indep-pairwise</code> when
+selecting approximately independent variants.</td>
 </tr>
 <tr class="odd">
 <td><code>pth</code></td>
-<td>Truncation threshold or vector of thresholds used in the
-truncated-normal estimator.</td>
+<td>Absolute Z-score threshold used to identify null variants in both
+summary-statistics datasets.</td>
 </tr>
 <tr class="even">
-<td><code>coreNum</code></td>
-<td>Number of CPU cores used in LD calculations.</td>
+<td><code>plink_dir</code></td>
+<td>Path to the PLINK executable.</td>
 </tr>
 </tbody>
 </table>
@@ -575,10 +571,11 @@ truncated-normal estimator.</td>
 <div class="section level5">
 <h5 id="value-3">Value<a class="anchor" aria-label="anchor" href="#value-3"></a>
 </h5>
-<p>A list containing <code>rhohat</code>, estimated correlation values;
-<code>pvalue</code>, correlation test P-values; <code>pres</code>, the
-number of variants used for each threshold; and <code>Rhores</code>,
-saved samples from the truncated-normal correlation estimator.</p>
+<p>A list containing <code>rhohat</code>, the estimated sample-overlap
+correlation; <code>pvalue</code>, the correlation test P-value;
+<code>pres</code>, the number of independent null variants used; and
+<code>Rhores</code>, saved samples from the truncated-normal correlation
+estimator.</p>
 </div>
 </div>
 <div class="section level4">
