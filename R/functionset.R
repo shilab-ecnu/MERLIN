@@ -767,106 +767,154 @@ summaryQC = function(mhcstart, mhcend, bh1, bh2, s12, s22, bp, chr,
 }
 
 
-EstRhofun <- function(fileexposure, fileoutcome, stringname3, block_file,
-                      ld_r2_thresh, lam, pth, coreNum = 1){
+EstRhofun <- function(fileexposure, fileoutcome, stringname3, ld_r2_thresh, pth, plink_dir) {
+  # Generate a temporary prefix for PLINK pruning output.
+  prune_prefix <- tempfile("MERLIN_rho_ind_")
 
-  # Estimate the rho
-  res = matchsnp(fileexposure, fileoutcome, stringname3, FALSE);
-  bh1 = as.numeric(res$bh1);
-  bh2 = as.numeric(res$bh2);
-  s12 = as.numeric(res$s12);
-  s22 = as.numeric(res$s22);
-  chr = as.numeric(res$chr);
-  bp = res$bp;
-  rsname = res$rsname
-  avbIndex = res$idxin;
-  idx4panel = res$idx4panel;
-  QCresult = summaryQC(mhcstart, mhcend, bh1, bh2, s12, s22, bp,
-                       chr, rsname, avbIndex, idx4panel, Inf, Inf);
+  # Remove temporary PLINK output files when the function exits.
+  on.exit(
+    unlink(
+      paste0(
+        prune_prefix,
+        c(".prune.in", ".prune.out", ".log", ".nosex")
+      )
+    ),
+    add = TRUE
+  )
 
+  # Construct and run the PLINK LD-pruning command.
+  plink_command <- paste(
+    plink_dir,
+    "--bfile", stringname3,
+    "--indep-pairwise",
+    50,
+    5,
+    ld_r2_thresh,
+    "--out", prune_prefix
+  )
 
-  bh1new = QCresult$bh1new;
-  bh2new = QCresult$bh2new;
-  s12new = QCresult$s12new;
-  s22new = QCresult$s22new;
-  bpnew = QCresult$bpnew;
-  chrnew = QCresult$chrnew;
-  avbIndexnew = QCresult$avbIndexnew;
-  rsnamenew = QCresult$rsnamenew;
-  pmhc = QCresult$pmhc;
-  px = QCresult$px;
-  py = QCresult$py;
+  plink_status <- system(plink_command)
+  prune_file <- paste0(prune_prefix, ".prune.in")
 
-  max_cores <- parallel::detectCores()
-  
-  if (is.null(coreNum) || !is.numeric(coreNum) || coreNum < 1) {
-    coreNum <- 1
-    warning("Invalid 'coreNum' provided. Defaulting to 1 core.")
-  } else if (coreNum > max_cores) {
-    coreNum <- max_cores
-    warning(sprintf("Requested 'coreNum' exceeds available cores. Adjusting to maximum available: %d cores.", max_cores))
+  if (plink_status != 0 || !file.exists(prune_file)) {
+    stop("PLINK LD pruning failed.")
   }
-  
-  coreNum <- as.integer(coreNum)
 
-  IndSumRes = IndepSummary(bpnew, chrnew, avbIndexnew - 1, block_file, stringname3,
-                           bh1new, bh2new, s12new, s22new, coreNum,
-                           lam, ld_r2_thresh);
-  bh1_ind = IndSumRes$bh1_ind;
-  bh2_ind = IndSumRes$bh2_ind;
-  se1_ind = IndSumRes$se1_ind;
-  se2_ind = IndSumRes$se2_ind;
+  # Read the SNPs retained after LD pruning.
+  independent_snps <- read.table(
+    prune_file,
+    header = FALSE,
+    stringsAsFactors = FALSE
+  )[, 1]
 
-  z1_ind = bh1_ind / se1_ind;
-  z2_ind = bh2_ind / se2_ind;
+  # Read exposure and outcome summary statistics.
+  exposure_data <- data.frame(
+    readr::read_delim(
+      fileexposure,
+      col_names = TRUE,
+      show_col_types = FALSE
+    )
+  )
 
-  # a = rep(-pth, 2);
-  # b = rep(pth, 2);
-  # z1_new = z1_ind [which(abs(z1_ind) < pth&abs(z2_ind) < pth)];
-  # z2_new = z2_ind[which(abs(z1_ind) < pth&abs(z2_ind) < pth)];
-  # rhores = truncEstfun(a, b, z1_new, z2_new, 4000, 1000, 10)
-  # rhohat = mean(rhores);
-  # p1 = length(z1_new);
-  # pvalue = testR(rhohat, p1);
-  #
-  maxIter = 4000;
-  thin = 10;
-  burnin = 1000;
+  outcome_data <- data.frame(
+    readr::read_delim(
+      fileoutcome,
+      col_names = TRUE,
+      show_col_types = FALSE
+    )
+  )
 
-  nsave = maxIter / thin;
+  # Identify SNPs shared by the exposure data, outcome data,
+  # and the LD-pruned reference-panel SNP set.
+  common_snps <- intersect(
+    exposure_data$SNP,
+    outcome_data$SNP
+  )
 
-  if(length(pth)==1){
-    Rhores = rep(NA, nsave);
-    a = rep(-pth, 2);
-    b = rep(pth, 2);
-    z1_new = z1_ind [which(abs(z1_ind) < pth&abs(z2_ind) < pth)];
-    z2_new = z2_ind[which(abs(z1_ind) < pth&abs(z2_ind) < pth)];
-    rhores = truncEstfun(a, b, z1_new, z2_new, maxIter, burnin, thin)
-    rhohat = mean(rhores);
-    p1 = length(z1_new);
-    pvalue = testR(rhohat, p1);
-    Rhores = rhores;
-    pres = p1;
-  }else{
-    rhohat = pvalue = rep(NA, length(pth));
-    Rhores = matrix(NA, nrow = nsave, ncol = length(pth));
-    pres = rep(NA, length(pth));
-    for(i in 1:length(pth)){
-      pth1 = pth[i];
-      a = rep(-pth1, 2);
-      b = rep(pth1, 2);
-      z1_new = z1_ind [which(abs(z1_ind) < pth1&abs(z2_ind) < pth1)];
-      z2_new = z2_ind[which(abs(z1_ind) < pth1&abs(z2_ind) < pth1)];
-      rhores = truncEstfun(a, b, z1_new, z2_new, 4000, 1000, 10)
-      rhohat[i] = mean(rhores);
-      p1 = length(z1_new);
-      pvalue[i] = testR(rhohat[i], p1);
-      Rhores[, i] = rhores;
-      pres[i] = p1;
-    }
+  common_snps <- intersect(
+    common_snps,
+    independent_snps
+  )
+
+  if (length(common_snps) == 0L) {
+    stop("No common independent SNPs were found.")
   }
-  # ---------------------------------------------------------
-  return(list(rhohat = rhohat, pvalue = pvalue, pres = pres, Rhores = Rhores))
 
+  # Arrange both datasets in the same SNP order.
+  exposure_independent <- exposure_data[
+    match(common_snps, exposure_data$SNP),
+  ]
+
+  outcome_independent <- outcome_data[
+    match(common_snps, outcome_data$SNP),
+  ]
+
+  # Calculate exposure and outcome Z-scores.
+  z_exposure <- (
+    exposure_independent$BETA /
+      exposure_independent$SE
+  )
+
+  z_outcome <- (
+    outcome_independent$BETA /
+      outcome_independent$SE
+  )
+
+  # Remove missing and non-finite Z-scores.
+  valid <- is.finite(z_exposure) & is.finite(z_outcome)
+
+  z_exposure <- z_exposure[valid]
+  z_outcome <- z_outcome[valid]
+
+  # Keep null SNPs away from the truncation boundaries to reduce
+  # numerical instability in the truncated-normal estimator.
+  boundary_eps <- 1e-4
+  null_threshold <- pth - boundary_eps
+
+  if (null_threshold <= 0) {
+    stop("'pth' must be greater than the boundary tolerance.")
+  }
+
+  null_index <- which(
+    abs(z_exposure) < null_threshold &
+      abs(z_outcome) < null_threshold
+  )
+
+  if (length(null_index) < 3L) {
+    stop(
+      "Fewer than three null SNPs remained after Z-score filtering."
+    )
+  }
+
+  z_exposure_null <- z_exposure[null_index]
+  z_outcome_null <- z_outcome[null_index]
+
+  # Define the original truncation boundaries.
+  lower_bound <- rep(-pth, 2L)
+  upper_bound <- rep(pth, 2L)
+
+  # Estimate the sample-overlap correlation using MERLIN's
+  # truncated-normal estimator.
+  rho_draws <- truncEstfun(
+    lower_bound,
+    upper_bound,
+    z_exposure_null,
+    z_outcome_null,
+    4000,
+    1000,
+    10
+  )
+
+  rhohat <- mean(rho_draws)
+  n_null <- length(null_index)
+  pvalue <- testR(rhohat, n_null)
+
+  return(
+    list(
+      rhohat = rhohat,
+      pvalue = pvalue,
+      pres = n_null,
+      Rhores = rho_draws
+    )
+  )
 }
-
